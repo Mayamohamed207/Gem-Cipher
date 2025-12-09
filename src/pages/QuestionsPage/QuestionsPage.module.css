@@ -1,0 +1,263 @@
+:root {
+    --primary: #d9650f;
+    --secondary: #a33013;
+    --accent: #e5c9a4;
+    --blue: #35638a;
+    --background: #fff8ef;
+    --light-gray: #f8f9fa;
+    --hover-bg: #e5c9a4;
+    --selected-bg: #d0d0d0;
+}
+
+.questionsPageContainer {
+    max-width: 850px;
+    margin: 40px auto;
+    padding: 30px;
+    background: var(--background);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+.heading {
+    text-align: center;
+    font-size: 2em;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--primary);
+}
+
+.subtext {
+    text-align: center;
+    font-size: 1.1em;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.progressBarContainer {
+    width: 100%;
+    height: 14px;
+    background: #eee;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.progressBar {
+    height: 100%;
+    background: var(--primary);
+    width: 0%;
+    border-radius: 10px;
+    transition: width 0.4s ease-in-out;
+}
+
+.progressLabel {
+    position: absolute;
+    top: 18px;
+    right: 0;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.questionForm {
+    background: var(--light-gray);
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.questionTitle {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    font-weight: 600;
+    border-bottom: 2px dashed var(--accent);
+    padding-bottom: 10px;
+    color: var(--secondary);
+}
+
+.questionLabel {
+    display: block;
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.textInput, .textArea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+/* NEW: Option cards for radio/select */
+.optionCardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.optionCard {
+    flex: 1 1 calc(50% - 12px);
+    padding: 15px;
+    border-radius: 12px;
+    border: 2px solid var(--accent);
+    background-color: #fef6e4;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.optionCard:hover {
+    background-color: var(--hover-bg);
+    border-color: var(--secondary);
+}
+
+.optionCard.selected {
+    background-color: var(--selected-bg);
+    border-color: var(--primary);
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.submitButton, .continueButton, .exitButton {
+    width: 100%;
+    padding: 14px;
+    margin-top: 15px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #fff;
+}
+
+.submitButton {
+    background-color: var(--primary);
+}
+
+.submitButton:hover {
+    background-color: var(--secondary);
+}
+
+.continueButton {
+    background-color: var(--blue);
+}
+
+.continueButton:hover {
+    background-color: var(--primary);
+}
+
+.exitButton {
+    background-color: var(--accent);
+    color: #333;
+}
+
+.exitButton:hover {
+    background-color: var(--secondary);
+    color: #fff;
+}
+
+.feedbackCard {
+    text-align: center;
+    background: var(--light-gray);
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid var(--accent);
+    margin-bottom: 20px;
+}
+
+.correct {
+    font-size: 1.8em;
+    color: #28a745;
+    margin-bottom: 12px;
+}
+
+.incorrect {
+    font-size: 1.8em;
+    color: #dc3545;
+    margin-bottom: 12px;
+}
+
+.keeperFeedback {
+    background: #fff3cd;
+    border-left: 5px solid #ffc107;
+    padding: 12px;
+    border-radius: 5px;
+    text-align: left;
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+.textArea {
+    resize: vertical;
+}
+
+.finalPromptCard {
+    text-align: center;
+    padding: 30px;
+    border-radius: 15px;
+    background: #fff8ef;
+    border: 2px solid var(--primary);
+    margin-top: 20px;
+}
+
+.finalHeader {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.finalScore, .finalQuestion {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+}
+
+.finalActions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.modalBackdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modalContent {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    width: 400px;
+}
+
+.modalHeader {
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.modalSubtext {
+    font-size: 1em;
+    margin-bottom: 20px;
+}
+
+.placeholderInput {
+    font-style: italic;
+    color: #888;
+}

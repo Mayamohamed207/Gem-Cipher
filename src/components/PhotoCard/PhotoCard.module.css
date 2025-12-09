@@ -1,0 +1,54 @@
+.photoCardContainer {
+  flex-grow: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-image: url('../../assets/images/photocard.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  text-align: center;
+  position: relative;
+}
+
+/* Overlay for readability */
+.photoCardContainer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 0;
+}
+
+.glyphIcon,
+.caption,
+.infoBox {
+  position: relative;
+  z-index: 1;
+}
+
+.glyphIcon {
+  font-size: 5em;
+  color: var(--gold-bright-solid);
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.9);
+}
+
+.caption {
+  font-style: italic;
+  font-size: 1.2em;
+}
+
+.infoBox {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+  margin-top: auto;
+}
+
+.infoTitle {
+  color: var(--gold-bright-solid);
+  font-size: 1.3em;
+  text-transform: uppercase;
+}

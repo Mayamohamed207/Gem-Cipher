@@ -1,0 +1,127 @@
+/* src/pages/HomePage/HomePage.module.css (MODIFIED: TiltedCard Support) */
+
+.pageWrapper {
+  min-height: 100vh;
+  display: block;
+  background-color: var(--light-bg);
+}
+
+/* Section Titles */
+.sectionTitle {
+  text-align: center;
+  font-size: 2.2em;
+  color: var(--blue);
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* FIXED: Proper two-column grid */
+.infoAndPhotoGrid {
+  max-width: 1400px;
+  margin: 0 auto 80px auto;
+  padding: 0 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: stretch;
+}
+
+@media (max-width: 992px) {
+  .infoAndPhotoGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* MATRIX SECTION */
+.matrixContent {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 4em;
+  color: white;
+  text-transform: uppercase;
+  margin: 0;
+  text-shadow: 0 0 20px var(--gold-bright-solid);
+}
+
+.title span {
+  color: var(--gold-bright-solid);
+}
+
+.glyph {
+  font-family: "Noto Sans Egyptian Hieroglyphs", sans-serif;
+  font-size: 1.1em;
+}
+
+.subtitle {
+  font-size: 1.8em;
+  color: var(--accent);
+  margin-top: 15px;
+  font-style: italic;
+  text-transform: capitalize;
+}
+
+.scrollHint {
+  color: var(--gold-bright-solid);
+  margin-top: 60px;
+  font-size: 1.2em;
+  animation: bounce 1.5s infinite;
+}
+.enrollmentCard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 1400px;
+  margin: 0 auto 80px auto;
+  margin-top: 50px;
+  background: var(--accent);
+  border: 3px solid var(--primary);
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(53, 99, 138, 0.25);
+  overflow: hidden;
+}
+
+/* Left side: Form */
+.formColumn {
+  background: #fff;
+  padding: 40px;
+  display: flex;
+  align-items: stretch;
+}
+
+/* Right side: Photo */
+.photoColumn {
+  /* Set a minimum height for the column to prevent TiltedCard from collapsing on mobile */
+  min-height: 400px; 
+  background: var(--blue);
+  display: flex;
+  align-items: center; /* Center the card vertically */
+  justify-content: center; /* Center the card horizontally */
+  padding: 20px; /* Added padding to ensure the card isn't glued to the edges */
+}
+
+/* Make TiltedCard fill the available space */
+.photoColumn > * {
+  flex-grow: 1;
+  width: 100%;
+  height: 100%;
+}
+
+/* Responsive stacking */
+@media (max-width: 992px) {
+  .enrollmentCard {
+    grid-template-columns: 1fr;
+  }
+
+  .formColumn {
+    padding: 25px;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}

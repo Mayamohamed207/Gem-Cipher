@@ -1,0 +1,116 @@
+/* src/components/ExperiencePicker/ExperiencePicker.module.css (MODIFIED: Solid Backgrounds) */
+
+/* Base Styles (Unchanged) */
+.pickerContainer { 
+  text-align: center;
+  padding: 40px;
+}
+
+.cardsGrid {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+/* Base Experience Card - Text color set to white for contrast on colored backgrounds */
+.experienceCard {
+  width: 220px;
+  padding: 20px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: box-shadow 0.2s; /* Keep transition for smooth shadow change */
+  border: 2px solid transparent; /* Base border */
+  color: white; /* CHANGE: Ensure text is white for contrast */
+  position: relative;
+}
+
+.pharaohIcon {
+  font-size: 2.5em;
+  margin-bottom: 12px;
+  transition: color 0.3s;
+}
+
+/* Base Button Style (White text for contrast on colored card background) */
+.selectButton {
+  /* Default to a solid look with white text */
+  background: white;
+  color: black; /* Use dark text color on the white button */
+  border: none;
+  border-radius: 30px;
+  padding: 10px 20px;
+  margin-top: 15px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s ease-out;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.selectButton:hover {
+  filter: brightness(0.95);
+}
+
+/* ---------------------------------------------------- */
+/* --- NEW: Individual Card Color Schemes (Solid BG) --- */
+/* ---------------------------------------------------- */
+
+/* 1. GAME MODE (Primary Color Theme) */
+.cardPrimary {
+    background-color: var(--primary); /* CHANGE: Primary color as BACKGROUND */
+    border: 3px solid var(--primary); /* Keeps border for consistency */
+    box-shadow: 0 10px 20px rgba(217, 101, 15, 0.4);
+}
+.cardPrimary .pharaohIcon {
+    color: white; /* Icon remains white */
+}
+
+/* 2. KIDS MODE (Secondary Color Theme) */
+.cardSecondary {
+    background-color: var(--secondary); /* CHANGE: Secondary color as BACKGROUND */
+    border: 3px solid var(--secondary); 
+    box-shadow: 0 10px 20px rgba(163, 48, 19, 0.4);
+}
+.cardSecondary .pharaohIcon {
+    color: white; /* Icon remains white */
+}
+
+/* 3. LEARNING MODE (Blue Color Theme) */
+.cardBlue {
+    background-color: var(--blue); /* CHANGE: Blue color as BACKGROUND */
+    border: 3px solid var(--blue); 
+    box-shadow: 0 10px 20px rgba(53, 99, 138, 0.4);
+}
+.cardBlue .pharaohIcon {
+    color: white; /* Icon remains white */
+}
+
+
+/* --- Map Styles (Unchanged) --- */
+.mapContainer {
+  position: relative;
+  width: 100%;
+  max-width: 800px; 
+  margin: 20px auto;
+}
+
+.mapImage {
+  width: 100%;
+  display: block;
+}
+
+.mapArea {
+  position: absolute;
+  width: 4%;        
+  aspect-ratio: 1;  
+  border-radius: 50%;
+  background: rgba(201, 169, 55, 0.4);
+  border: 2px solid rgba(245, 210, 80, 0.8);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mapArea:hover {
+  background: rgba(245, 210, 80, 0.7);
+  transform: scale(1.2);
+}
