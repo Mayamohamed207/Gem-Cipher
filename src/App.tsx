@@ -38,6 +38,30 @@ const App: React.FC = () => {
         return localStorage.getItem('user_registered') === 'true';
     });
 
+    // --- Helper: Get or Generate NFC ID (Device Agnostic) ---
+    const getOrGenerateNfcId = useCallback((): string => {
+        // Priority 1: Check if Android injected NFC ID via bridge
+        if (virtualNfcId) {
+            console.log('🔵 Using existing NFC ID:', virtualNfcId);
+            return virtualNfcId;
+        }
+
+        // Priority 2: Check localStorage for existing ID
+        const storedId = localStorage.getItem('virtual_nfc_id');
+        if (storedId) {
+            console.log('💾 Using stored NFC ID:', storedId);
+            setVirtualNfcId(storedId);
+            return storedId;
+        }
+
+        // Priority 3: Fallback - Generate web-based ID
+        const webId = `WEB_${crypto.randomUUID()}`;
+        console.log('🌐 Generated web NFC ID:', webId);
+        localStorage.setItem('virtual_nfc_id', webId);
+        setVirtualNfcId(webId);
+        return webId;
+    }, [virtualNfcId]);
+
     // --- Android Bridge Setup ---
     useEffect(() => {
         // Create global function for Android to set virtual NFC ID
@@ -87,10 +111,8 @@ const App: React.FC = () => {
 
     // --- Registration Handler ---
     const handleRegistration = async (name: string, email: string) => {
-        if (!virtualNfcId) {
-            alert('Error: No device ID received from Android. Please restart the app.');
-            return;
-        }
+        // Get or generate device ID (works on Android, web, and laptop)
+        const deviceId = getOrGenerateNfcId();
 
         try {
             // TODO: Replace with your laptop IP address
@@ -102,7 +124,7 @@ const App: React.FC = () => {
                 body: JSON.stringify({
                     name,
                     email,
-                    virtual_nfc_id: virtualNfcId,
+                    virtual_nfc_id: deviceId,
                 }),
             });
 

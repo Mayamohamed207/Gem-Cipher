@@ -55,11 +55,6 @@ const HomePage: React.FC<HomePageProps> = ({ onExperienceSelect, onRegister, isR
             return;
         }
 
-        if (!virtualNfcId) {
-            alert('Device ID not received. Please restart the app.');
-            return;
-        }
-
         setIsSubmitting(true);
         await onRegister(name, email);
         setIsSubmitting(false);
@@ -128,26 +123,26 @@ const HomePage: React.FC<HomePageProps> = ({ onExperienceSelect, onRegister, isR
                                 </div>
                                 <button
                                     type="submit"
-                                    disabled={isSubmitting || !virtualNfcId}
+                                    disabled={isSubmitting}
                                     style={{
                                         padding: '14px',
-                                        backgroundColor: virtualNfcId ? '#00ff00' : '#666',
+                                        backgroundColor: '#00ff00',
                                         color: '#000',
                                         border: 'none',
                                         borderRadius: '4px',
                                         fontSize: '18px',
                                         fontWeight: 'bold',
-                                        cursor: virtualNfcId ? 'pointer' : 'not-allowed',
+                                        cursor: 'pointer',
                                         marginTop: '10px',
                                         transition: 'all 0.3s ease',
                                         opacity: isSubmitting ? 0.7 : 1
                                     }}
                                 >
-                                    {isSubmitting ? 'Joining...' : virtualNfcId ? 'Join' : 'Waiting for Device ID...'}
+                                    {isSubmitting ? 'Joining...' : 'Join'}
                                 </button>
-                                {!virtualNfcId && (
-                                    <p style={{ color: '#ff9900', fontSize: '12px', textAlign: 'center', margin: 0 }}>
-                                        ⚠️ Waiting for Android device connection...
+                                {virtualNfcId && virtualNfcId.startsWith('WEB_') && (
+                                    <p style={{ color: '#00ff00', fontSize: '12px', textAlign: 'center', margin: 0 }}>
+                                        🌐 Web Mode - Device ID auto-generated
                                     </p>
                                 )}
                             </form>
