@@ -21,11 +21,12 @@ interface HomePageProps {
     onRegister: (name: string, email: string) => Promise<void>;
     isRegistered: boolean;
     virtualNfcId: string | null;
+    isWaitingForNfc: boolean;
 }
 
 // --- Component ---
 // The component is now simplified to only focus on the welcome message and the mode picker.
-const HomePage: React.FC<HomePageProps> = ({ onExperienceSelect, onRegister, isRegistered, virtualNfcId }) => {
+const HomePage: React.FC<HomePageProps> = ({ onExperienceSelect, onRegister, isRegistered, virtualNfcId, isWaitingForNfc }) => {
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -121,6 +122,29 @@ const HomePage: React.FC<HomePageProps> = ({ onExperienceSelect, onRegister, isR
                                         required
                                     />
                                 </div>
+                                {isWaitingForNfc && (
+                                    <div style={{
+                                        padding: '12px',
+                                        backgroundColor: 'rgba(255, 165, 0, 0.1)',
+                                        border: '1px solid #ffa500',
+                                        borderRadius: '4px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '10px'
+                                    }}>
+                                        <div style={{
+                                            width: '20px',
+                                            height: '20px',
+                                            border: '2px solid #ffa500',
+                                            borderTop: '2px solid transparent',
+                                            borderRadius: '50%',
+                                            animation: 'spin 1s linear infinite'
+                                        }} />
+                                        <p style={{ color: '#ffa500', fontSize: '14px', margin: 0 }}>
+                                            📱 Reading NFC from device... Please wait
+                                        </p>
+                                    </div>
+                                )}
                                 <button
                                     type="submit"
                                     disabled={isSubmitting}

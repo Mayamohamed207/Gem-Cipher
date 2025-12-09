@@ -31,11 +31,14 @@ const App: React.FC = () => {
     const [selectedLevel, setSelectedLevel] = useState<string | undefined>(undefined);
     
     // --- Android Bridge State ---
-    const [virtualNfcId, setVirtualNfcId] = useState<string | null>(() => {
-        return localStorage.getItem('virtual_nfc_id');
-    });
+    const [virtualNfcId, setVirtualNfcId] = useState<string | null>(null);
     const [isRegistered, setIsRegistered] = useState<boolean>(() => {
         return localStorage.getItem('user_registered') === 'true';
+    });
+    const [isWaitingForNfc, setIsWaitingForNfc] = useState<boolean>(() => {
+        // Detect if we're in Android WebView - always wait for fresh NFC on Android
+        const isAndroid = /android/i.test(navigator.userAgent);
+        return isAndroid;
     });
 
     // --- Helper: Get or Generate NFC ID (Device Agnostic) ---
@@ -69,6 +72,7 @@ const App: React.FC = () => {
             console.log('📱 Android Bridge: Received virtual NFC ID:', id);
             setVirtualNfcId(id);
             localStorage.setItem('virtual_nfc_id', id);
+            setIsWaitingForNfc(false); // NFC received, stop waiting
         };
 
         // Create global function for physical card scanning
@@ -78,12 +82,37 @@ const App: React.FC = () => {
             // TODO: Send to backend for verification
         };
 
+        // For Android: Wait for fresh NFC, but fallback to cached after 3 seconds
+        let nfcTimeout: number | null = null;
+        const isAndroid = /android/i.test(navigator.userAgent);
+        
+        if (isAndroid && isWaitingForNfc) {
+            nfcTimeout = window.setTimeout(() => {
+                const cachedId = localStorage.getItem('virtual_nfc_id');
+                if (cachedId) {
+                    console.log('⏱️ Using cached NFC ID:', cachedId);
+                    setVirtualNfcId(cachedId);
+                } else {
+                    console.log('⏱️ NFC timeout - switching to web mode');
+                }
+                setIsWaitingForNfc(false);
+            }, 3000); // Reduced to 3 seconds for better UX
+        } else if (!isAndroid) {
+            // Not Android, load cached or generate immediately
+            const cachedId = localStorage.getItem('virtual_nfc_id');
+            if (cachedId) {
+                setVirtualNfcId(cachedId);
+            }
+            setIsWaitingForNfc(false);
+        }
+
         // Cleanup
         return () => {
             delete window.setAndroidNfcId;
             delete window.onPhysicalCardScanned;
+            if (nfcTimeout) window.clearTimeout(nfcTimeout);
         };
-    }, []);
+    }, [isWaitingForNfc]);
 
     // --- Hash Router Logic ---
     const getHashStage = useCallback((hash: string): AppStageType => {
@@ -192,6 +221,7 @@ const App: React.FC = () => {
                 onRegister={handleRegistration}
                 isRegistered={isRegistered}
                 virtualNfcId={virtualNfcId}
+                isWaitingForNfc={isWaitingForNfc}
             />
         );
         
