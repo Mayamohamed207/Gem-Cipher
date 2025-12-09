@@ -14,6 +14,14 @@ const AppStage = {
 
 type AppStageType = (typeof AppStage)[keyof typeof AppStage];
 
+// Extend Window interface for Android bridge
+declare global {
+    interface Window {
+        setAndroidNfcId?: (id: string) => void;
+        onPhysicalCardScanned?: (uid: string) => void;
+    }
+}
+
 const App: React.FC = () => {
     // --- 2. State Management ---
     const [currentStage, setCurrentStage] = useState<AppStageType>(AppStage.HOME_INFO);
@@ -21,6 +29,37 @@ const App: React.FC = () => {
     const [selectedMode, setSelectedMode] = useState<'kids' | 'learning' | 'game' | null>(null);
     const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
     const [selectedLevel, setSelectedLevel] = useState<string | undefined>(undefined);
+    
+    // --- Android Bridge State ---
+    const [virtualNfcId, setVirtualNfcId] = useState<string | null>(() => {
+        return localStorage.getItem('virtual_nfc_id');
+    });
+    const [isRegistered, setIsRegistered] = useState<boolean>(() => {
+        return localStorage.getItem('user_registered') === 'true';
+    });
+
+    // --- Android Bridge Setup ---
+    useEffect(() => {
+        // Create global function for Android to set virtual NFC ID
+        window.setAndroidNfcId = (id: string) => {
+            console.log('📱 Android Bridge: Received virtual NFC ID:', id);
+            setVirtualNfcId(id);
+            localStorage.setItem('virtual_nfc_id', id);
+        };
+
+        // Create global function for physical card scanning
+        window.onPhysicalCardScanned = (uid: string) => {
+            console.log('💳 Physical Card Scanned:', uid);
+            alert(`Physical Card Found: ${uid}`);
+            // TODO: Send to backend for verification
+        };
+
+        // Cleanup
+        return () => {
+            delete window.setAndroidNfcId;
+            delete window.onPhysicalCardScanned;
+        };
+    }, []);
 
     // --- Hash Router Logic ---
     const getHashStage = useCallback((hash: string): AppStageType => {
@@ -45,6 +84,47 @@ const App: React.FC = () => {
         return () => window.removeEventListener('hashchange', handleHashChange);
     }, [getHashStage]);
 
+
+    // --- Registration Handler ---
+    const handleRegistration = async (name: string, email: string) => {
+        if (!virtualNfcId) {
+            alert('Error: No device ID received from Android. Please restart the app.');
+            return;
+        }
+
+        try {
+            // TODO: Replace with your laptop IP address
+            const response = await fetch('http://10.3.106.185:8000/api/auth/login-register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    virtual_nfc_id: virtualNfcId,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Registration failed: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            console.log('✅ Registration successful:', data);
+            
+            // Mark as registered
+            localStorage.setItem('user_registered', 'true');
+            localStorage.setItem('user_name', name);
+            localStorage.setItem('user_email', email);
+            setIsRegistered(true);
+            
+            alert(`Welcome, ${name}! Registration successful.`);
+        } catch (error) {
+            console.error('❌ Registration error:', error);
+            alert(`Registration failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        }
+    };
 
     // --- 3. Stage Handlers (Now update the URL hash) ---
     
@@ -86,7 +166,10 @@ const App: React.FC = () => {
     if (currentStage === AppStage.HOME_INFO) {
         CurrentComponent = (
             <HomePage 
-                onExperienceSelect={handleInitialSelect} 
+                onExperienceSelect={handleInitialSelect}
+                onRegister={handleRegistration}
+                isRegistered={isRegistered}
+                virtualNfcId={virtualNfcId}
             />
         );
         
@@ -145,6 +228,24 @@ const App: React.FC = () => {
     return (
         <div className="App">
             {CurrentComponent}
+            
+            {/* Debug Footer */}
+            <div style={{
+                position: 'fixed',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                color: '#00ff00',
+                padding: '8px 16px',
+                fontSize: '12px',
+                fontFamily: 'monospace',
+                borderTop: '1px solid #00ff00',
+                zIndex: 9999,
+                textAlign: 'center'
+            }}>
+                🔧 Debug | Device ID: {virtualNfcId || 'Waiting for Android...'} | Registered: {isRegistered ? '✅' : '❌'}
+            </div>
         </div>
     );
 };
