@@ -23,6 +23,12 @@ interface HomePageProps {
     onToggleTheme: () => void;
     isDark: boolean;
 }
+const museumStats = [
+  { label: "Artifacts", value: "100,000+" },
+  { label: "Spans", value: "5,000 Years" },
+  { label: "Interactive", value: "12" },
+  { label: "Daily Visitors", value: "(50,000+)" },
+];
 
 // --- Component ---
 const HomePage: React.FC<HomePageProps> = ({ 
@@ -70,14 +76,56 @@ const HomePage: React.FC<HomePageProps> = ({
             {/* Theme Toggle Button */}
             <ThemeToggle isDark={isDark} onToggle={onToggleTheme} />
             
-            {/* HERO SECTION WITH MATRIX BACKGROUND */}
-            <MatrixCard>
+                     <MatrixCard>
                 <div className={styles.matrixContent}>
-                    <h1 className={styles.title}>WELCOME TO THE <span><span className={styles.glyph}>𓂀</span> PHARAOH MATRIX <span className={styles.glyph}>𓋹</span></span></h1>
-                    {/* Add a direct instruction here */}
-                    <p className={styles.subtitle}>
-                        {isRegistered ? 'Select your desired experience below to begin your journey through the museum.' : 'Please register to begin your journey'}
-                    </p>
+                    <motion.div 
+                        className={styles.heroContainer}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1 }}
+                    >
+                        {/* Column 1: Title and Start Button */}
+                        <div className={styles.heroContent}>
+                            <div className={styles.titleWrapper}>
+                                <h1 className={styles.title}>THE GEM<br/>Experience</h1>
+                                <motion.span 
+                                    className={styles.glyph}
+                                    animate={{ rotateY: [0, -360], scale: [1, 1.1, 1] }}
+                                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                                >
+                                    𓂀
+                                </motion.span>
+                            </div>
+                            <p className={styles.subtitle}>Listenting To Every Voice</p>
+                            <p className={styles.subtitle} style={{fontSize: '1.2rem'}}>Personalizing Your Experience, listening to your voice</p>
+                            <button className={styles.startButton}>START YOUR JOURNEY</button>
+                        </div>
+                        
+                        {/* Column 2: Photo Card */}
+                        <div className={styles.photoCard}>
+                            <img 
+                                src={PhotocardImage} 
+                                alt="Grand Egyptian Museum Exterior"
+                            />
+                            <div className={styles.photoCaption}>Giza, Egypt • Grand Opening 2024</div>
+                        </div>
+                    </motion.div>
+
+                    {/* Stats Row */}
+                    <div className={styles.statsContainer}>
+                        {museumStats.map((stat) => (
+                            <motion.div 
+                                key={stat.label} 
+                                className={styles.statCard}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 1.2 + museumStats.indexOf(stat) * 0.1 }}
+                            >
+                                <div className={styles.statValue}>{stat.value}</div>
+                                <div className={styles.statLabel}>{stat.label}</div>
+                            </motion.div>
+                        ))}
+                    </div>
                 </div>
             </MatrixCard>
 
@@ -88,15 +136,15 @@ const HomePage: React.FC<HomePageProps> = ({
                         padding: '40px 20px', 
                         maxWidth: '500px', 
                         margin: '20px auto',
-                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                        border: '2px solid #00ff00',
+                        backgroundColor: '#e5c9a4',
+                        border: '2px solid #a33013',
                         borderRadius: '12px',
-                        boxShadow: '0 0 20px rgba(0, 255, 0, 0.3)'
+                        boxShadow: '0 0 20px rgba(237, 16, 16, 0.3)'
                     }}>
-                        <h2 style={{ color: '#00ff00', marginBottom: '24px', textAlign: 'center' }}>Join the Museum Experience</h2>
+                        <h2 style={{ color: '#a33013', marginBottom: '24px', textAlign: 'center' }}>Join the Museum Experience</h2>
                         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                             <div>
-                                <label style={{ color: '#00ff00', display: 'block', marginBottom: '8px', fontSize: '14px' }}>Name</label>
+                                <label style={{ color: '#a33013', display: 'block', marginBottom: '8px', fontSize: '14px' }}>Name</label>
                                 <input
                                     type="text"
                                     value={name}
@@ -105,10 +153,10 @@ const HomePage: React.FC<HomePageProps> = ({
                                     style={{
                                         width: '100%',
                                         padding: '12px',
-                                        backgroundColor: 'rgba(0, 255, 0, 0.1)',
-                                        border: '1px solid #00ff00',
+                                        backgroundColor: 'rgba(192, 188, 188, 0.1)',
+                                        border: '1px solid #a33013',
                                         borderRadius: '4px',
-                                        color: '#00ff00',
+                                        color: '#a33013',
                                         fontSize: '16px',
                                         fontFamily: 'inherit',
                                         boxSizing: 'border-box'
@@ -117,7 +165,7 @@ const HomePage: React.FC<HomePageProps> = ({
                                 />
                             </div>
                             <div>
-                                <label style={{ color: '#00ff00', display: 'block', marginBottom: '8px', fontSize: '14px' }}>Email</label>
+                                <label style={{ color: '#a33013', display: 'block', marginBottom: '8px', fontSize: '14px' }}>Email</label>
                                 <input
                                     type="email"
                                     value={email}
@@ -126,10 +174,10 @@ const HomePage: React.FC<HomePageProps> = ({
                                     style={{
                                         width: '100%',
                                         padding: '12px',
-                                        backgroundColor: 'rgba(0, 255, 0, 0.1)',
-                                        border: '1px solid #00ff00',
+                                        backgroundColor: 'rgba(219, 200, 198, 0.1)',
+                                        border: '1px solid #a33013',
                                         borderRadius: '4px',
-                                        color: '#00ff00',
+                                        color: '#a33013',
                                         fontSize: '16px',
                                         fontFamily: 'inherit',
                                         boxSizing: 'border-box'
@@ -165,7 +213,7 @@ const HomePage: React.FC<HomePageProps> = ({
                                 disabled={isSubmitting}
                                 style={{
                                     padding: '14px',
-                                    backgroundColor: '#00ff00',
+                                    backgroundColor: '#a33013',
                                     color: '#000',
                                     border: 'none',
                                     borderRadius: '4px',
@@ -180,7 +228,7 @@ const HomePage: React.FC<HomePageProps> = ({
                                 {isSubmitting ? 'Joining...' : 'Join'}
                             </button>
                             {virtualNfcId && virtualNfcId.startsWith('WEB_') && (
-                                <p style={{ color: '#00ff00', fontSize: '12px', textAlign: 'center', margin: 0 }}>
+                                <p style={{ color: '#a33013', fontSize: '12px', textAlign: 'center', margin: 0 }}>
                                     🌐 Web Mode - Device ID auto-generated
                                 </p>
                             )}
