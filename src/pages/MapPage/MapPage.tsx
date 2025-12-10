@@ -19,18 +19,18 @@ interface Room {
 }
 
 const rooms: Room[] = [
-  { id: 'room1', name: 'Royal Treasures', levels: ['Beginner', 'Intermediate', 'Advanced'], top: '78.5%', left: '49%' },
-  { id: 'room2', name: 'Sacred Tombs', levels: ['Beginner', 'Intermediate', 'Advanced'], top: '75%', left: '58.5%' },
-  { id: 'room3', name: 'Temple of Gods', levels: ['Beginner', 'Intermediate', 'Advanced'], top: '80%', left: '72.5%' },
-  { id: 'room4', name: 'Daily Life Hall', levels: ['Beginner', 'Intermediate', 'Advanced'], top: '64.5%', left: '64.7%' },
-  { id: 'room5', name: 'Hieroglyph Gallery', levels: ['Beginner', 'Intermediate', 'Advanced'], top: '62%', left: '53%' },
-  { id: 'room6', name: 'Mummification Chamber', levels: ['Beginner', 'Intermediate', 'Advanced'], top: '64%', left: '44%' },
-  { id: 'room7', name: 'War & Conquest', levels: ['Beginner', 'Intermediate', 'Advanced'], top: '50%', left: '39%' },
-  { id: 'room8', name: 'Artisan Workshop', levels: ['Beginner', 'Intermediate', 'Advanced'], top: '49%', left: '47.6%' },
-  { id: 'room9', name: 'Jewelry & Beauty', levels: ['Beginner', 'Intermediate', 'Advanced'], top: '46%', left: '55.7%' },
-  { id: 'room10', name: 'Great Hall', levels: ['Beginner', 'Intermediate', 'Advanced'], top: '31%', left: '49.1%' },
-  { id: 'room11', name: 'Astronomy Tower', levels: ['Beginner', 'Intermediate', 'Advanced'], top: '35%', left: '41.5%' },
-  { id: 'room12', name: 'Scribes Library', levels: ['Beginner', 'Intermediate', 'Advanced'], top: '33.1%', left: '32%' },
+  { id: 'room1', name: 'Royal Treasures', levels: ['Visitor', 'Scribe Apprentice', 'High Official'], top: '78.5%', left: '49%' },
+  { id: 'room2', name: 'Sacred Tombs', levels: ['Visitor', 'Scribe Apprentice', 'High Official'], top: '75%', left: '58.5%' },
+  { id: 'room3', name: 'Temple of Gods', levels: ['Visitor', 'Scribe Apprentice', 'High Official'], top: '80%', left: '72.5%' },
+  { id: 'room4', name: 'Daily Life Hall', levels: ['Visitor', 'Scribe Apprentice', 'High Official'], top: '64.5%', left: '64.7%' },
+  { id: 'room5', name: 'Hieroglyph Gallery', levels: ['Visitor', 'Scribe Apprentice', 'High Official'], top: '62%', left: '53%' },
+  { id: 'room6', name: 'Mummification Chamber', levels: ['Visitor', 'Scribe Apprentice', 'High Official'], top: '64%', left: '44%' },
+  { id: 'room7', name: 'War & Conquest', levels: ['Visitor', 'Scribe Apprentice', 'High Official'], top: '50%', left: '39%' },
+  { id: 'room8', name: 'Artisan Workshop', levels: ['Visitor', 'Scribe Apprentice', 'High Official'], top: '49%', left: '47.6%' },
+  { id: 'room9', name: 'Jewelry & Beauty', levels: ['Visitor', 'Scribe Apprentice', 'High Official'], top: '46%', left: '55.7%' },
+  { id: 'room10', name: 'Great Hall', levels: ['Visitor', 'Scribe Apprentice', 'High Official'], top: '31%', left: '49.1%' },
+  { id: 'room11', name: 'Astronomy Tower', levels: ['Visitor', 'Scribe Apprentice', 'High Official'], top: '35%', left: '41.5%' },
+  { id: 'room12', name: 'Scribes Library', levels: ['Visitor', 'Scribe Apprentice', 'High Official'], top: '33.1%', left: '32%' },
 ];
 
 const MapPage: React.FC<MapPageProps> = ({ mode, onRoomSelected }) => {
