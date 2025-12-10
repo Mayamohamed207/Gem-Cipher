@@ -87,100 +87,108 @@ const HomePage: React.FC<HomePageProps> = ({
             {/* -------------------- CONDITIONAL: REGISTRATION FORM OR EXPERIENCE PICKER -------------------- */}
             {!isRegistered ? (
                 <section className={styles.scrollSection}>
-                    <MatrixCard>
-                        <div style={{ padding: '40px', maxWidth: '500px', margin: '0 auto' }}>
-                            <h2 style={{ color: '#00ff00', marginBottom: '24px', textAlign: 'center' }}>Join the Museum Experience</h2>
-                            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                                <div>
-                                    <label style={{ color: '#00ff00', display: 'block', marginBottom: '8px', fontSize: '14px' }}>Name</label>
-                                    <input
-                                        type="text"
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
-                                        placeholder="Enter your name"
-                                        style={{
-                                            width: '100%',
-                                            padding: '12px',
-                                            backgroundColor: 'rgba(0, 255, 0, 0.1)',
-                                            border: '1px solid #00ff00',
-                                            borderRadius: '4px',
-                                            color: '#00ff00',
-                                            fontSize: '16px',
-                                            fontFamily: 'inherit'
-                                        }}
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label style={{ color: '#00ff00', display: 'block', marginBottom: '8px', fontSize: '14px' }}>Email</label>
-                                    <input
-                                        type="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        placeholder="Enter your email"
-                                        style={{
-                                            width: '100%',
-                                            padding: '12px',
-                                            backgroundColor: 'rgba(0, 255, 0, 0.1)',
-                                            border: '1px solid #00ff00',
-                                            borderRadius: '4px',
-                                            color: '#00ff00',
-                                            fontSize: '16px',
-                                            fontFamily: 'inherit'
-                                        }}
-                                        required
-                                    />
-                                </div>
-                                {isWaitingForNfc && (
-                                    <div style={{
-                                        padding: '12px',
-                                        backgroundColor: 'rgba(255, 165, 0, 0.1)',
-                                        border: '1px solid #ffa500',
-                                        borderRadius: '4px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '10px'
-                                    }}>
-                                        <div style={{
-                                            width: '20px',
-                                            height: '20px',
-                                            border: '2px solid #ffa500',
-                                            borderTop: '2px solid transparent',
-                                            borderRadius: '50%',
-                                            animation: 'spin 1s linear infinite'
-                                        }} />
-                                        <p style={{ color: '#ffa500', fontSize: '14px', margin: 0 }}>
-                                            📱 Reading NFC from device... Please wait
-                                        </p>
-                                    </div>
-                                )}
-                                <button
-                                    type="submit"
-                                    disabled={isSubmitting}
+                    <div style={{ 
+                        padding: '40px 20px', 
+                        maxWidth: '500px', 
+                        margin: '20px auto',
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        border: '2px solid #00ff00',
+                        borderRadius: '12px',
+                        boxShadow: '0 0 20px rgba(0, 255, 0, 0.3)'
+                    }}>
+                        <h2 style={{ color: '#00ff00', marginBottom: '24px', textAlign: 'center' }}>Join the Museum Experience</h2>
+                        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                            <div>
+                                <label style={{ color: '#00ff00', display: 'block', marginBottom: '8px', fontSize: '14px' }}>Name</label>
+                                <input
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    placeholder="Enter your name"
                                     style={{
-                                        padding: '14px',
-                                        backgroundColor: '#00ff00',
-                                        color: '#000',
-                                        border: 'none',
+                                        width: '100%',
+                                        padding: '12px',
+                                        backgroundColor: 'rgba(0, 255, 0, 0.1)',
+                                        border: '1px solid #00ff00',
                                         borderRadius: '4px',
-                                        fontSize: '18px',
-                                        fontWeight: 'bold',
-                                        cursor: 'pointer',
-                                        marginTop: '10px',
-                                        transition: 'all 0.3s ease',
-                                        opacity: isSubmitting ? 0.7 : 1
+                                        color: '#00ff00',
+                                        fontSize: '16px',
+                                        fontFamily: 'inherit',
+                                        boxSizing: 'border-box'
                                     }}
-                                >
-                                    {isSubmitting ? 'Joining...' : 'Join'}
-                                </button>
-                                {virtualNfcId && virtualNfcId.startsWith('WEB_') && (
-                                    <p style={{ color: '#00ff00', fontSize: '12px', textAlign: 'center', margin: 0 }}>
-                                        🌐 Web Mode - Device ID auto-generated
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label style={{ color: '#00ff00', display: 'block', marginBottom: '8px', fontSize: '14px' }}>Email</label>
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="Enter your email"
+                                    style={{
+                                        width: '100%',
+                                        padding: '12px',
+                                        backgroundColor: 'rgba(0, 255, 0, 0.1)',
+                                        border: '1px solid #00ff00',
+                                        borderRadius: '4px',
+                                        color: '#00ff00',
+                                        fontSize: '16px',
+                                        fontFamily: 'inherit',
+                                        boxSizing: 'border-box'
+                                    }}
+                                    required
+                                />
+                            </div>
+                            {isWaitingForNfc && (
+                                <div style={{
+                                    padding: '12px',
+                                    backgroundColor: 'rgba(255, 165, 0, 0.1)',
+                                    border: '1px solid #ffa500',
+                                    borderRadius: '4px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '10px'
+                                }}>
+                                    <div style={{
+                                        width: '20px',
+                                        height: '20px',
+                                        border: '2px solid #ffa500',
+                                        borderTop: '2px solid transparent',
+                                        borderRadius: '50%',
+                                        animation: 'spin 1s linear infinite'
+                                    }} />
+                                    <p style={{ color: '#ffa500', fontSize: '14px', margin: 0 }}>
+                                        📱 Reading NFC from device... Please wait
                                     </p>
-                                )}
-                            </form>
-                        </div>
-                    </MatrixCard>
+                                </div>
+                            )}
+                            <button
+                                type="submit"
+                                disabled={isSubmitting}
+                                style={{
+                                    padding: '14px',
+                                    backgroundColor: '#00ff00',
+                                    color: '#000',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    fontSize: '18px',
+                                    fontWeight: 'bold',
+                                    cursor: 'pointer',
+                                    marginTop: '10px',
+                                    transition: 'all 0.3s ease',
+                                    opacity: isSubmitting ? 0.7 : 1
+                                }}
+                            >
+                                {isSubmitting ? 'Joining...' : 'Join'}
+                            </button>
+                            {virtualNfcId && virtualNfcId.startsWith('WEB_') && (
+                                <p style={{ color: '#00ff00', fontSize: '12px', textAlign: 'center', margin: 0 }}>
+                                    🌐 Web Mode - Device ID auto-generated
+                                </p>
+                            )}
+                        </form>
+                    </div>
                 </section>
             ) : (
                 <section className={styles.scrollSection} id="experience-section">

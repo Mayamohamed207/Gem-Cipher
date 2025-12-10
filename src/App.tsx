@@ -72,6 +72,7 @@ const App: React.FC = () => {
             console.log('📱 Android Bridge: Received virtual NFC ID:', id);
             setVirtualNfcId(id);
             localStorage.setItem('virtual_nfc_id', id);
+            localStorage.setItem('device_type', 'android'); // Mark as Android device
             setIsWaitingForNfc(false); // NFC received, stop waiting
         };
 
@@ -87,21 +88,40 @@ const App: React.FC = () => {
         const isAndroid = /android/i.test(navigator.userAgent);
         
         if (isAndroid && isWaitingForNfc) {
+            // Clear any WEB_ generated IDs on Android devices
+            const cachedId = localStorage.getItem('virtual_nfc_id');
+            if (cachedId && cachedId.startsWith('WEB_')) {
+                console.log('🧹 Clearing web-generated ID on Android device');
+                localStorage.removeItem('virtual_nfc_id');
+            }
+            
             nfcTimeout = window.setTimeout(() => {
                 const cachedId = localStorage.getItem('virtual_nfc_id');
-                if (cachedId) {
-                    console.log('⏱️ Using cached NFC ID:', cachedId);
+                const deviceType = localStorage.getItem('device_type');
+                
+                // Only use cached ID if it's from Android (not web-generated)
+                if (cachedId && deviceType === 'android') {
+                    console.log('⏱️ Using cached Android NFC ID:', cachedId);
                     setVirtualNfcId(cachedId);
                 } else {
-                    console.log('⏱️ NFC timeout - switching to web mode');
+                    console.log('⏱️ NFC timeout - no valid Android ID available');
+                    alert('⚠️ Could not read NFC. Please ensure NFC is enabled and try again.');
                 }
                 setIsWaitingForNfc(false);
-            }, 3000); // Reduced to 3 seconds for better UX
+            }, 5000); // Increased to 5 seconds for more reliable NFC reading
         } else if (!isAndroid) {
             // Not Android, load cached or generate immediately
             const cachedId = localStorage.getItem('virtual_nfc_id');
             if (cachedId) {
+                console.log('💾 Loading cached ID for web:', cachedId);
                 setVirtualNfcId(cachedId);
+            } else {
+                // Generate web ID immediately on laptop/browser
+                const webId = `WEB_${crypto.randomUUID()}`;
+                console.log('🌐 Auto-generated web NFC ID:', webId);
+                localStorage.setItem('virtual_nfc_id', webId);
+                localStorage.setItem('device_type', 'web');
+                setVirtualNfcId(webId);
             }
             setIsWaitingForNfc(false);
         }

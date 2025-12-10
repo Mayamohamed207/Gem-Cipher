@@ -2,6 +2,7 @@
 
 .pageWrapper {
 	min-height: 100vh;
+	min-height: 100dvh; /* Use dynamic viewport height for mobile */
 	display: flex;
 	flex-direction: column;
 	background: var(--bg1);
@@ -35,6 +36,16 @@
 .matrixContent {
 	padding: 80px 40px 30px;
 	width: 100%;
+}
+
+/* Scroll Section for content below hero */
+.scrollSection {
+	position: relative;
+	z-index: 10; /* Higher than MatrixCard layers */
+	padding: 20px;
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
 }
 
 .heroContainer {
@@ -376,6 +387,11 @@
 	.matrixContent { 
 		/* Adjusted padding for short header (approx 100px total height) */
 		padding: 15px 15px 5px; 
+	}
+	
+	.scrollSection {
+		padding: 10px 15px 80px; /* Added more bottom padding for debug footer */
+		margin-bottom: 0;
 	}
 	
 	.heroContainer { 
