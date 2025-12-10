@@ -35,7 +35,7 @@
 .questionsPageContainer {
   min-height: 100vh;
   padding: 40px 20px;
-  background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
+background: white;
   position: relative;
   transition: background 0.5s ease;
 }
@@ -130,10 +130,7 @@
   margin: 0 auto 40px;
   max-width: 900px;
   height: 500px;
-  border-radius: 24px;
   overflow: hidden;
-  box-shadow: var(--shadow-lg);
-  background: #000;
 }
 
 .videoPlayer {
@@ -188,14 +185,12 @@
 .smallVideo {
   position: fixed;
   width: 280px;
-  height: 500px;
+  height: 450px;
   bottom: 20px;
   right: 20px;
   z-index: 100;
   margin: 0;
 border:none;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
 }
 
 .videoPlayerSmall {
