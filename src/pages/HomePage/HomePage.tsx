@@ -88,15 +88,15 @@ const HomePage: React.FC<HomePageProps> = ({
                         padding: '40px 20px', 
                         maxWidth: '500px', 
                         margin: '20px auto',
-                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                        border: '2px solid #00ff00',
+                        backgroundColor: 'var(--bg2)',
+                        border: '2px solid var(--primary)',
                         borderRadius: '12px',
-                        boxShadow: '0 0 20px rgba(0, 255, 0, 0.3)'
+                        boxShadow: 'var(--shadow-card)'
                     }}>
-                        <h2 style={{ color: '#00ff00', marginBottom: '24px', textAlign: 'center' }}>Join the Museum Experience</h2>
+                        <h2 style={{ color: 'var(--primary)', marginBottom: '24px', textAlign: 'center' }}>Join the Museum Experience</h2>
                         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                             <div>
-                                <label style={{ color: '#00ff00', display: 'block', marginBottom: '8px', fontSize: '14px' }}>Name</label>
+                                <label style={{ color: 'var(--text-primary)', display: 'block', marginBottom: '8px', fontSize: '14px' }}>Name</label>
                                 <input
                                     type="text"
                                     value={name}
@@ -105,10 +105,10 @@ const HomePage: React.FC<HomePageProps> = ({
                                     style={{
                                         width: '100%',
                                         padding: '12px',
-                                        backgroundColor: 'rgba(0, 255, 0, 0.1)',
-                                        border: '1px solid #00ff00',
+                                        backgroundColor: 'var(--bg1)',
+                                        border: '1px solid var(--accent)',
                                         borderRadius: '4px',
-                                        color: '#00ff00',
+                                        color: 'var(--text-primary)',
                                         fontSize: '16px',
                                         fontFamily: 'inherit',
                                         boxSizing: 'border-box'
@@ -117,7 +117,7 @@ const HomePage: React.FC<HomePageProps> = ({
                                 />
                             </div>
                             <div>
-                                <label style={{ color: '#00ff00', display: 'block', marginBottom: '8px', fontSize: '14px' }}>Email</label>
+                                <label style={{ color: 'var(--text-primary)', display: 'block', marginBottom: '8px', fontSize: '14px' }}>Email</label>
                                 <input
                                     type="email"
                                     value={email}
@@ -126,10 +126,10 @@ const HomePage: React.FC<HomePageProps> = ({
                                     style={{
                                         width: '100%',
                                         padding: '12px',
-                                        backgroundColor: 'rgba(0, 255, 0, 0.1)',
-                                        border: '1px solid #00ff00',
+                                        backgroundColor: 'var(--bg1)',
+                                        border: '1px solid var(--accent)',
                                         borderRadius: '4px',
-                                        color: '#00ff00',
+                                        color: 'var(--text-primary)',
                                         fontSize: '16px',
                                         fontFamily: 'inherit',
                                         boxSizing: 'border-box'
@@ -140,8 +140,8 @@ const HomePage: React.FC<HomePageProps> = ({
                             {isWaitingForNfc && (
                                 <div style={{
                                     padding: '12px',
-                                    backgroundColor: 'rgba(255, 165, 0, 0.1)',
-                                    border: '1px solid #ffa500',
+                                    backgroundColor: 'rgba(217, 101, 15, 0.1)',
+                                    border: '1px solid var(--primary)',
                                     borderRadius: '4px',
                                     display: 'flex',
                                     alignItems: 'center',
@@ -150,12 +150,12 @@ const HomePage: React.FC<HomePageProps> = ({
                                     <div style={{
                                         width: '20px',
                                         height: '20px',
-                                        border: '2px solid #ffa500',
+                                        border: '2px solid var(--primary)',
                                         borderTop: '2px solid transparent',
                                         borderRadius: '50%',
                                         animation: 'spin 1s linear infinite'
                                     }} />
-                                    <p style={{ color: '#ffa500', fontSize: '14px', margin: 0 }}>
+                                    <p style={{ color: 'var(--primary)', fontSize: '14px', margin: 0 }}>
                                         📱 Reading NFC from device... Please wait
                                     </p>
                                 </div>
@@ -165,8 +165,8 @@ const HomePage: React.FC<HomePageProps> = ({
                                 disabled={isSubmitting}
                                 style={{
                                     padding: '14px',
-                                    backgroundColor: '#00ff00',
-                                    color: '#000',
+                                    backgroundColor: 'var(--primary)',
+                                    color: 'var(--bg1)',
                                     border: 'none',
                                     borderRadius: '4px',
                                     fontSize: '18px',
@@ -180,7 +180,7 @@ const HomePage: React.FC<HomePageProps> = ({
                                 {isSubmitting ? 'Joining...' : 'Join'}
                             </button>
                             {virtualNfcId && virtualNfcId.startsWith('WEB_') && (
-                                <p style={{ color: '#00ff00', fontSize: '12px', textAlign: 'center', margin: 0 }}>
+                                <p style={{ color: 'var(--text-secondary)', fontSize: '12px', textAlign: 'center', margin: 0 }}>
                                     🌐 Web Mode - Device ID auto-generated
                                 </p>
                             )}

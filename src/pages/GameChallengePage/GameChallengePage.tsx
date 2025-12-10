@@ -24,8 +24,15 @@ const roomNames: Record<string, string> = {
   room12: 'Scribes Library'
 };
 
+// Map room keys to backend room IDs (room1 -> 1, room2 -> 2, etc.)
+const getRoomId = (roomKey: string): number => {
+  const match = roomKey.match(/\d+/);
+  return match ? parseInt(match[0]) : 1;
+};
+
 const GameChallengePage: React.FC<GameChallengePageProps> = ({ room, onComplete }) => {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
 
   const [feedback, setFeedback] = useState({
@@ -38,11 +45,16 @@ const GameChallengePage: React.FC<GameChallengePageProps> = ({ room, onComplete 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const roomName = roomNames[room] || room;
+  const roomId = getRoomId(room);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Store the actual file for backend upload
+    setUploadedFile(file);
+
+    // Create preview URL
     const reader = new FileReader();
     reader.onloadend = () => {
       setUploadedImage(reader.result as string);
@@ -64,19 +76,57 @@ const GameChallengePage: React.FC<GameChallengePageProps> = ({ room, onComplete 
   };
 
   const handleFeedbackSubmit = async () => {
+    if (!uploadedFile) {
+      alert('No image file to upload');
+      return;
+    }
+
     setIsSubmitting(true);
 
-    const photoData = {
-      imageUrl: uploadedImage,
-      room: roomName,
-      timestamp: Date.now(),
-      votes: 0,
-      feedback
-    };
+    try {
+      // Get visitor_id from localStorage (set during registration)
+      const visitorId = localStorage.getItem('visitor_id');
+      
+      if (!visitorId) {
+        throw new Error('No visitor ID found. Please register first.');
+      }
+      
+      // Debug logging
+      console.log('📍 Room key:', room);
+      console.log('📍 Room ID:', roomId);
+      console.log('📍 Visitor ID:', visitorId);
+      
+      // Create FormData for multipart/form-data upload
+      const formData = new FormData();
+      formData.append('file', uploadedFile);
+      formData.append('visitor_id', visitorId);
+      formData.append('room_id', roomId.toString());
 
-    await new Promise(res => setTimeout(res, 1000));
+      // Upload to backend
+      const response = await fetch('http://10.3.106.185:8000/upload-photo', {
+        method: 'POST',
+        body: formData,
+      });
 
-    onComplete();
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('❌ Backend error:', errorData);
+        throw new Error(errorData.detail || 'Upload failed');
+      }
+
+      const result = await response.json();
+      console.log('✅ Photo uploaded successfully:', result);
+      
+      // Optional: Submit feedback data separately if you have an endpoint for it
+      console.log('📝 Feedback:', feedback);
+
+      alert(`🎉 Photo uploaded successfully! Score: ${result.photo.score}`);
+      onComplete();
+    } catch (error) {
+      console.error('❌ Upload error:', error);
+      alert(`Upload failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      setIsSubmitting(false);
+    }
   };
 
   return (
