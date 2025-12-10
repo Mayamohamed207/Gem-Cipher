@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Info, ChevronRight, X } from 'lucide-react'; // Added X for close button
+import { Info, ChevronRight, X } from 'lucide-react';
 import styles from './MapPage.module.css';
 import museumMap from '../../assets/images/map.jpeg';
 import ThemeToggle from '../../components/ToggleTheme/ThemeContext';
@@ -33,9 +33,17 @@ const rooms: Room[] = [
   { id: 'room12', name: 'Scribes Library', levels: ['Visitor', 'Scribe Apprentice', 'High Official'], top: '33.1%', left: '32%' },
 ];
 
+// ⬇ NEW: Level descriptions
+const levelDescriptions: Record<string, string> = {
+  "Visitor": "A relaxed exploration mode with simple questions and smooth interactions.",
+  "Scribe Apprentice": "Moderate difficulty with more puzzles and detail-focused questions.",
+  "High Official": "The expert challenge — historically deep, complex, and logic heavy."
+};
+
 const MapPage: React.FC<MapPageProps> = ({ mode, onRoomSelected }) => {
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [selectedLevel, setSelectedLevel] = useState<string>('');
+  const [hoveredLevel, setHoveredLevel] = useState<string | null>(null);
   const [darkMode, setDarkMode] = useState<boolean>(true);
 
   const handleRoomClick = (room: Room) => {
@@ -69,6 +77,7 @@ const MapPage: React.FC<MapPageProps> = ({ mode, onRoomSelected }) => {
         <div className={styles.toggleWrapper} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <ThemeToggle isDark={darkMode} onToggle={() => setDarkMode(prev => !prev)} />
         </div>
+
         <p className={styles.subtitle}>
           {mode === 'kids'
             ? 'Click on any room marker to begin your adventure'
@@ -103,11 +112,11 @@ const MapPage: React.FC<MapPageProps> = ({ mode, onRoomSelected }) => {
           </div>
         </motion.div>
 
-        {/* POPUP MODAL SECTION */}
+        {/* POPUP MODAL */}
         <AnimatePresence>
           {selectedRoom && mode === 'learning' && (
             <>
-              {/* Dark Overlay Backdrop */}
+              {/* BACKDROP */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -119,72 +128,84 @@ const MapPage: React.FC<MapPageProps> = ({ mode, onRoomSelected }) => {
                   left: 0,
                   width: '100%',
                   height: '100%',
-                  backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                  backgroundColor: 'rgba(0,0,0,0.6)',
                   zIndex: 999,
                   backdropFilter: 'blur(3px)'
                 }}
               />
 
-              {/* The Popup Content */}
+              {/* POPUP PANEL */}
               <motion.div
                 className={styles.detailsPanel}
-                // Inline styles to override CSS class for popup positioning
                 style={{
                   position: 'fixed',
                   top: '50%',
                   left: '50%',
                   zIndex: 1000,
                   width: '90%',
-                  maxWidth: '500px',
+                  maxWidth: '650px',
                   maxHeight: '90vh',
                   overflowY: 'auto',
-                  margin: 0,
-                  boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
                 }}
                 initial={{ opacity: 0, x: '-50%', y: '-40%', scale: 0.9 }}
                 animate={{ opacity: 1, x: '-50%', y: '-50%', scale: 1 }}
                 exit={{ opacity: 0, x: '-50%', y: '-40%', scale: 0.9 }}
                 transition={{ type: "spring", damping: 25, stiffness: 300 }}
               >
-                <div className={styles.detailsHeader} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                <div className={styles.detailsHeader} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <Info size={28} color="var(--primary)" />
-                    <h2 className={styles.detailsTitle} style={{ margin: 0 }}>{selectedRoom.name}</h2>
+                    <h2 className={styles.detailsTitle}>{selectedRoom.name}</h2>
                   </div>
                   <button 
                     onClick={handleClosePopup}
-                    style={{ 
-                      background: 'none', 
-                      border: 'none', 
-                      cursor: 'pointer',
-                      padding: '5px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      color: 'inherit'
-                    }}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer' }}
                   >
                     <X size={24} />
                   </button>
                 </div>
 
+                {/* LEVELS SECTION */}
                 {selectedRoom.levels && (
                   <div className={styles.levelSelector}>
                     <h3 className={styles.levelTitle}>Select Difficulty Level</h3>
                     <div className={styles.levelButtons}>
                       {selectedRoom.levels.map((level) => (
-                        <button
-                          key={level}
-                          className={`${styles.levelButton} ${selectedLevel === level ? styles.levelButtonActive : ''}`}
-                          onClick={() => setSelectedLevel(level)}
-                        >
-                          {level}
-                        </button>
+                        <div key={level} className={styles.levelButtonWrapper}>
+                          <button
+                            className={`${styles.levelButton} ${selectedLevel === level ? styles.levelButtonActive : ''}`}
+                            onClick={() => setSelectedLevel(level)}
+                            onMouseEnter={() => setHoveredLevel(level)}
+                            onMouseLeave={() => setHoveredLevel(null)}
+                          >
+                            {level}
+                          </button>
+
+                          {/* DESCRIPTION TOOLTIP */}
+                          <AnimatePresence>
+                            {hoveredLevel === level && (
+                              <motion.div
+                                className={styles.levelTooltip}
+                                initial={{ opacity: 0, y: 5 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 5 }}
+                                transition={{ duration: 0.2 }}
+                              >
+                                {levelDescriptions[level]}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
                       ))}
                     </div>
                   </div>
                 )}
 
-                <button className={styles.proceedButton} onClick={handleProceed} disabled={!selectedLevel}>
+                <button 
+                  className={styles.proceedButton} 
+                  onClick={handleProceed} 
+                  disabled={!selectedLevel}
+                >
                   Begin Experience
                   <ChevronRight size={20} />
                 </button>
