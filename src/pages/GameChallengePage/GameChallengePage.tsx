@@ -30,7 +30,7 @@ const getRoomId = (roomKey: string): number => {
   return match ? parseInt(match[0]) : 1;
 };
 
-const GameChallengePage: React.FC<GameChallengePageProps> = ({ room, onComplete }) => {
+const GameChallengePage: React.FC<GameChallengePageProps> = ({ room }) => {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
@@ -121,7 +121,9 @@ const GameChallengePage: React.FC<GameChallengePageProps> = ({ room, onComplete 
       console.log('📝 Feedback:', feedback);
 
       alert(`🎉 Photo uploaded successfully! Score: ${result.photo.score}`);
-      onComplete();
+      
+      // Redirect to home page to see uploaded image in Winners Dashboard
+      window.location.hash = '/';
     } catch (error) {
       console.error('❌ Upload error:', error);
       alert(`Upload failed: ${error instanceof Error ? error.message : 'Unknown error'}`);

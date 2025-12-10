@@ -289,7 +289,8 @@ const QuestionsPage: React.FC<QuestionsPageProps> = ({ room, mode, level: initia
 
     const handleCheckpointExit = () => {
         setShowCheckpoint(false);
-        setShowFeedback(true);
+        // Redirect to map page to choose another room
+        window.location.hash = '/map';
     };
 
     // --- Feedback Logic ---

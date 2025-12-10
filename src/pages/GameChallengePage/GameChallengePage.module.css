@@ -2,16 +2,35 @@
 /* Enhanced for Dark Gold/Bronze Egyptian Theme */
 
 /* Define color variables using the established theme names */
-:root {
-  /* Fallbacks to ensure color theme consistency */
+.lightTheme {
+  --light-bg: #fdfbf7;
+  --bg1: #fdfbf7;
+  --bg2: #fff9df;
   --primary: #d9650f;
-  --secondary: #a33013;
+  --secondary: #f59e0b;
+  --text-primary: #120e06;
+  --text-secondary: #4a3b2a;
   --gold-bright-solid: #FFD700;
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(217, 101, 15, 0.2);
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.1);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.darkTheme {
+  /* Dark Egyptian Theme - Matches GameChallengePage */
+  --light-bg: #080603;
   --bg1: #080603;
   --bg2: #1a1206;
+  --primary: #d9650f;
+  --secondary: #a33013;
   --text-primary: #FFD700;
   --text-secondary: #e5c9a4;
-  --white-text: #fff9df;
+  --gold-bright-solid: #FFD700;
+  --glass-bg: rgba(26, 18, 6, 0.85);
+  --glass-border: rgba(255, 215, 0, 0.2);
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.7);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .pageContainer {
