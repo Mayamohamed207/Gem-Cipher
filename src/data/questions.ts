@@ -75,12 +75,14 @@ const QUESTIONS: Record<string, RoomQuestionSet> = {
             { id: 1, text: "What is the main purpose of this place?", type: 'radio', options: ["Producing food for the King", "A vacation spot"], correctAnswer: "Producing food for the King", feedback: "The $hwt$ (estates) were agricultural centers for the crown.", points: 25 },
             { id: 2, text: "How do I pay workers?", type: 'radio', options: ["Bread/Beer", "Gold Coins"], correctAnswer: "Bread/Beer", feedback: "Wages were paid in rations, primarily grain and beer.", points: 25 },
             // ID 3: Feedback - Omitted
+            { id: 3, text: "Does the layout of this exhibit make it easy to see the artifacts?", type: 'radio', options: ["Yes", "No Crowded"], correctAnswer: "", feedback: "", points: 25 },
             { id: 4, text: "What is in the round silo?", type: 'radio', options: ["Grain", "Sand"], correctAnswer: "Grain", feedback: "The silo (granary) stored the state's wealth.", points: 25 },
-            // ID 5: Checkpoint - Omitted
+            
+// ID 5: Checkpoint - Omitted
 
             // 2: Administration
             // ID 5.1: Intro_Info - Omitted
-            { id: 6, text: "Who runs the country for the Pharaoh?", type: 'radio', options: ["The Vizier", "The General"], correctAnswer: "The Vizier", feedback: "The Vizier ($Tjati$) was the highest non-royal official.", points: 25 },
+            { id: 4, text: "Who runs the country for the Pharaoh?", type: 'radio', options: ["The Vizier", "The General"], correctAnswer: "The Vizier", feedback: "The Vizier ($Tjati$) was the highest non-royal official.", points: 25 },
             { id: 7, text: "Which god does the 5th Dynasty King love?", type: 'radio', options: ["Ra (Sun)", "Moon"], correctAnswer: "Ra (Sun)", feedback: "The 5th Dynasty saw the rise of the solar cult of Ra.", points: 25 },
             // ID 8: Feedback - Omitted
             { id: 9, text: "What is a 'Decree'?", type: 'radio', options: ["A royal order", "A poem"], correctAnswer: "A royal order", feedback: "A decree was a formal order issued by the king's administration.", points: 25 },
