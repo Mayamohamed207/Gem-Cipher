@@ -1,97 +1,182 @@
-
+/* ============================================
+   THEME VARIABLES
+   ============================================ */
 .lightTheme {
-  --light-bg: white;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-gradient-start: white;
+  --bg-gradient-end: #fff8f0;
   --primary: #d9650f;
+  --primary-hover: #b8540c;
   --secondary: #f59e0b;
-  --text-primary: #120e06;
-  --text-secondary: #333;
-  --gold-bright-solid: #FFD700;
-  --glass-bg: rgba(255, 255, 255, 0.2);
-  --glass-border: rgba(255, 255, 255, 0.3);
-  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.1);
-  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --text-primary: #1a1a1a;
+  --text-secondary: #4a5568;
+  --text-muted: #718096;
+  --gold-bright: #FFD700;
+  --gold-light: #ffe55c;
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(217, 101, 15, 0.2);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 40px rgba(217, 101, 15, 0.15);
+  --shadow-xl: 0 20px 60px rgba(217, 101, 15, 0.2);
+  --success: #10b981;
+  --error: #ef4444;
+  --border-radius: 20px;
 }
 
 .darkTheme {
-  --light-bg: #120e06;
-  --primary: #d9650f;
-  --secondary: #f59e0b;
-  --text-primary: #fff;
-  --text-secondary: #ccc;
-  --gold-bright-solid: #FFD700;
-  --glass-bg: rgba(0, 0, 0, 0.3);
-  --glass-border: rgba(255, 255, 255, 0.2);
-  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.5);
-  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --bg-primary: #0f0e0d;
+  --bg-secondary: #1a1816;
+  --bg-gradient-start: #1a1510;
+  --bg-gradient-end: #0f0e0d;
+  --primary: #ff8533;
+  --primary-hover: #ffa366;
+  --secondary: #fbbf24;
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-muted: #9ca3af;
+  --gold-bright: #FFD700;
+  --gold-light: #ffe55c;
+  --glass-bg: rgba(26, 24, 22, 0.85);
+  --glass-border: rgba(255, 133, 51, 0.25);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 40px rgba(255, 133, 51, 0.25);
+  --shadow-xl: 0 20px 60px rgba(255, 133, 51, 0.3);
+  --success: #34d399;
+  --error: #f87171;
+  --border-radius: 20px;
 }
 
-
+/* ============================================
+   MAIN CONTAINER
+   ============================================ */
 .questionsPageContainer {
     min-height: 100vh;
-    padding: 40px 20px;
-    background: linear-gradient(135deg, var(--light-bg) 0%, var(--light-bg) 100%);
+    padding: 60px 24px;
+    background: white;
     position: relative;
 }
 
+.questionsPageContainer::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+}
 
+/* ============================================
+   THEME TOGGLE
+   ============================================ */
+.themeToggleWrapper {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 1000;
+}
+
+/* ============================================
+   HEADER SECTION
+   ============================================ */
 .headerSection {
     text-align: center;
-    margin-bottom: 40px;
-    max-width: 900px;
+    margin-bottom: 48px;
+    max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
+    position: relative;
+    z-index: 1;
 }
 
 .heading {
-    font-size: 3rem;
-    font-weight: 800;
-    color: var(--primary);
-    margin-bottom: 12px;
+    font-size: 4rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+    letter-spacing: 3px;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 0 2px 10px rgba(217, 101, 15, 0.2);
+    filter: drop-shadow(0 4px 12px rgba(217, 101, 15, 0.3));
 }
 
 .levelDisplay {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     color: var(--text-secondary);
-    margin-bottom: 20px;
+    margin-bottom: 28px;
     font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
 .scoreDisplay {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.2));
-    padding: 12px 32px;
-    border-radius: 50px;
-    border: 2px solid var(--gold-bright-solid);
-    font-size: 1.4rem;
-    font-weight: 700;
+    gap: 14px;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 215, 0, 0.25));
+    padding: 16px 40px;
+    border-radius: 60px;
+    border: 3px solid var(--gold-bright);
+    font-size: 1.6rem;
+    font-weight: 800;
     color: var(--text-primary);
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    box-shadow: var(--shadow-lg), 0 0 30px rgba(255, 215, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
 }
 
+.scoreDisplay svg {
+    color: var(--gold-bright);
+    filter: drop-shadow(0 2px 4px rgba(255, 215, 0, 0.5));
+}
+
+/* ============================================
+   PROGRESS BAR
+   ============================================ */
 .progressBarContainer {
     width: 100%;
-    max-width: 900px;
-    height: 12px;
-    background: rgba(0, 0, 0, 0.05);
+    max-width: 1000px;
+    height: 16px;
+    background: var(--bg-secondary);
     border-radius: 50px;
     overflow: hidden;
     position: relative;
-    margin: 0 auto 40px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 0 auto 48px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--glass-border);
 }
 
 .progressBar {
     height: 100%;
-    background: linear-gradient(90deg, var(--primary), var(--gold-bright-solid), var(--primary));
+    background: linear-gradient(90deg, 
+        var(--primary) 0%, 
+        var(--gold-bright) 50%, 
+        var(--primary) 100%);
     background-size: 200% 100%;
     border-radius: 50px;
-    animation: shimmerProgress 2s linear infinite;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    animation: shimmerProgress 3s linear infinite;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.6),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
+    position: relative;
+}
+
+.progressBar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, 
+        rgba(255, 255, 255, 0.3) 0%, 
+        transparent 50%, 
+        rgba(0, 0, 0, 0.1) 100%);
+    border-radius: 50px;
 }
 
 @keyframes shimmerProgress {
@@ -101,15 +186,17 @@
 
 .progressLabel {
     position: absolute;
-    top: -28px;
+    top: -32px;
     right: 0;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--text-secondary);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
     background: var(--glass-bg);
-    padding: 4px 12px;
-    border-radius: 12px;
-    border: 1px solid var(--glass-border);
+    padding: 6px 16px;
+    border-radius: 16px;
+    border: 2px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-sm);
 }
 
 /* ============================================
@@ -117,13 +204,14 @@
    ============================================ */
 .keeperVideoContainer {
     position: relative;
-    margin: 0 auto 40px;
-    max-width: 900px;
-    height: 500px;
-    border-radius: 24px;
+    margin: 0 auto 48px;
+    max-width: 1000px;
+    height: 560px;
+    border-radius: 28px;
     overflow: hidden;
-    box-shadow: var(--shadow-lg);
-    border: 3px solid var(--primary);
+    box-shadow: var(--shadow-xl);
+    border: 4px solid var(--primary);
+    background: var(--bg-secondary);
 }
 
 .videoPlayer {
@@ -138,58 +226,72 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 20px 40px;
+    padding: 24px 48px;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     color: white;
     border: none;
-    border-radius: 50px;
-    font-size: 1.3rem;
-    font-weight: 700;
+    border-radius: 60px;
+    font-size: 1.4rem;
+    font-weight: 800;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 12px;
-    box-shadow: 0 8px 30px rgba(217, 101, 15, 0.5);
+    gap: 14px;
+    box-shadow: 0 12px 40px rgba(217, 101, 15, 0.6);
     z-index: 10;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.startButtonOverlay:hover {
+    transform: translate(-50%, -50%) scale(1.05);
+    box-shadow: 0 16px 50px rgba(217, 101, 15, 0.7);
 }
 
 .skipButton {
     position: absolute;
-    bottom: 20px;
-    right: 20px;
-    padding: 10px 24px;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(10px);
+    bottom: 24px;
+    right: 24px;
+    padding: 12px 28px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(12px);
     color: white;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 50px;
-    font-size: 0.95rem;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.3s ease;
     z-index: 10;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .skipButton:hover {
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.9);
+    border-color: rgba(255, 255, 255, 0.5);
     transform: scale(1.05);
 }
 
 .smallVideo {
     position: fixed;
-    width: 280px;
-    height: 500px;
-    bottom: 20px;
-    right: 20px;
+    width: 320px;
+    height: 560px;
+    bottom: 24px;
+    right: 24px;
     z-index: 100;
     margin: 0;
-    border: none;
+    border-radius: 24px;
+    border:none;
+    box-shadow: var(--shadow-xl);
 }
 
 .videoPlayerSmall {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 20px;
 }
 
 /* ============================================
@@ -197,43 +299,58 @@
    ============================================ */
 .questionForm {
     background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    padding: 40px;
-    border-radius: 24px;
-    border: 1px solid var(--glass-border);
-    max-width: 900px;
+    backdrop-filter: blur(30px);
+    padding: 48px;
+    border-radius: 32px;
+    border: 2px solid var(--glass-border);
+    max-width: 1000px;
     margin: 0 auto;
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-xl);
+    position: relative;
+    z-index: 1;
+}
+
+.questionForm::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+    background-size: 200% 100%;
+    animation: shimmerProgress 3s linear infinite;
+    border-radius: 32px 32px 0 0;
 }
 
 .questionHeader {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 24px;
+    margin-bottom: 32px;
 }
 
 .questionBadge {
     display: inline-block;
-    padding: 8px 20px;
+    padding: 10px 24px;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     color: white;
     border-radius: 50px;
-    font-size: 0.95rem;
-    font-weight: 700;
+    font-size: 1rem;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: 0 4px 12px rgba(217, 101, 15, 0.3);
+    letter-spacing: 1px;
+    box-shadow: 0 6px 16px rgba(217, 101, 15, 0.4);
 }
 
 .questionLabel {
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: 1.75rem;
+    font-weight: 800;
     color: var(--text-primary);
-    margin-bottom: 30px;
-    line-height: 1.5;
-    padding-left: 20px;
-    border-left: 4px solid var(--primary);
+    margin-bottom: 36px;
+    line-height: 1.6;
+    padding-left: 24px;
+    border-left: 6px solid var(--primary);
 }
 
 /* ============================================
@@ -241,23 +358,24 @@
    ============================================ */
 .optionCardContainer {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-bottom: 36px;
 }
 
 .optionCard {
-    padding: 24px;
-    border-radius: 16px;
+    padding: 28px;
+    border-radius: 20px;
     border: 3px solid var(--glass-border);
     background: var(--glass-bg);
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 18px;
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(20px);
 }
 
 .optionCard::before {
@@ -265,36 +383,87 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 4px;
+    width: 6px;
     height: 100%;
-    background: var(--primary);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
     transform: scaleY(0);
-    transition: transform 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.optionCard::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(217, 101, 15, 0.1), transparent);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
 }
 
 .optionCard:hover {
     border-color: var(--primary);
-    transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(217, 101, 15, 0.2);
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 16px 40px rgba(217, 101, 15, 0.25);
 }
 
 .optionCard:hover::before {
     transform: scaleY(1);
 }
 
+.optionCard:hover::after {
+    width: 400px;
+    height: 400px;
+}
+
 .optionCard.selected {
     border-color: var(--primary);
-    background: linear-gradient(135deg, rgba(217, 101, 15, 0.05), rgba(217, 101, 15, 0.1));
-    box-shadow: 0 8px 25px rgba(217, 101, 15, 0.3);
+    background: linear-gradient(135deg, rgba(217, 101, 15, 0.08), rgba(217, 101, 15, 0.15));
+    box-shadow: 0 12px 32px rgba(217, 101, 15, 0.35);
+    transform: scale(1.02);
 }
 
 .optionCard.selected::before {
     transform: scaleY(1);
 }
 
+.optionCard.correctAnswer {
+    border-color: var(--success);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(16, 185, 129, 0.15));
+    box-shadow: 0 12px 32px rgba(16, 185, 129, 0.35);
+}
+
+.optionCard.correctAnswer::before {
+    background: var(--success);
+}
+
+.optionCard.wrongAnswer {
+    border-color: var(--error);
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(239, 68, 68, 0.15));
+    box-shadow: 0 12px 32px rgba(239, 68, 68, 0.35);
+    animation: shake 0.5s;
+}
+
+.optionCard.wrongAnswer::before {
+    background: var(--error);
+}
+
+.optionCard.showCorrect {
+    border-color: var(--success);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(16, 185, 129, 0.1));
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
 .optionCheckbox {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     border: 3px solid var(--glass-border);
     display: flex;
@@ -302,161 +471,125 @@
     justify-content: center;
     flex-shrink: 0;
     transition: all 0.3s ease;
+    background: var(--bg-primary);
 }
 
 .optionCard.selected .optionCheckbox {
     border-color: var(--primary);
     background: var(--primary);
     color: white;
+    box-shadow: 0 4px 12px rgba(217, 101, 15, 0.4);
+}
+
+.optionCard.correctAnswer .optionCheckbox {
+    border-color: var(--success);
+    background: var(--success);
+    color: white;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.optionCard.wrongAnswer .optionCheckbox {
+    border-color: var(--error);
+    background: var(--error);
+    color: white;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
 }
 
 .optionText {
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-size: 1.2rem;
+    font-weight: 700;
     color: var(--text-primary);
     flex: 1;
+    line-height: 1.5;
 }
 
 .optionCard.selected .optionText {
     color: var(--primary);
 }
 
-/* ============================================
-   BUTTONS
-   ============================================ */
-.submitButton,
-.continueButton,
-.advanceButton,
-.exitButton {
-    width: 100%;
-    padding: 18px 32px;
-    border: none;
-    border-radius: 16px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+.optionCard.correctAnswer .optionText {
+    color: var(--success);
 }
 
-.submitButton {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white;
-    box-shadow: 0 8px 25px rgba(217, 101, 15, 0.4);
-    margin-top: 10px;
-}
-
-.submitButton:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 35px rgba(217, 101, 15, 0.5);
-}
-
-.continueButton {
-    background: linear-gradient(135deg, var(--blue), #2a4d6f);
-    color: white;
-    box-shadow: 0 8px 25px rgba(53, 99, 138, 0.4);
-}
-
-.continueButton:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 35px rgba(53, 99, 138, 0.5);
-}
-
-.advanceButton {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white;
-    box-shadow: 0 8px 25px rgba(217, 101, 15, 0.4);
-}
-
-.advanceButton:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 35px rgba(217, 101, 15, 0.5);
-}
-
-.exitButton {
-    background: var(--glass-bg);
-    color: var(--text-primary);
-    border: 2px solid var(--glass-border);
-    box-shadow: var(--shadow-sm);
-}
-
-.exitButton:hover {
-    border-color: var(--primary);
-    transform: translateY(-4px);
+.optionCard.wrongAnswer .optionText {
+    color: var(--error);
 }
 
 /* ============================================
-   FEEDBACK CARD
+   INLINE FEEDBACK
    ============================================ */
-.feedbackCard {
-    text-align: center;
+.inlineFeedback {
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
-    padding: 50px 40px;
+    padding: 32px;
     border-radius: 24px;
-    border: 1px solid var(--glass-border);
-    max-width: 700px;
-    margin: 0 auto;
+    border: 2px solid var(--glass-border);
+    margin-top: 32px;
+    text-align: center;
     box-shadow: var(--shadow-lg);
 }
 
 .feedbackIcon {
-    margin-bottom: 24px;
-    animation: scaleIn 0.5s ease-out;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
 }
 
-@keyframes scaleIn {
-    0% { transform: scale(0); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+.feedbackIcon svg {
+    filter: drop-shadow(0 4px 12px currentColor);
 }
 
 .correct {
-    font-size: 2rem;
-    font-weight: 800;
-    color: #10b981;
-    margin-bottom: 20px;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--success);
+    margin-bottom: 24px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
+    text-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
 }
 
 .incorrect {
-    font-size: 2rem;
-    font-weight: 800;
-    color: #ef4444;
-    margin-bottom: 20px;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--error);
+    margin-bottom: 24px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
+    text-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
 }
 
 .keeperFeedback {
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.2));
-    border-left: 5px solid var(--gold-bright-solid);
-    padding: 24px;
-    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.12), rgba(255, 215, 0, 0.25));
+    border-left: 6px solid var(--gold-bright);
+    padding: 28px;
+    border-radius: 16px;
     text-align: left;
-    margin-bottom: 30px;
     display: flex;
     align-items: flex-start;
-    gap: 15px;
+    gap: 18px;
+    box-shadow: inset 0 2px 8px rgba(255, 215, 0, 0.2);
 }
 
 .sparkleIcon {
-    color: var(--gold-bright-solid);
+    color: var(--gold-bright);
     flex-shrink: 0;
-    margin-top: 2px;
+    margin-top: 4px;
+    filter: drop-shadow(0 2px 4px rgba(255, 215, 0, 0.5));
+    animation: sparkle 2s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    50% { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
 }
 
 .keeperFeedback p {
-    font-size: 1.1rem;
-    line-height: 1.7;
+    font-size: 1.2rem;
+    line-height: 1.8;
     color: var(--text-primary);
     margin: 0;
+    font-weight: 600;
 }
 
 /* ============================================
@@ -464,92 +597,209 @@
    ============================================ */
 .finalPromptCard {
     text-align: center;
-    padding: 60px 40px;
-    border-radius: 24px;
+    padding: 72px 48px;
+    border-radius: 32px;
     background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    border: 2px solid var(--gold-bright-solid);
-    max-width: 700px;
+    backdrop-filter: blur(30px);
+    border: 4px solid var(--gold-bright);
+    max-width: 800px;
     margin: 0 auto;
-    box-shadow: 0 20px 60px rgba(255, 215, 0, 0.3);
+    box-shadow: var(--shadow-xl), 0 0 60px rgba(255, 215, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.finalPromptCard::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+    animation: rotate 10s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 .trophyIcon {
-    margin-bottom: 24px;
-    animation: bounce 1s ease-in-out infinite;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 28px;
+    color: var(--gold-bright);
+    filter: drop-shadow(0 8px 20px rgba(255, 215, 0, 0.6));
+    animation: bounce 2s ease-in-out infinite;
 }
 
 @keyframes bounce {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    50% { transform: translateY(-15px); }
 }
 
 .finalHeader {
+    position: relative;
+    z-index: 1;
+    font-size: 3rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--primary), var(--gold-bright));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.finalScore {
+    position: relative;
+    z-index: 1;
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    margin-bottom: 48px;
+    font-weight: 600;
+}
+
+.scoreHighlight {
     font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--gold-bright);
+    text-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+    display: inline-block;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.finalActions {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+.advanceButton,
+.exitButton {
+    width: 100%;
+    padding: 20px 40px;
+    border: none;
+    border-radius: 60px;
+    font-size: 1.2rem;
     font-weight: 800;
-    color: var(--primary);
-    margin-bottom: 20px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
-.finalScore {
-    font-size: 1.3rem;
-    color: var(--text-secondary);
-    margin-bottom: 40px;
+.advanceButton {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    box-shadow: 0 10px 30px rgba(217, 101, 15, 0.5);
 }
 
-.scoreHighlight {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--gold-bright-solid);
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+.advanceButton:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(217, 101, 15, 0.6);
 }
 
-.finalActions {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+.exitButton {
+    background: var(--glass-bg);
+    color: var(--text-primary);
+    border: 3px solid var(--glass-border);
+    box-shadow: var(--shadow-md);
+    backdrop-filter: blur(10px);
 }
 
-/* ============================================
-   ERROR MESSAGE
-   ============================================ */
-.errorMessage {
-    color: #ef4444;
-    font-size: 0.95rem;
-    font-weight: 600;
-    padding: 12px 20px;
-    background: rgba(239, 68, 68, 0.1);
-    border-left: 4px solid #ef4444;
-    border-radius: 8px;
-    margin-bottom: 20px;
+.exitButton:hover {
+    border-color: var(--primary);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(217, 101, 15, 0.2);
 }
 
 /* ============================================
    RESPONSIVE DESIGN
    ============================================ */
+@media (max-width: 1200px) {
+    .heading { font-size: 3.5rem; }
+    .questionForm { padding: 40px; }
+}
+
 @media (max-width: 992px) {
-    .heading { font-size: 2.5rem; }
-    .keeperVideoContainer { height: 400px; }
-    .smallVideo { width: 240px; height: 340px; }
+    .heading { font-size: 3rem; }
+    .keeperVideoContainer { height: 450px; }
+    .smallVideo { width: 280px; height: 480px; }
+    .questionLabel { font-size: 1.5rem; }
 }
 
 @media (max-width: 768px) {
-    .questionsPageContainer { padding: 20px 15px; }
-    .heading { font-size: 2rem; }
-    .levelDisplay { font-size: 1.1rem; }
-    .scoreDisplay { font-size: 1.2rem; padding: 10px 24px; }
-    .keeperVideoContainer { height: 300px; }
-    .smallVideo { width: 200px; height: 280px; bottom: 10px; right: 10px; }
-    .questionForm { padding: 30px 20px; }
-    .questionLabel { font-size: 1.3rem; }
-    .optionCardContainer { grid-template-columns: 1fr; }
-    .feedbackCard, .finalPromptCard { padding: 40px 25px; }
+    .questionsPageContainer { padding: 40px 16px; }
+    .heading { font-size: 2.5rem; letter-spacing: 2px; }
+    .levelDisplay { font-size: 1.3rem; }
+    .scoreDisplay { font-size: 1.4rem; padding: 14px 32px; }
+    .keeperVideoContainer { height: 350px; border-radius: 20px; }
+    .smallVideo { width: 240px; height: 400px; bottom: 16px; right: 16px; }
+    .questionForm { padding: 32px 24px; border-radius: 24px; }
+    .questionLabel { font-size: 1.4rem; padding-left: 18px; }
+    .optionCardContainer { grid-template-columns: 1fr; gap: 16px; }
+    .optionCard { padding: 24px; }
+    .optionText { font-size: 1.1rem; }
+    .feedbackCard, .finalPromptCard { padding: 48px 32px; }
+    .finalHeader { font-size: 2.5rem; }
 }
 
 @media (max-width: 480px) {
-    .heading { font-size: 1.5rem; }
+    .questionsPageContainer { padding: 32px 12px; }
+    .heading { font-size: 2rem; letter-spacing: 1px; }
+    .levelDisplay { font-size: 1.1rem; }
+    .scoreDisplay { font-size: 1.2rem; padding: 12px 24px; gap: 10px; }
+    .keeperVideoContainer { height: 280px; }
+    .smallVideo { width: 200px; height: 320px; }
+    .questionForm { padding: 24px 16px; }
+    .questionBadge { padding: 8px 18px; font-size: 0.9rem; }
+    .questionLabel { font-size: 1.2rem; padding-left: 14px; border-left: 4px solid var(--primary); }
+    .optionCard { padding: 20px; gap: 14px; }
+    .optionCheckbox { width: 28px; height: 28px; }
+    .optionText { font-size: 1rem; }
+    .correct, .incorrect { font-size: 1.8rem; }
+    .keeperFeedback { padding: 20px; gap: 14px; }
+    .keeperFeedback p { font-size: 1rem; }
     .finalHeader { font-size: 2rem; }
-    .smallVideo { width: 160px; height: 220px; }
+    .finalScore { font-size: 1.2rem; }
+    .scoreHighlight { font-size: 2rem; }
+    .advanceButton, .exitButton { padding: 16px 32px; font-size: 1rem; }
+    .themeToggleWrapper { top: 16px; right: 16px; }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus states for accessibility */
+.optionCard:focus-visible,
+.advanceButton:focus-visible,
+.exitButton:focus-visible,
+.skipButton:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 4px;
 }

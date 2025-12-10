@@ -71,7 +71,7 @@ const HomePage: React.FC<HomePageProps> = ({ onExperienceSelect, onToggleTheme, 
                                 </motion.span>
                             </div>
                             <p className={styles.subtitle}>Listenting To Every Voice</p>
-                            <p className={styles.subtitle} style={{fontSize: '1.2rem'}}>Personalizing Your Experience</p>
+                            <p className={styles.subtitle} style={{fontSize: '1.2rem'}}>Personalizing Your Experience, listening to your voice</p>
                             <button className={styles.startButton}>START YOUR JOURNEY</button>
                         </div>
                         
@@ -81,7 +81,7 @@ const HomePage: React.FC<HomePageProps> = ({ onExperienceSelect, onToggleTheme, 
                                 src={PhotocardImage} 
                                 alt="Grand Egyptian Museum Exterior"
                             />
-                            <div className={styles.photoCaption}>Giza, Egypt • Grand Opening 2024</div>
+                            <div className={styles.photoCaption}>Giza, Egypt • Grand Opening</div>
                         </div>
                     </motion.div>
 
