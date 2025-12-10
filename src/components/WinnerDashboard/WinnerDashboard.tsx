@@ -50,12 +50,9 @@ const WinnersDashboard: React.FC = () => {
           animate={{ scale: 1 }}
           transition={{ duration: 0.6 }}
         >
-          <Trophy className={styles.trophyIcon} />
+         
           <h2 className={styles.title}>Top Captures This Hour</h2>
-          <div className={styles.liveIndicator}>
-            <span className={styles.liveDot}></span>
-            LIVE
-          </div>
+       
         </motion.div>
 
         <div className={styles.winnersGrid}>
@@ -88,14 +85,8 @@ const WinnersDashboard: React.FC = () => {
 
               <div className={styles.winnerInfo}>
                 <h3 className={styles.winnerName}>{winner.name}</h3>
-                <p className={styles.winnerRoom}>
-                  <span className={styles.hieroglyph}>𓋹</span>
-                  {winner.room}
-                </p>
-                <div className={styles.winnerMeta}>
-                  <Clock size={14} />
-                  <span>{formatTimeAgo(winner.timestamp)}</span>
-                </div>
+           
+       
               </div>
 
               <div className={styles.cardGlow}></div>

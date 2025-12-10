@@ -30,6 +30,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(28px, 1fr));
     grid-auto-rows: 28px;
+
     font-size: 22px;
     box-sizing: border-box;
     overflow: hidden;

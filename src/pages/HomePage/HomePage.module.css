@@ -1,494 +1,343 @@
 /* src/pages/HomePage/HomePage.module.css - MOBILE RESPONSIVE VERSION */
 
 .pageWrapper {
-	min-height: 100vh;
-	display: flex;
-	flex-direction: column;
-	background: var(--bg1);
-	position: relative;
-	overflow-x: hidden;
-	transition: background 0.5s ease;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg2);
+  position: relative;
+  overflow-x: hidden;
+  transition: background 0.5s ease;
 }
 
 /* Subtle animated background */
 .pageWrapper::before {
-	content: '';
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-image: 
-		radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.03) 0%, transparent 50%),
-		radial-gradient(circle at 80% 80%, rgba(217, 101, 15, 0.03) 0%, transparent 50%);
-	pointer-events: none;
-	animation: particleFloat 20s ease-in-out infinite;
-	z-index: 0;
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(217, 101, 15, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+  animation: particleFloat 20s ease-in-out infinite;
+  z-index: 0;
 }
 
 @keyframes particleFloat {
-	0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
-	50% { transform: translate(20px, -20px) scale(1.05); opacity: 0.8; }
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+  50% { transform: translate(20px, -20px) scale(1.05); opacity: 0.8; }
 }
 
 /* ----------------- HERO / MATRIX CONTENT ----------------- */
 .matrixContent {
-	padding: 80px 40px 30px;
-	width: 100%;
+  padding: 80px 40px 30px;
+  width: 100%;
 }
 
 .heroContainer {
-	position: relative;
-	display: grid;
-	grid-template-columns: 1fr 1.2fr;
-	gap: 50px;
-	align-items: center;
-	text-align: left;
-	max-width: 1400px;
-	margin: 0 auto 50px auto;
-	width: 100%;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 50px;
+  align-items: center;
+  text-align: left;
+  max-width: 1400px;
+  margin: 0 auto 50px auto;
+  width: 100%;
 }
 
 .heroContent {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	gap: 8px;
-	width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
 }
 
 .titleWrapper {
-	display: flex;
-	align-items: center;
-	justify-content: flex-start;
-	gap: 25px;
-	margin-bottom: 15px;
-	flex-wrap: wrap;
-	width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 25px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  width: 100%;
 }
-
-.themeToggle {
-    align-self: flex-end;
-    margin-bottom: 16px;
-    padding: 8px 16px;
-    border-radius: 999px;
-    border: 1px solid var(--glass-border);
-    background: var(--glass-bg);
-    color: var(--text-primary);
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: var(--shadow-sm);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-    z-index: 10; 
-}
-
 
 /* Clean title with smooth gradient */
 .title {
-	font-size: 5rem;
-	font-weight: 900;
-	text-transform: uppercase;
-	letter-spacing: 5px;
-	margin: 0;
-	line-height: 1;
-	/* FIX: Ensure color variables are used for themes */
-	color: var(--white); 
-	/* NOTE: If you want a gradient title in modules, you may need a workaround 
-	background: linear-gradient(135deg, var(--gold) 0%, var(--primary) 100%);
-	background-clip: text;
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	*/
-	transition: all 0.5s ease;
+  font-size: 5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  margin: 0;
+  line-height: 1;
+  background: var(--gold);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.5s ease;
 }
 
 /* Clean subtitle */
 .subtitle {
-	font-size: 1.5rem;
-	color: var(--gold-bright-solid); /* FIX: Use theme variable */
-	font-weight: 500;
-	letter-spacing: 1.5px;
-	margin: 0 0 12px 0;
-	font-style: italic;
-	transition: color 0.5s ease;
-	line-height: 1.4;
-}
-
-/* subtitleSmall fix for text visibility */
-.subtitleSmall {
-	font-size: 1.2rem;
-	color: var(--text-secondary); /* FIX: Use theme variable for readability */
-	margin: 0 0 24px 0;
-	font-weight: 300;
+  font-size: 1.5rem;
+  color: var(--gold);
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  margin: 0 0 12px 0;
+  font-style: italic;
+  transition: color 0.5s ease;
+  line-height: 1.4;
 }
 
 /* Clean glyph */
 .glyph {
-	font-family: "Noto Sans Egyptian Hieroglyphs", serif;
-	font-size: 7rem;
-	color: var(--gold-bright-solid); /* FIX: Use theme variable */
-	display: inline-block;
-	transition: color 0.5s ease;
+  font-family: "Noto Sans Egyptian Hieroglyphs", serif;
+  font-size: 7rem;
+  color: var(--gold);
+  display: inline-block;
+  transition: color 0.5s ease;
 }
 
 /* Minimal button */
 .startButton {
-	padding: 16px 36px;
-	background: linear-gradient(135deg, var(--gold-bright-solid) 0%, var(--primary) 100%); /* FIX: Use theme variable */
-	color: var(--bg1);
-	font-size: 1rem;
-	font-weight: 800;
-	border: none;
-	border-radius: 50px;
-	cursor: pointer;
-	transition: all 0.3s ease;
-	text-transform: uppercase;
-	letter-spacing: 1.8px;
-	margin-top: 18px;
-	white-space: nowrap;
+  padding: 16px 36px;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--primary) 100%);
+  color: var(--bg2);
+  font-size: 1rem;
+  font-weight: 800;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  margin-top: 18px;
+  white-space: nowrap;
 }
 
 .startButton:hover {
-	transform: translateY(-3px);
-	opacity: 0.95;
+  transform: translateY(-3px);
+  opacity: 0.95;
 }
 
 .startButton:active {
-	transform: translateY(-1px);
+  transform: translateY(-1px);
 }
 
 /* Clean photo card */
 .photoCard {
-	width: 100%;
-	aspect-ratio: 16/9;
-	background: var(--bg2);
-	border-radius: 18px;
-	overflow: hidden;
-	position: relative;
-	transition: all 0.4s ease;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: var(--bg2);
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.4s ease;
 }
 
 .photoCard:hover {
-	transform: translateY(-5px);
+  transform: translateY(-5px);
 }
 
 .photoCard img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	transition: transform 0.4s ease;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
 }
 
 .photoCard:hover img {
-	transform: scale(1.03);
+  transform: scale(1.03);
 }
 
 .photoCaption {
-	position: absolute;
-	bottom: 12px;
-	right: 12px;
-	background: rgba(0, 0, 0, 0.7);
-	color: var(--gold);
-	padding: 6px 14px;
-	border-radius: 18px;
-	font-size: 0.85rem;
-	font-weight: 600;
-	letter-spacing: 0.4px;
-	white-space: nowrap;
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.7);
+  color: var(--gold);
+  padding: 6px 14px;
+  border-radius: 18px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
 }
 
 /* ----------------- CLEAN STATS ----------------- */
 .statsContainer {
-	display: flex;
-	justify-content: center;
-	flex-wrap: wrap;
-	gap: 20px;
-	padding: 40px 0 60px 0;
-	max-width: 1200px;
-	margin: 0 auto;
-	transition: all 0.5s ease;
-	width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 40px 0 60px 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  transition: all 0.5s ease;
+  width: 100%;
 }
 
 .statCard {
-	text-align: center;
-	padding: 25px 35px;
-	/* FIX: Use theme-aware transparent background */
-	background: rgba(255, 215, 0, 0.05); 
-	border-radius: 18px;
-	min-width: 160px;
-	flex: 1 1 auto;
-	transition: all 0.3s ease;
+  text-align: center;
+  padding: 25px 35px;
+  background: rgba(255, 215, 0, 0.05);
+  border-radius: 18px;
+  min-width: 160px;
+  flex: 1 1 auto;
+  transition: all 0.3s ease;
 }
 
 .statCard:hover {
-	transform: translateY(-5px);
-	background: rgba(255, 215, 0, 0.08);
+  transform: translateY(-5px);
+  background: rgba(255, 215, 0, 0.08);
 }
 
 .statValue {
-	font-size: 2.2rem;
-	font-weight: 900;
-	/* FIX: Use theme variables */
-	background: linear-gradient(135deg, var(--gold-bright-solid) 0%, var(--primary) 100%);
-	background-clip: text;
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	margin-bottom: 6px;
-	transition: all 0.5s ease;
-	line-height: 1.2;
+  font-size: 2.2rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--primary) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 6px;
+  transition: all 0.5s ease;
+  line-height: 1.2;
 }
 
 .statLabel {
-	font-size: 0.9rem;
-	color: var(--text-secondary);
-	text-transform: uppercase;
-	letter-spacing: 1.3px;
-	font-weight: 600;
-	transition: color 0.5s ease;
-	line-height: 1.3;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  font-weight: 600;
+  transition: color 0.5s ease;
+  line-height: 1.3;
 }
 
 /* ----------------- EXPERIENCE SECTION ----------------- */
 .experienceSection {
-	padding: 80px 20px 100px;
-	position: relative;
-	background: var(--bg1);
-	z-index: 1;
-	transition: background 0.5s ease;
-	width: 100%;
+  padding: 80px 20px 100px;
+  position: relative;
+  background: var(--bg1);
+  z-index: 1;
+  transition: background 0.5s ease;
+  width: 100%;
 }
 
-/* Light mode adjustments for stats (for fallback/specificity) */
+/* Light mode adjustments */
 :global(.theme-light) .statCard,
 :global(body.light-mode) .statCard {
-	background: rgba(217, 101, 15, 0.05);
+  background: rgba(217, 101, 15, 0.05);
 }
 
 :global(.theme-light) .statCard:hover,
 :global(body.light-mode) .statCard:hover {
-	background: rgba(217, 101, 15, 0.08);
-}
-
-/* ----------------- KA-APER SECTION (Added missing styles for completeness) ----------------- */
-.kaperSection {
-    padding: 100px 50px;
-    background: var(--bg2);
-    position: relative;
-    z-index: 1;
-    border-top: 4px solid var(--primary);
-}
-
-.kaperSection::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    /* FIX: Corrected gradient syntax */
-    background: linear-gradient(135deg, rgba(217, 101, 15, 0.08) 0%, rgba(255, 215, 0, 0.03) 100%);
-    pointer-events: none;
-}
-
-.kaperContainer {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    gap: 80px;
-    align-items: flex-start;
-    position: relative;
-    z-index: 1;
-}
-
-.kaperImageWrapper {
-    position: relative;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4), 0 0 60px rgba(255, 215, 0, 0.3);
-    text-align: center;
-}
-
-.imageGlow {
-    position: absolute;
-    inset: -20px;
-    background: linear-gradient(135deg, var(--primary), var(--gold-bright-solid));
-    opacity: 0.25;
-    filter: blur(50px);
-    z-index: -1;
-    animation: glowPulse 4s ease-in-out infinite;
-}
-
-@keyframes glowPulse {
-    0%, 100% { opacity: 0.25; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(1.05); }
-}
-
-.introTitle {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--gold-bright-solid);
-    margin-bottom: 8px;
-}
-
-.introSubtitle {
-    font-size: 1.3rem;
-    color: var(--text-secondary);
-}
-
-.quoteBox {
-    background: rgba(255, 215, 0, 0.12);
-    border-left: 6px solid var(--gold-bright-solid);
-    padding: 35px;
-}
-
-.quoteText {
-    color: var(--white);
-}
-
-.quoteMark {
-    color: var(--gold-bright-solid);
-}
-
-.introText {
-    color: var(--text-secondary);
-}
-
-.scrollIndicator p {
-    color: var(--gold-bright-solid);
-}
-
-.arrowIcon {
-    color: var(--gold-bright-solid);
+  background: rgba(217, 101, 15, 0.08);
 }
 
 /* ----------------- RESPONSIVE BREAKPOINTS ----------------- */
 
-/* ... (Breakpoints up to 768px largely unchanged) ... */
+/* Tablets (landscape) */
+@media (max-width: 1200px) {
+  .matrixContent { padding: 70px 35px 25px; }
+  .title { font-size: 4.2rem; letter-spacing: 4px; }
+  .glyph { font-size: 6rem; }
+  .heroContainer { gap: 40px; }
+  .subtitle { font-size: 1.4rem; letter-spacing: 1.3px; }
+}
 
-/* Mobile (medium phones) - SHORT NAVBAR EFFECT START */
+/* Tablets (portrait) and small laptops */
+@media (max-width: 992px) {
+  .matrixContent { padding: 60px 30px 20px; }
+  .heroContainer { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+  .heroContent { align-items: center; }
+  .titleWrapper { justify-content: center; }
+  .title { font-size: 3.5rem; letter-spacing: 3px; }
+  .glyph { font-size: 5.5rem; }
+  .subtitle { font-size: 1.3rem; text-align: center; }
+  .startButton { padding: 15px 32px; font-size: 0.95rem; letter-spacing: 1.5px; }
+  .statsContainer { padding: 35px 0 50px 0; gap: 18px; }
+  .statCard { padding: 22px 30px; min-width: 140px; }
+  .experienceSection { padding: 70px 20px 90px; }
+}
+
+/* Mobile (large phones) */
+@media (max-width: 768px) {
+  .matrixContent { padding: 50px 20px 15px; }
+  .heroContainer { gap: 30px; }
+  .title { font-size: 2.8rem; letter-spacing: 2px; line-height: 1.1; }
+  .glyph { font-size: 4rem; }
+  .subtitle { font-size: 1.15rem; letter-spacing: 1px; margin: 0 0 10px 0; }
+  .startButton { padding: 14px 28px; font-size: 0.9rem; letter-spacing: 1.3px; }
+  .photoCard { border-radius: 15px; }
+  .photoCaption { font-size: 0.75rem; padding: 5px 12px; bottom: 10px; right: 10px; }
+
+  /* Force 1 card per row on mobile */
+  .statsContainer { 
+    flex-direction: column; 
+    gap: 15px; 
+    align-items: center;
+    padding: 30px 10px 45px 10px;
+  }
+  .statCard { 
+    flex: 0 0 90%;
+    max-width: 400px;
+    padding: 20px 25px;
+  }
+
+  .statValue { font-size: 1.9rem; }
+  .statLabel { font-size: 0.8rem; letter-spacing: 1px; }
+  .experienceSection { padding: 60px 15px 80px; }
+}
+
+/* Mobile (medium phones) */
 @media (max-width: 600px) {
-	.matrixContent { 
-		/* Adjusted padding for short header (approx 100px total height) */
-		padding: 15px 15px 5px; 
-	}
-	
-	.heroContainer { 
-		gap: 15px; 
-		margin: 0 auto; 
-		grid-template-columns: 1fr;
-	}
-	
-	.heroContent {
-		align-items: center; 
-		flex-direction: row; /* Layout content horizontally */
-		justify-content: space-between;
-	}
-	
-	.titleWrapper {
-		gap: 15px;
-		margin-bottom: 0;
-		flex-wrap: nowrap; 
-		/* Ensures title and glyph are side-by-side */
-		max-width: calc(100% - 100px); 
-	}
-	
-	.title { 
-		font-size: 1.8rem; /* Reduced font size for header */
-		letter-spacing: 1.5px; 
-		line-height: 1;
-		white-space: nowrap; 
-	}
-	
-	.glyph { 
-		font-size: 2.5rem; 
-		align-self: flex-start;
-		/* Hide the glyph entirely if necessary to save space */
-		/* display: none; */
-	}
-
-    .themeToggle {
-        padding: 5px 10px;
-        font-size: 0.75rem;
-        margin: 0 0 0 10px;
-    }
-	
-	/* HIDE large, non-essential elements */
-	.subtitle, 
-	.subtitleSmall,
-	.startButton,
-	.photoCard,
-	.statsContainer,
-    .matrixBand {
-		display: none !important;
-	}
-    
-    /* Push the main section content up */
-	.experienceSection {
-		padding-top: 20px; 
-	}
-
-    /* Kaper section and similar sections below the hero will still respect padding, but must also adapt */
-    .kaperSection {
-        padding: 40px 15px;
-    }
-    
-    .kaperContainer {
-        grid-template-columns: 1fr;
-        gap: 40px;
-    }
-    
-    .introTitle {
-        font-size: 1.8rem;
-    }
-    
-    .introSubtitle {
-        font-size: 1.1rem;
-    }
+  .matrixContent { padding: 40px 15px 12px; }
+  .titleWrapper { gap: 15px; margin-bottom: 12px; }
+  .title { font-size: 2.3rem; letter-spacing: 1.5px; }
+  .glyph { font-size: 3.5rem; }
+  .subtitle { font-size: 1.05rem; letter-spacing: 0.8px; margin: 0 0 8px 0; }
+  .startButton { padding: 13px 26px; font-size: 0.85rem; letter-spacing: 1.2px; margin-top: 15px; }
+  .photoCard { border-radius: 12px; }
+  .statsContainer { padding: 25px 5px 40px 5px; gap: 12px; }
+  .statCard { padding: 18px 20px; border-radius: 15px; flex: 0 0 90%; max-width: 400px; }
+  .statValue { font-size: 1.7rem; }
+  .statLabel { font-size: 0.75rem; }
+  .experienceSection { padding: 50px 12px 70px; }
 }
 
 /* Mobile (small phones) */
 @media (max-width: 480px) {
-	.matrixContent { 
-		padding: 10px 10px 5px; 
-	}
-	
-	.title { 
-		font-size: 1.5rem; 
-		letter-spacing: 1px;
-	}
-	
-	.glyph { 
-		font-size: 2rem; 
-	}
-
-    .themeToggle {
-        padding: 4px 8px;
-        font-size: 0.7rem;
-    }
+  .matrixContent { padding: 35px 12px 10px; }
+  .heroContainer { gap: 25px; margin-bottom: 35px; }
+  .titleWrapper { flex-direction: column; gap: 10px; margin-bottom: 10px; }
+  .title { font-size: 2rem; letter-spacing: 1.2px; text-align: center; }
+  .glyph { font-size: 3rem; }
+  .subtitle { font-size: 0.95rem; letter-spacing: 0.6px; margin: 0 0 6px 0; }
+  .startButton { padding: 12px 24px; font-size: 0.8rem; letter-spacing: 1px; margin-top: 12px; }
+  .photoCard { border-radius: 10px; }
+  .photoCaption { font-size: 0.7rem; padding: 4px 10px; bottom: 8px; right: 8px; }
+  .statsContainer { padding: 20px 5px 35px 5px; gap: 10px; flex-direction: column; align-items: center; }
+  .statCard { padding: 16px 18px; flex: 0 0 90%; max-width: 400px; border-radius: 12px; }
+  .statValue { font-size: 1.5rem; }
+  .statLabel { font-size: 0.7rem; letter-spacing: 0.8px; }
+  .experienceSection { padding: 40px 10px 60px; }
 }
 
 /* Mobile (extra small phones) */
 @media (max-width: 360px) {
-	.matrixContent {
-		padding: 8px 8px 4px;
-	}
-	
-	.title {
-		font-size: 1.3rem;
-	}
-	
-	.glyph {
-		font-size: 1.8rem;
-	}
-	
-	.themeToggle {
-		font-size: 0.65rem;
-		padding: 3px 6px;
-	}
+  .matrixContent { padding: 30px 10px 8px; }
+  .title { font-size: 1.8rem; letter-spacing: 1px; }
+  .glyph { font-size: 2.5rem; }
+  .subtitle { font-size: 0.9rem; letter-spacing: 0.5px; }
+  .startButton { padding: 11px 22px; font-size: 0.75rem; letter-spacing: 0.8px; }
+  .statsContainer { gap: 8px; padding: 18px 5px 30px 5px; flex-direction: column; align-items: center; }
+  .statCard { padding: 14px 15px; flex: 0 0 90%; max-width: 400px; }
+  .statValue { font-size: 1.3rem; }
+  .statLabel { font-size: 0.65rem; }
 }
