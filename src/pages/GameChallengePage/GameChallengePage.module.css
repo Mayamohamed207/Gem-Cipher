@@ -89,7 +89,7 @@
   color: var(--gold-bright-solid);
   margin-bottom: 20px;
   filter: drop-shadow(0 10px 30px rgba(255, 215, 0, 0.5));
-  animation: cameraShake 3s ease-in-out infinite;
+  /* animation: cameraShake 3s ease-in-out infinite; */
 }
 
 @keyframes cameraShake {
