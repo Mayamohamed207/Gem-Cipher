@@ -1,117 +1,138 @@
-// src/components/ExperiencePicker/ExperiencePicker.tsx
 import React from 'react';
 import { motion } from 'framer-motion';
 import styles from './ExperiencePicker.module.css';
-
-// Import your map image
-import museumMap from '../../assets/images/map.jpeg';
 
 interface Experience {
   id: string;
   title: string;
   description: string;
-  pharaoh: string;
+  icon: string; 
 }
 
-// Updated experiences with simplified modes, keeping original icons
 const experiences: Experience[] = [
   { 
     id: 'game', 
-    title: 'GAME MODE', 
-    description: 'Play and explore the museum in a fun and interactive way!', 
-    pharaoh: '𓋴𓍯' 
+    title: 'Interactive Challenge', 
+    description: 'Solve historical puzzles and capture rare digital artifacts to compete with fellow explorers.', 
+    icon: "𓆣" // Scarab for Game/Challenge
   },
   { 
     id: 'kids', 
-    title: 'KIDS MODE', 
-    description: 'Child-friendly tour with interactive surprises and fun facts!', 
-    pharaoh: '𓁈' 
+    title: 'Family Adventure', 
+    description: 'Age-appropriate tours with simplified facts, animated stories, and fun, hands-on activities.', 
+    icon: "𓇋" // Reed Leaf / Single Stroke (Child/Family)
   },
   { 
     id: 'learning', 
-    title: 'LEARNING MODE', 
-    description: 'Explore exhibits to learn more and understand their history.', 
-    pharaoh: '𓇋' 
+    title: 'Educational Tour', 
+    description: 'Deep dive into curatorial notes, archaeological context, and expert academic insights.', 
+    icon: "𓁈" // Eye/Udjat (Knowledge/Learning)
   },
 ];
 
 interface ExperiencePickerProps {
   onSelect: (experienceId: string) => void;
-  onRoomClick?: (roomId: string) => void;
 }
 
-// Helper function to map ID to the color class
 const getCardColorClass = (id: string): string => {
     switch (id) {
         case 'game':
-            return styles.cardPrimary; // Uses --primary as background
+            return styles.cardGame;
         case 'kids':
-            return styles.cardSecondary; // Uses --secondary as background
+            return styles.cardKids;
         case 'learning':
-            return styles.cardBlue; // Uses --blue as background
+            return styles.cardLearning;
         default:
             return '';
     }
 };
 
-const ExperiencePicker: React.FC<ExperiencePickerProps> = ({ onSelect, onRoomClick }) => {
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2
+    }
+  }
+};
+
+const ExperiencePicker: React.FC<ExperiencePickerProps> = ({ onSelect }) => {
   return (
     <motion.div 
-      className={`${styles.pickerContainer} glass-card`}
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
+      className={styles.pickerContainer}
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
     >
       <motion.h2 
         className={styles.heading}
-        initial={{ scale: 0.9 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.1 }}
       >
-        CHOOSE YOUR EXPERIENCE
+        Select Your Experience Mode
       </motion.h2>
       
       <motion.p 
         className={styles.subtext}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
       >
-        Enter the golden path, choose your destiny from the sands of time:
+        Choose how you would like to explore the museum today
       </motion.p>
 
-      <div className={styles.cardsGrid}>
-        {experiences.map((exp, index) => (
+      <motion.div className={styles.cardsGrid} variants={containerVariants}>
+        {experiences.map((exp) => (
           <motion.div
             key={exp.id}
-            /* Apply color class */
             className={`${styles.experienceCard} ${getCardColorClass(exp.id)}`}
             onClick={() => onSelect(exp.id)}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.1 }}
-            /* REMOVED: whileHover for the card itself */
+            variants={{
+                hidden: { opacity: 0, y: 50, scale: 0.9 },
+                visible: { 
+                    opacity: 1, 
+                    y: 0, 
+                    scale: 1,
+                    transition: {
+                        duration: 0.6,
+                        ease: [0.22, 1, 0.36, 1]
+                    }
+                }
+            }}
+            whileHover={{ 
+              y: -15, 
+              scale: 1.03,
+              transition: { duration: 0.3 }
+            }}
+            whileTap={{ scale: 0.98 }}
+            viewport={{ once: true }}
           >
-            <motion.div 
-              className={styles.pharaohIcon}
-              /* REMOVED: whileHover animation on the icon */
-            >
-              {exp.pharaoh}
-            </motion.div>
-            <h3>{exp.title}</h3>
-            <p>{exp.description}</p>
-            <motion.button 
-              className={styles.selectButton}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Select 𓆣
-            </motion.button>
+            <div className={styles.cardBackground}></div>
+            <div className={styles.cardContent}>
+              <motion.div 
+                className={styles.iconWrapper}
+                whileHover={{ rotate: 360, scale: 1.2 }}
+                transition={{ duration: 0.6 }}
+              >
+                {exp.icon}
+              </motion.div>
+              <h3 className={styles.cardTitle}>{exp.title}</h3>
+              <p className={styles.cardDescription}>{exp.description}</p>
+              <motion.button 
+                className={styles.selectButton}
+                whileHover={{ scale: 1.08, x: 5 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                BEGIN JOURNEY 𓆣
+              </motion.button>
+            </div>
+            <div className={styles.cardGlow}></div>
+            <div className={styles.cardSparkle} /> 
           </motion.div>
         ))}
-      </div>
-
-  
+      </motion.div>
     </motion.div>
   );
 };

@@ -1,67 +1,54 @@
-/* src/index.css */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Playfair+Display:wght@400;700&display=swap');
+/* Mode-specific classes: Use the classes added by your React App */
 
-:root {
-  /* Main Dark Colors (Used by Matrix Card) */
-  --primary: #d9650f;
-  --secondary: #a33013;
-  --blue: #35638a;
-  --bg1: #080603;
-  --bg2: #1a1206;
+.theme-light, body.light-mode { /* Added .theme-light for compatibility with App.tsx */
+    /* Dynamic, unscoped variables for use in components */
+    --primary: var(--primary-light);
+    --secondary: var(--secondary-light);
+    --accent: var(--accent-light);
+    --blue: var(--blue-light);
+    --gold: var(--gold-light);
+    --bg1: var(--bg1-light);
+    --bg2: var(--bg2-light);
+    --text-primary: var(--text-primary-light);
+    --text-secondary: var(--text-secondary-light);
 
-  /* Gold theme */
-  --gold-dim: rgba(160,120,20,0.35);
-  --gold-mid: rgba(210,160,30,0.8);
-  --gold-bright: rgba(255,215,0,1);
-  --gold-bright-solid: #FFD700;
-
-
-  /* Shadows */
-  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.1);
-  --shadow-glow: 0 0 20px rgba(255,215,0,0.4);
-
-  /* Border radius */
-  --border-radius-card: 20px;
-  --border-radius-button: 12px;
+    /* Custom variables needed by HomePage.module.css */
+    --white: var(--text-primary-light); /* Dark text for light mode titles */
+    --gold-bright-solid: var(--primary-light);
+    --glass-bg: rgba(255, 255, 255, 0.5); 
+    --glass-border: rgba(18, 14, 6, 0.15);
+    --shadow-sm: 0 4px 6px rgba(18, 14, 6, 0.1);
+    --shadow-md: 0 10px 15px rgba(18, 14, 6, 0.2);
 }
 
-/* Global body (Light Mode background) */
-body {
-  font-family: 'Cinzel Decorative', "Segoe UI Symbol", "Noto Sans Egyptian Hieroglyphs", sans-serif;
-  margin: 0;
-  padding: 0;
-  /* Use light background for the whole page */
-  background-color: var(--light-bg); 
-  color: var(--light-text);
-  scroll-behavior: smooth;
-  min-height: 100vh;
-  overflow-x: hidden;
+.theme-dark, body.dark-mode { /* Added .theme-dark for compatibility with App.tsx */
+    /* Dynamic, unscoped variables for use in components */
+    --primary: var(--primary-dark);
+    --secondary: var(--secondary-dark);
+    --accent: var(--accent-dark);
+    --blue: var(--blue-dark);
+    --gold: var(--gold-dark);
+    --bg1: var(--bg1-dark);
+    --bg2: var(--bg2-dark);
+    --text-primary: var(--text-primary-dark);
+    --text-secondary: var(--text-secondary-dark);
+
+    /* Custom variables needed by HomePage.module.css */
+    --white: var(--text-primary-dark); /* Light text for dark mode titles */
+    --gold-bright-solid: var(--gold-dark);
+    --glass-bg: rgba(0, 0, 0, 0.5); 
+    --glass-border: rgba(255, 249, 223, 0.15);
+    --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.6);
 }
 
-#root {
-  min-height: 100vh;
+/* Update Body Styles to use the new unscoped variables */
+body.light-mode {
+    background: radial-gradient(ellipse at center, var(--bg2) 0%, var(--bg1) 70%);
+    color: var(--text-primary);
 }
 
-/* Utility Class for Buttons (Updated for Light Mode visibility) */
-.gold-button {
-  background-color: var(--light-accent);
-  color: var(--light-bg);
-  padding: 12px 30px;
-  border: none;
-  border-radius: var(--border-radius-button);
-  font-size: 1.1em;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: var(--shadow-card);
-  text-transform: uppercase;
-}
-
-.gold-button:hover {
-  background-color: var(--primary); /* Use primary dark color for hover contrast */
-  box-shadow: 0 0 15px rgba(217,101,15,0.5);
-}
-
-.gold-button:active {
-  transform: scale(0.98);
+body.dark-mode {
+    background: radial-gradient(ellipse at center, var(--bg2) 0%, var(--bg1) 70%);
+    color: var(--text-primary);
 }

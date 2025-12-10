@@ -1,62 +1,128 @@
 // src/pages/HomePage/HomePage.tsx
 import React from 'react';
+import { ArrowDown } from 'lucide-react';
+import { motion } from 'framer-motion';
 import ExperiencePicker from '../../components/ExperiencePicker/ExperiencePicker';
-// REMOVED: import UserInfoForm from '../../components/UserInfoForm/UserInfoForm';
-// REMOVED: import TiltedCard from '../../components/TiltedCard/TiltedCard'; 
-import styles from './HomePage.module.css';
 import MatrixCard from '../../components/MatrixBackground/MatrixBackground';
+import styles from './HomePage.module.css';
 
-// IMPORTANT: Define UserInfo as an empty placeholder or remove it entirely if no data is needed.
-// Since App.tsx still expects an 'info' argument, we'll keep a minimal interface for compatibility.
+// CORRECT IMPORT PATH - adjust this based on where you save the ThemeToggle component
+// If you save it as src/components/ThemeToggle/ThemeToggle.tsx, use:
+import ThemeToggle from '../../components/ToggleTheme/ThemeContext';
+import PhotocardImage from '../../assets/images/Grand-Egyptian-Museum.jpg';
+import KaperImage from '../../assets/images/kaper.png';
+
 export interface UserInfo {
     name: string;
     email: string;
-    // Removed all other fields
 }
 
-// --- Component Props (Simplified) ---
 interface HomePageProps {
-    // The App component expects this signature, so we keep the `info: UserInfo` argument.
-    onExperienceSelect: (id: string, info: UserInfo) => void; 
+    onExperienceSelect: (id: string, info: UserInfo) => void;
+    onToggleTheme: () => void;
+    isDark: boolean;
 }
 
-// --- Component ---
-// The component is now simplified to only focus on the welcome message and the mode picker.
-const HomePage: React.FC<HomePageProps> = ({ onExperienceSelect }) => {
+const museumStats = [
+  { label: "Artifacts", value: "100,000+" },
+  { label: "Spans", value: "5,000 Years" },
+  { label: "Interactive", value: "12" },
+  { label: "Daily Visitors", value: "(50,000+)" },
+];
+
+const HomePage: React.FC<HomePageProps> = ({ onExperienceSelect, onToggleTheme, isDark }) => {
     
-    /**
-     * SIMPLIFIED: Handles mode selection and passes dummy/default data back to App.tsx.
-     */
     const handleModeSelection = (id: string) => {
-        // Create minimal UserInfo object as placeholder since App.tsx expects it.
         const dummyUserInfo: UserInfo = {
-            name: "Adventurer", // Default name
-            email: "default@museum.com", // Default email
+            name: "Visitor",
+            email: "visitor@museum.com",
         };
-        
-        // Pass the selected mode ID and the dummy user info back to App.tsx
         onExperienceSelect(id, dummyUserInfo);
+    };
+
+    const scrollToExperience = () => {
+        document.getElementById('experience-section')?.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+        });
     };
 
     return (
         <div className={styles.pageWrapper}>
+            {/* Theme Toggle Button */}
+            <ThemeToggle isDark={isDark} onToggle={onToggleTheme} />
             
-            {/* -------------------- ROW 1: GLOWING MATRIX CARD (WELCOME) -------------------- */}
+            {/* HERO SECTION WITH MATRIX BACKGROUND */}
             <MatrixCard>
                 <div className={styles.matrixContent}>
-                    <h1 className={styles.title}>WELCOME TO THE <span><span className={styles.glyph}>𓂀</span> PHARAOH MATRIX <span className={styles.glyph}>𓋹</span></span></h1>
-                    {/* Add a direct instruction here */}
-                    <p className={styles.subtitle}>Select your desired experience below to begin your journey through the museum.</p>
+                    <motion.div 
+                        className={styles.heroContainer}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1 }}
+                    >
+                        {/* Column 1: Title and Start Button */}
+                        <div className={styles.heroContent}>
+                            <div className={styles.titleWrapper}>
+                                <h1 className={styles.title}>THE GRAND<br/>EGYPTIAN MUSEUM</h1>
+                                <motion.span 
+                                    className={styles.glyph}
+                                    animate={{ rotateY: [0, -360], scale: [1, 1.1, 1] }}
+                                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                                >
+                                    𓂀
+                                </motion.span>
+                            </div>
+                            <p className={styles.subtitle}>ANCIENT ECHOES</p>
+                            <p className={styles.subtitle} style={{fontSize: '1.2rem'}}>Where Generative History Breathes New Life into Kemet</p>
+                            <button className={styles.startButton}>START YOUR JOURNEY</button>
+                        </div>
+                        
+                        {/* Column 2: Photo Card */}
+                        <div className={styles.photoCard}>
+                            <img 
+                                src={PhotocardImage} 
+                                alt="Grand Egyptian Museum Exterior"
+                            />
+                            <div className={styles.photoCaption}>Giza, Egypt • Grand Opening 2024</div>
+                        </div>
+                    </motion.div>
+
+                    {/* Stats Row */}
+                    <div className={styles.statsContainer}>
+                        {museumStats.map((stat) => (
+                            <motion.div 
+                                key={stat.label} 
+                                className={styles.statCard}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 1.2 + museumStats.indexOf(stat) * 0.1 }}
+                            >
+                                <div className={styles.statValue}>{stat.value}</div>
+                                <div className={styles.statLabel}>{stat.label}</div>
+                            </motion.div>
+                        ))}
+                    </div>
+                    
+                  
                 </div>
             </MatrixCard>
 
-            {/* -------------------- ROW 2: EXPERIENCE PICKER (Now main content) -------------------- */}
-            {/* The multi-column layout is removed, and the experience picker takes the focus */}
-            <section className={styles.scrollSection} id="experience-section">
-                <ExperiencePicker onSelect={handleModeSelection} /> 
+         
+
+          
+
+            {/* EXPERIENCE SECTION */}
+            <section className={styles.experienceSection} id="experience-section">
+                <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                >
+                    <ExperiencePicker onSelect={handleModeSelection} /> 
+                </motion.div>
             </section>
-            
-            {/* REMOVED: Enrollment Card, UserInfoForm, and TiltedCard sections */}
         </div>
     );
 };

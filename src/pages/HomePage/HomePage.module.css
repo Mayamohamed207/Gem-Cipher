@@ -1,127 +1,494 @@
-/* src/pages/HomePage/HomePage.module.css (MODIFIED: TiltedCard Support) */
+/* src/pages/HomePage/HomePage.module.css - MOBILE RESPONSIVE VERSION */
 
 .pageWrapper {
-  min-height: 100vh;
-  display: block;
-  background-color: var(--light-bg);
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	background: var(--bg1);
+	position: relative;
+	overflow-x: hidden;
+	transition: background 0.5s ease;
 }
 
-/* Section Titles */
-.sectionTitle {
-  text-align: center;
-  font-size: 2.2em;
-  color: var(--blue);
-  margin-bottom: 40px;
-  text-transform: uppercase;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+/* Subtle animated background */
+.pageWrapper::before {
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-image: 
+		radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.03) 0%, transparent 50%),
+		radial-gradient(circle at 80% 80%, rgba(217, 101, 15, 0.03) 0%, transparent 50%);
+	pointer-events: none;
+	animation: particleFloat 20s ease-in-out infinite;
+	z-index: 0;
 }
 
-/* FIXED: Proper two-column grid */
-.infoAndPhotoGrid {
-  max-width: 1400px;
-  margin: 0 auto 80px auto;
-  padding: 0 30px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  align-items: stretch;
+@keyframes particleFloat {
+	0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+	50% { transform: translate(20px, -20px) scale(1.05); opacity: 0.8; }
 }
 
-@media (max-width: 992px) {
-  .infoAndPhotoGrid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-}
-
-/* MATRIX SECTION */
+/* ----------------- HERO / MATRIX CONTENT ----------------- */
 .matrixContent {
-  max-width: 1000px;
-  margin: 0 auto;
+	padding: 80px 40px 30px;
+	width: 100%;
 }
 
+.heroContainer {
+	position: relative;
+	display: grid;
+	grid-template-columns: 1fr 1.2fr;
+	gap: 50px;
+	align-items: center;
+	text-align: left;
+	max-width: 1400px;
+	margin: 0 auto 50px auto;
+	width: 100%;
+}
+
+.heroContent {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 8px;
+	width: 100%;
+}
+
+.titleWrapper {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 25px;
+	margin-bottom: 15px;
+	flex-wrap: wrap;
+	width: 100%;
+}
+
+.themeToggle {
+    align-self: flex-end;
+    margin-bottom: 16px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    z-index: 10; 
+}
+
+
+/* Clean title with smooth gradient */
 .title {
-  font-size: 4em;
-  color: white;
-  text-transform: uppercase;
-  margin: 0;
-  text-shadow: 0 0 20px var(--gold-bright-solid);
+	font-size: 5rem;
+	font-weight: 900;
+	text-transform: uppercase;
+	letter-spacing: 5px;
+	margin: 0;
+	line-height: 1;
+	/* FIX: Ensure color variables are used for themes */
+	color: var(--white); 
+	/* NOTE: If you want a gradient title in modules, you may need a workaround 
+	background: linear-gradient(135deg, var(--gold) 0%, var(--primary) 100%);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	*/
+	transition: all 0.5s ease;
 }
 
-.title span {
-  color: var(--gold-bright-solid);
-}
-
-.glyph {
-  font-family: "Noto Sans Egyptian Hieroglyphs", sans-serif;
-  font-size: 1.1em;
-}
-
+/* Clean subtitle */
 .subtitle {
-  font-size: 1.8em;
-  color: var(--accent);
-  margin-top: 15px;
-  font-style: italic;
-  text-transform: capitalize;
+	font-size: 1.5rem;
+	color: var(--gold-bright-solid); /* FIX: Use theme variable */
+	font-weight: 500;
+	letter-spacing: 1.5px;
+	margin: 0 0 12px 0;
+	font-style: italic;
+	transition: color 0.5s ease;
+	line-height: 1.4;
 }
 
-.scrollHint {
-  color: var(--gold-bright-solid);
-  margin-top: 60px;
-  font-size: 1.2em;
-  animation: bounce 1.5s infinite;
-}
-.enrollmentCard {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  max-width: 1400px;
-  margin: 0 auto 80px auto;
-  margin-top: 50px;
-  background: var(--accent);
-  border: 3px solid var(--primary);
-  border-radius: 20px;
-  box-shadow: 0 8px 25px rgba(53, 99, 138, 0.25);
-  overflow: hidden;
+/* subtitleSmall fix for text visibility */
+.subtitleSmall {
+	font-size: 1.2rem;
+	color: var(--text-secondary); /* FIX: Use theme variable for readability */
+	margin: 0 0 24px 0;
+	font-weight: 300;
 }
 
-/* Left side: Form */
-.formColumn {
-  background: #fff;
-  padding: 40px;
-  display: flex;
-  align-items: stretch;
+/* Clean glyph */
+.glyph {
+	font-family: "Noto Sans Egyptian Hieroglyphs", serif;
+	font-size: 7rem;
+	color: var(--gold-bright-solid); /* FIX: Use theme variable */
+	display: inline-block;
+	transition: color 0.5s ease;
 }
 
-/* Right side: Photo */
-.photoColumn {
-  /* Set a minimum height for the column to prevent TiltedCard from collapsing on mobile */
-  min-height: 400px; 
-  background: var(--blue);
-  display: flex;
-  align-items: center; /* Center the card vertically */
-  justify-content: center; /* Center the card horizontally */
-  padding: 20px; /* Added padding to ensure the card isn't glued to the edges */
+/* Minimal button */
+.startButton {
+	padding: 16px 36px;
+	background: linear-gradient(135deg, var(--gold-bright-solid) 0%, var(--primary) 100%); /* FIX: Use theme variable */
+	color: var(--bg1);
+	font-size: 1rem;
+	font-weight: 800;
+	border: none;
+	border-radius: 50px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	text-transform: uppercase;
+	letter-spacing: 1.8px;
+	margin-top: 18px;
+	white-space: nowrap;
 }
 
-/* Make TiltedCard fill the available space */
-.photoColumn > * {
-  flex-grow: 1;
-  width: 100%;
-  height: 100%;
+.startButton:hover {
+	transform: translateY(-3px);
+	opacity: 0.95;
 }
 
-/* Responsive stacking */
-@media (max-width: 992px) {
-  .enrollmentCard {
-    grid-template-columns: 1fr;
-  }
-
-  .formColumn {
-    padding: 25px;
-  }
+.startButton:active {
+	transform: translateY(-1px);
 }
 
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+/* Clean photo card */
+.photoCard {
+	width: 100%;
+	aspect-ratio: 16/9;
+	background: var(--bg2);
+	border-radius: 18px;
+	overflow: hidden;
+	position: relative;
+	transition: all 0.4s ease;
+}
+
+.photoCard:hover {
+	transform: translateY(-5px);
+}
+
+.photoCard img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.4s ease;
+}
+
+.photoCard:hover img {
+	transform: scale(1.03);
+}
+
+.photoCaption {
+	position: absolute;
+	bottom: 12px;
+	right: 12px;
+	background: rgba(0, 0, 0, 0.7);
+	color: var(--gold);
+	padding: 6px 14px;
+	border-radius: 18px;
+	font-size: 0.85rem;
+	font-weight: 600;
+	letter-spacing: 0.4px;
+	white-space: nowrap;
+}
+
+/* ----------------- CLEAN STATS ----------------- */
+.statsContainer {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 20px;
+	padding: 40px 0 60px 0;
+	max-width: 1200px;
+	margin: 0 auto;
+	transition: all 0.5s ease;
+	width: 100%;
+}
+
+.statCard {
+	text-align: center;
+	padding: 25px 35px;
+	/* FIX: Use theme-aware transparent background */
+	background: rgba(255, 215, 0, 0.05); 
+	border-radius: 18px;
+	min-width: 160px;
+	flex: 1 1 auto;
+	transition: all 0.3s ease;
+}
+
+.statCard:hover {
+	transform: translateY(-5px);
+	background: rgba(255, 215, 0, 0.08);
+}
+
+.statValue {
+	font-size: 2.2rem;
+	font-weight: 900;
+	/* FIX: Use theme variables */
+	background: linear-gradient(135deg, var(--gold-bright-solid) 0%, var(--primary) 100%);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	margin-bottom: 6px;
+	transition: all 0.5s ease;
+	line-height: 1.2;
+}
+
+.statLabel {
+	font-size: 0.9rem;
+	color: var(--text-secondary);
+	text-transform: uppercase;
+	letter-spacing: 1.3px;
+	font-weight: 600;
+	transition: color 0.5s ease;
+	line-height: 1.3;
+}
+
+/* ----------------- EXPERIENCE SECTION ----------------- */
+.experienceSection {
+	padding: 80px 20px 100px;
+	position: relative;
+	background: var(--bg1);
+	z-index: 1;
+	transition: background 0.5s ease;
+	width: 100%;
+}
+
+/* Light mode adjustments for stats (for fallback/specificity) */
+:global(.theme-light) .statCard,
+:global(body.light-mode) .statCard {
+	background: rgba(217, 101, 15, 0.05);
+}
+
+:global(.theme-light) .statCard:hover,
+:global(body.light-mode) .statCard:hover {
+	background: rgba(217, 101, 15, 0.08);
+}
+
+/* ----------------- KA-APER SECTION (Added missing styles for completeness) ----------------- */
+.kaperSection {
+    padding: 100px 50px;
+    background: var(--bg2);
+    position: relative;
+    z-index: 1;
+    border-top: 4px solid var(--primary);
+}
+
+.kaperSection::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    /* FIX: Corrected gradient syntax */
+    background: linear-gradient(135deg, rgba(217, 101, 15, 0.08) 0%, rgba(255, 215, 0, 0.03) 100%);
+    pointer-events: none;
+}
+
+.kaperContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 80px;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+}
+
+.kaperImageWrapper {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4), 0 0 60px rgba(255, 215, 0, 0.3);
+    text-align: center;
+}
+
+.imageGlow {
+    position: absolute;
+    inset: -20px;
+    background: linear-gradient(135deg, var(--primary), var(--gold-bright-solid));
+    opacity: 0.25;
+    filter: blur(50px);
+    z-index: -1;
+    animation: glowPulse 4s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+    0%, 100% { opacity: 0.25; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.05); }
+}
+
+.introTitle {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--gold-bright-solid);
+    margin-bottom: 8px;
+}
+
+.introSubtitle {
+    font-size: 1.3rem;
+    color: var(--text-secondary);
+}
+
+.quoteBox {
+    background: rgba(255, 215, 0, 0.12);
+    border-left: 6px solid var(--gold-bright-solid);
+    padding: 35px;
+}
+
+.quoteText {
+    color: var(--white);
+}
+
+.quoteMark {
+    color: var(--gold-bright-solid);
+}
+
+.introText {
+    color: var(--text-secondary);
+}
+
+.scrollIndicator p {
+    color: var(--gold-bright-solid);
+}
+
+.arrowIcon {
+    color: var(--gold-bright-solid);
+}
+
+/* ----------------- RESPONSIVE BREAKPOINTS ----------------- */
+
+/* ... (Breakpoints up to 768px largely unchanged) ... */
+
+/* Mobile (medium phones) - SHORT NAVBAR EFFECT START */
+@media (max-width: 600px) {
+	.matrixContent { 
+		/* Adjusted padding for short header (approx 100px total height) */
+		padding: 15px 15px 5px; 
+	}
+	
+	.heroContainer { 
+		gap: 15px; 
+		margin: 0 auto; 
+		grid-template-columns: 1fr;
+	}
+	
+	.heroContent {
+		align-items: center; 
+		flex-direction: row; /* Layout content horizontally */
+		justify-content: space-between;
+	}
+	
+	.titleWrapper {
+		gap: 15px;
+		margin-bottom: 0;
+		flex-wrap: nowrap; 
+		/* Ensures title and glyph are side-by-side */
+		max-width: calc(100% - 100px); 
+	}
+	
+	.title { 
+		font-size: 1.8rem; /* Reduced font size for header */
+		letter-spacing: 1.5px; 
+		line-height: 1;
+		white-space: nowrap; 
+	}
+	
+	.glyph { 
+		font-size: 2.5rem; 
+		align-self: flex-start;
+		/* Hide the glyph entirely if necessary to save space */
+		/* display: none; */
+	}
+
+    .themeToggle {
+        padding: 5px 10px;
+        font-size: 0.75rem;
+        margin: 0 0 0 10px;
+    }
+	
+	/* HIDE large, non-essential elements */
+	.subtitle, 
+	.subtitleSmall,
+	.startButton,
+	.photoCard,
+	.statsContainer,
+    .matrixBand {
+		display: none !important;
+	}
+    
+    /* Push the main section content up */
+	.experienceSection {
+		padding-top: 20px; 
+	}
+
+    /* Kaper section and similar sections below the hero will still respect padding, but must also adapt */
+    .kaperSection {
+        padding: 40px 15px;
+    }
+    
+    .kaperContainer {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .introTitle {
+        font-size: 1.8rem;
+    }
+    
+    .introSubtitle {
+        font-size: 1.1rem;
+    }
+}
+
+/* Mobile (small phones) */
+@media (max-width: 480px) {
+	.matrixContent { 
+		padding: 10px 10px 5px; 
+	}
+	
+	.title { 
+		font-size: 1.5rem; 
+		letter-spacing: 1px;
+	}
+	
+	.glyph { 
+		font-size: 2rem; 
+	}
+
+    .themeToggle {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+    }
+}
+
+/* Mobile (extra small phones) */
+@media (max-width: 360px) {
+	.matrixContent {
+		padding: 8px 8px 4px;
+	}
+	
+	.title {
+		font-size: 1.3rem;
+	}
+	
+	.glyph {
+		font-size: 1.8rem;
+	}
+	
+	.themeToggle {
+		font-size: 0.65rem;
+		padding: 3px 6px;
+	}
 }

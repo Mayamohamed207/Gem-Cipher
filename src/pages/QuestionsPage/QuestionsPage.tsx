@@ -1,7 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { QUESTIONS, FEEDBACK_QUESTIONS, type Question, type FeedbackQuestion, type RoomQuestionSet } from '../../data/questions';
+import { CheckCircle2, XCircle, Trophy, ArrowRight, LogOut, Sparkles } from 'lucide-react';
+import { QUESTIONS, type Question, type RoomQuestionSet } from '../../data/questions';
 import styles from './QuestionsPage.module.css';
+import kaperIntroVideo from '../../assets/images/kaperIntro.mp4';
+import question1Video from '../../assets/images/Question 1 - level 1.mp4';
+import question2Video from '../../assets/images/Question 2 - level 1.mp4';
+import question3Video from '../../assets/images/Question 3 - level 1.mp4';
+import question4Video from '../../assets/images/Question 4 - level1.mp4';
+import ThemeToggle from '../../components/ToggleTheme/ThemeContext';
+const questionVideos = [question1Video, question2Video, question3Video, question4Video];
 
 interface QuestionsPageProps {
     room: string;
@@ -13,120 +21,256 @@ interface QuestionsPageProps {
 type LevelKey = keyof RoomQuestionSet;
 type RoomKey = keyof typeof QUESTIONS;
 
-const QuestionStep: React.FC<{
-    q: Question,
-    index: number,
-    total: number,
-    onAnswer: (isCorrect: boolean, feedback: string) => void
-}> = ({ q, index, total, onAnswer }) => {
-    const [userAnswer, setUserAnswer] = useState<string>('');
+const FinalPrompt: React.FC<{ room: string; totalScore: number; onContinue: () => void; onExit: () => void }> = ({ room, totalScore, onContinue, onExit }) => (
+    <motion.div
+        key="final"
+        className={styles.finalPromptCard}
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ duration: 0.3 }}
+    >
+        <Trophy size={80} color="var(--gold-bright-solid)" className={styles.trophyIcon} />
+        <h3 className={styles.finalHeader}>Challenge Complete!</h3>
+        <p className={styles.finalScore}>You earned <span className={styles.scoreHighlight}>{totalScore}</span> points in {room}</p>
+        <div className={styles.finalActions}>
+            <motion.button onClick={onContinue} className={styles.advanceButton} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                <ArrowRight size={20} />
+                Advance to Next Level
+            </motion.button>
+            <motion.button onClick={onExit} className={styles.exitButton} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                <LogOut size={20} />
+                Exit Experience
+            </motion.button>
+        </div>
+    </motion.div>
+);
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        const normalizedCorrect = String(q.correctAnswer).trim().toLowerCase();
-        const normalizedUser = userAnswer.trim().toLowerCase();
-        let isCorrect = q.type === 'number' || q.type === 'text' || q.type === 'radio'
-            ? normalizedUser === normalizedCorrect
-            : userAnswer.length > 2;
-        onAnswer(isCorrect, q.feedback);
-    };
-
-    const inputProps = {
-        required: true,
-        className: styles.textInput,
-        onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setUserAnswer(e.target.value),
-        value: userAnswer,
+const QuestionStep: React.FC<{ 
+    q: Question; 
+    index: number; 
+    total: number; 
+    onAnswer: (isCorrect: boolean, feedback: string, selectedAnswer: string) => void;
+    answeredOption: string | null;
+    isCorrectAnswer: boolean | null;
+}> = ({ q, index, total, onAnswer, answeredOption, isCorrectAnswer }) => {
+    const handleOptionClick = (option: string) => {
+        if (answeredOption !== null) return;
+        const isCorrect = option.trim().toLowerCase() === q.correctAnswer.trim().toLowerCase();
+        onAnswer(isCorrect, q.feedback, option);
     };
 
     return (
-        <motion.form
+        <motion.div
             key={q.id}
             className={styles.questionForm}
-            onSubmit={handleSubmit}
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -20, opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            initial={{ x: 50, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: -50, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         >
-            <h3 className={styles.questionTitle}>
-                Question {index + 1} of {total}
-            </h3>
-            <label className={styles.questionLabel}>{q.text}</label>
-
-            {q.type === 'text' && <input type="text" {...inputProps} />}
-            {q.type === 'number' && <input type="number" {...inputProps} />}
-            {q.type === 'textarea' && <textarea rows={4} {...inputProps} className={styles.textArea} />}
-
-            {q.type === 'radio' && q.options && (
-                <div className={styles.optionCardContainer}>
-                    {q.options.map(option => (
-                        <div
+            <div className={styles.questionHeader}>
+                <span className={styles.questionBadge}>Question {index + 1}/{total}</span>
+            </div>
+            <h3 className={styles.questionLabel}>{q.text}</h3>
+            <div className={styles.optionCardContainer}>
+                {q.options.map(option => {
+                    const isSelected = answeredOption === option;
+                    const isCorrectOption = option.trim().toLowerCase() === q.correctAnswer.trim().toLowerCase();
+                    let cardState = '';
+                    if (answeredOption !== null) {
+                        if (isSelected && isCorrectAnswer) cardState = styles.correctAnswer;
+                        else if (isSelected && !isCorrectAnswer) cardState = styles.wrongAnswer;
+                        else if (isCorrectOption && !isCorrectAnswer) cardState = styles.showCorrect;
+                    }
+                    return (
+                        <motion.div
                             key={option}
-                            className={`${styles.optionCard} ${userAnswer === option ? styles.selected : ''}`}
-                            onClick={() => setUserAnswer(option)}
+                            className={`${styles.optionCard} ${isSelected ? styles.selected : ''} ${cardState}`}
+                            onClick={() => handleOptionClick(option)}
+                            whileHover={answeredOption === null ? { scale: 1.02, y: -2 } : {}}
+                            whileTap={answeredOption === null ? { scale: 0.98 } : {}}
+                            style={{ cursor: answeredOption === null ? 'pointer' : 'not-allowed' }}
                         >
-                            {option}
+                            <div className={styles.optionCheckbox}>
+                                {isSelected && isCorrectAnswer && <CheckCircle2 size={20} />}
+                                {isSelected && !isCorrectAnswer && <XCircle size={20} />}
+                                {!isSelected && isCorrectOption && answeredOption !== null && !isCorrectAnswer && <CheckCircle2 size={20} />}
+                            </div>
+                            <span className={styles.optionText}>{option}</span>
+                        </motion.div>
+                    );
+                })}
+            </div>
+            <AnimatePresence>
+                {answeredOption !== null && (
+                    <motion.div
+                        className={styles.inlineFeedback}
+                        initial={{ opacity: 0, y: -20, height: 0 }}
+                        animate={{ opacity: 1, y: 0, height: 'auto' }}
+                        exit={{ opacity: 0, y: -20, height: 0 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <div className={styles.feedbackIcon}>
+                            {isCorrectAnswer ? <CheckCircle2 size={48} color="#10b981" /> : <XCircle size={48} color="#ef4444" />}
                         </div>
-                    ))}
-                </div>
-            )}
-
-            {(q.type === 'select' || q.type === 'drawing') && (
-                <p className={styles.placeholderInput}>[{q.type.toUpperCase()} INPUT AREA]</p>
-            )}
-
-            <motion.button type="submit" className={styles.submitButton} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                Submit Answer 💡
-            </motion.button>
-        </motion.form>
+                        <h4 className={isCorrectAnswer ? styles.correct : styles.incorrect}>
+                            {isCorrectAnswer ? 'Excellent Work!' : 'Not Quite Right'}
+                        </h4>
+                        <div className={styles.keeperFeedback}>
+                            <Sparkles size={20} className={styles.sparkleIcon} />
+                            <p>{q.feedback}</p>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </motion.div>
     );
 };
 
-// FeedbackStep and FinalPrompt remain unchanged, just CSS and small tweaks for option cards apply.
-
 const QuestionsPage: React.FC<QuestionsPageProps> = ({ room, mode, level: initialLevel, onFinish }) => {
-    const [currentStep, setCurrentStep] = useState<'question' | 'feedback' | 'final'>('question');
+    const [currentStep, setCurrentStep] = useState<'intro' | 'question' | 'final'>('intro');
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [currentLevel, setCurrentLevel] = useState(initialLevel || 'Beginner');
     const [totalScore, setTotalScore] = useState(0);
-    const [feedbackText, setFeedbackText] = useState('');
+    const [showSmallVideo, setShowSmallVideo] = useState(false);
+    const [playAttemptFailed, setPlayAttemptFailed] = useState(false);
+    const [isQuestionVideoFinished, setIsQuestionVideoFinished] = useState(false);
+    const [answeredOption, setAnsweredOption] = useState<string | null>(null);
+    const [isCorrectAnswer, setIsCorrectAnswer] = useState<boolean | null>(null);
 
-    const rawModeKey = (mode === 'kids' ? 'kids' : currentLevel.toLowerCase()) as LevelKey;
-    const roomKey = room as RoomKey;
-    const questionSet: Question[] = QUESTIONS[roomKey][rawModeKey];
+    const [isDark, setIsDark] = useState(false); // THEME STATE
+    const handleThemeToggle = () => setIsDark(prev => !prev);
+
+    const introVideoRef = useRef<HTMLVideoElement>(null);
+    const questionVideoRef = useRef<HTMLVideoElement>(null);
+
+    const { questionSet, levelDisplay, error: dataError } = useMemo(() => {
+        try {
+            const modeKey = (mode === 'kids' ? 'kids' : currentLevel.toLowerCase()) as LevelKey;
+            const roomKey = room as RoomKey;
+            const qs: readonly Question[] = QUESTIONS[roomKey][modeKey];
+            const display = mode === 'kids' ? 'Kids Mode' : `Learning Mode - ${currentLevel}`;
+            return { questionSet: qs, levelDisplay: display, error: null };
+        } catch {
+            return { questionSet: [], levelDisplay: '', error: 'Error loading questions.' };
+        }
+    }, [room, mode, currentLevel]);
+
+    useEffect(() => {
+        setIsQuestionVideoFinished(false);
+        setAnsweredOption(null);
+        setIsCorrectAnswer(null);
+    }, [currentQuestionIndex]);
+
+    useEffect(() => {
+        if (currentStep === 'intro' && introVideoRef.current) {
+            const playPromise = introVideoRef.current.play();
+            if (playPromise !== undefined) playPromise.catch(() => setPlayAttemptFailed(true));
+        }
+    }, [currentStep]);
+
+    useEffect(() => {
+        if (currentStep === 'question' && questionVideoRef.current && !isQuestionVideoFinished) {
+            const playPromise = questionVideoRef.current.play();
+            if (playPromise !== undefined) playPromise.catch(console.error);
+        }
+    }, [currentStep, currentQuestionIndex, isQuestionVideoFinished]);
+
+    if (dataError) return <div className={styles.questionsPageContainer}><h1>Error</h1><p>{dataError}</p></div>;
+
     const currentQuestion = questionSet[currentQuestionIndex];
+    const totalQuestions = questionSet.length;
+    const progress = ((currentQuestionIndex + (answeredOption ? 1 : 0)) / totalQuestions) * 100;
 
-    const handleAnswerSubmission = (isCorrect: boolean, feedback: string) => {
-        if (isCorrect) setTotalScore(s => s + (currentQuestion?.points || 0));
-        setFeedbackText(feedback);
-        setCurrentStep('feedback');
+    const handleAnswerSubmission = (isCorrect: boolean, feedback: string, selectedAnswer: string) => {
+        setAnsweredOption(selectedAnswer);
+        setIsCorrectAnswer(isCorrect);
+        if (isCorrect && currentQuestion) setTotalScore(s => s + currentQuestion.points);
+        setTimeout(() => {
+            const nextIndex = currentQuestionIndex + 1;
+            if (nextIndex < totalQuestions) {
+                setCurrentQuestionIndex(nextIndex);
+                setCurrentStep('question');
+            } else setCurrentStep('final');
+        }, 5000);
     };
 
-    const handleNextQuestion = () => {
-        const nextIndex = currentQuestionIndex + 1;
-        if (nextIndex < questionSet.length) setCurrentQuestionIndex(nextIndex);
-        else setCurrentStep('final');
+    const handleContinueInRoom = () => {
+        const levels = ['Beginner', 'Intermediate', 'Expert'];
+        const currentLevelIndex = levels.indexOf(currentLevel);
+        const nextLevelIndex = currentLevelIndex + 1;
+        if (nextLevelIndex < levels.length) {
+            setCurrentLevel(levels[nextLevelIndex]);
+            setCurrentQuestionIndex(0);
+            setCurrentStep('question');
+            setTotalScore(0);
+        } else onFinish();
+    };
+
+    const handleIntroEnd = () => {
+        setShowSmallVideo(true);
         setCurrentStep('question');
     };
 
-    const progress = (currentQuestionIndex / questionSet.length) * 100;
+    const handleStartVideo = () => {
+        if (introVideoRef.current) introVideoRef.current.play().catch(console.error);
+    };
+
+    const handleQuestionVideoEnd = () => setIsQuestionVideoFinished(true);
+
+    const currentQuestionVideo = questionVideos[currentQuestionIndex] ?? kaperIntroVideo;
 
     return (
-        <motion.div className={styles.questionsPageContainer} initial={{ x: 300, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ type: 'spring', stiffness: 100 }}>
-            <h1 className={styles.heading}>{room.toUpperCase()}: {mode === 'kids' ? 'Kids Mode' : `Learning Mode (${currentLevel})`} Challenge 🏛️</h1>
-            <p className={styles.subtext}>**Current Score:** {totalScore} points</p>
+        <motion.div className={`${styles.questionsPageContainer} ${isDark ? styles.darkTheme : styles.lightTheme}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+            
+            {/* FLOATING THEME TOGGLE */}
+            <div className={styles.themeToggleWrapper}>
+                <ThemeToggle isDark={isDark} onToggle={handleThemeToggle} />
+            </div>
+
+            <div className={styles.headerSection}>
+                <h1 className={styles.heading}>{room.toUpperCase()}</h1>
+                <p className={styles.levelDisplay}>{levelDisplay}</p>
+                <div className={styles.scoreDisplay}>
+                    <Trophy size={24} color="var(--gold-bright-solid)" />
+                    <span>{totalScore} Points</span>
+                </div>
+            </div>
 
             <div className={styles.progressBarContainer}>
-                <div className={styles.progressBar} style={{ width: `${progress}%` }}></div>
+                <motion.div className={styles.progressBar} initial={{ width: 0 }} animate={{ width: `${progress}%` }} transition={{ duration: 0.5 }} />
                 <span className={styles.progressLabel}>
-                    {currentStep !== 'final' ? `Question ${currentQuestionIndex + 1} of ${questionSet.length}` : 'Session Complete'}
+                    {currentStep !== 'final' ? `${currentQuestionIndex + 1}/${totalQuestions}` : 'Complete'}
                 </span>
             </div>
 
+            <AnimatePresence>
+                {currentStep === 'intro' && (
+                    <motion.div className={styles.keeperVideoContainer} key="intro-video" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} transition={{ duration: 0.5 }}>
+                        <video ref={introVideoRef} src={kaperIntroVideo} playsInline autoPlay controls={false} className={styles.videoPlayer} onEnded={handleIntroEnd} />
+                        {playAttemptFailed && (
+                            <motion.button className={styles.startButtonOverlay} onClick={handleStartVideo} initial={{ opacity: 0 }} animate={{ opacity: 1 }} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                <Sparkles size={24} />
+                                Begin Your Journey
+                            </motion.button>
+                        )}
+                        <button className={styles.skipButton} onClick={handleIntroEnd}>Skip Introduction</button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {showSmallVideo && currentStep === 'question' && !isQuestionVideoFinished && (
+                <motion.div className={`${styles.keeperVideoContainer} ${styles.smallVideo}`} key={`question-video-container-${currentQuestionIndex}`} initial={{ opacity: 0, scale: 0.5, x: 100, y: 100 }} animate={{ opacity: 1, scale: 1, x: 0, y: 0 }} exit={{ opacity: 0, scale: 0.5 }} transition={{ duration: 0.5 }}>
+                    <video ref={questionVideoRef} key={`video-${currentQuestionIndex}`} src={currentQuestionVideo} playsInline autoPlay controls={false} className={styles.videoPlayerSmall} onEnded={handleQuestionVideoEnd} />
+                </motion.div>
+            )}
+
             <AnimatePresence mode="wait">
                 {currentStep === 'question' && currentQuestion && (
-                    <QuestionStep q={currentQuestion} index={currentQuestionIndex} total={questionSet.length} onAnswer={handleAnswerSubmission} />
+                    <QuestionStep q={currentQuestion} index={currentQuestionIndex} total={totalQuestions} onAnswer={handleAnswerSubmission} answeredOption={answeredOption} isCorrectAnswer={isCorrectAnswer} />
                 )}
+                {currentStep === 'final' && <FinalPrompt room={room} totalScore={totalScore} onContinue={handleContinueInRoom} onExit={onFinish} />}
             </AnimatePresence>
         </motion.div>
     );

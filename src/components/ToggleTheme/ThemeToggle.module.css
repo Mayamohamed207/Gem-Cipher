@@ -1,0 +1,86 @@
+/* ThemeToggle.module.css */
+
+/* --- Base (Desktop) Styles --- */
+.toggleButton {
+    /* Fixed positioning on screen */
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    
+    /* Default Desktop Size */
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    padding: 0;
+}
+
+/* Theme-specific styles (applied dynamically in React) */
+.dark {
+    background: linear-gradient(135deg, #FFD700 0%, #d9650f 100%);
+    box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+}
+
+.light {
+    background: linear-gradient(135deg, #120e06 0%, #35638a 100%);
+    box-shadow: 0 5px 20px rgba(18, 14, 6, 0.4);
+}
+
+/* Hover/Focus Effects (pure CSS for cleaner styling) */
+.toggleButton:hover,
+.toggleButton:focus {
+    transform: scale(1.1) rotate(15deg);
+    outline: none;
+}
+
+.dark:hover,
+.dark:focus {
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.6);
+}
+
+.light:hover,
+.light:focus {
+    box-shadow: 0 8px 25px rgba(18, 14, 6, 0.6);
+}
+
+/* --- RESPONSIVENESS --- */
+
+/* Tablet adjustments (e.g., max-width: 992px) */
+@media (max-width: 992px) {
+    .toggleButton {
+        top: 15px;
+        right: 15px;
+        width: 50px;
+        height: 50px;
+    }
+}
+
+/* Mobile adjustments (e.g., max-width: 600px) */
+@media (max-width: 600px) {
+    .toggleButton {
+        top: 10px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        /* Reduce rotation on small screens if desired */
+        /* transform: none !important; */
+    }
+    
+    /* Reset hover effects on touch devices to prevent sticky state */
+    .toggleButton:hover,
+    .toggleButton:focus {
+        transform: scale(1) rotate(0deg);
+        box-shadow: none;
+    }
+
+    .dark:hover,
+    .light:hover {
+        box-shadow: none;
+    }
+}

@@ -1,116 +1,281 @@
-/* src/components/ExperiencePicker/ExperiencePicker.module.css (MODIFIED: Solid Backgrounds) */
+/* src/components/ExperiencePicker/ExperiencePicker.module.css - CLEAN & SMOOTH VERSION */
 
-/* Base Styles (Unchanged) */
-.pickerContainer { 
+.pickerContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  position: relative;
+}
+
+/* Subtle background glow */
+.pickerContainer::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.08), transparent 70%);
+  filter: blur(60px);
+  animation: backgroundPulse 6s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes backgroundPulse {
+  0%, 100% { 
+    opacity: 0.4;
+    transform: translateX(-50%) scale(1);
+  }
+  50% { 
+    opacity: 0.7;
+    transform: translateX(-50%) scale(1.1);
+  }
+}
+
+/* Clean heading with smooth gradient */
+.heading {
+  font-size: 3rem; 
+  font-weight: 900;
   text-align: center;
-  padding: 40px;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--primary) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  transition: all 0.5s ease;
+}
+
+.subtext {
+  text-align: center;
+  font-size: 1.3rem;
+  color: var(--text-secondary); 
+  margin-bottom: 60px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: color 0.5s ease;
 }
 
 .cardsGrid {
-  display: flex;
-  justify-content: center;
-  gap: 25px;
-  margin-bottom: 40px;
-  flex-wrap: wrap;
-}
-
-/* Base Experience Card - Text color set to white for contrast on colored backgrounds */
-.experienceCard {
-  width: 220px;
-  padding: 20px;
-  border-radius: 15px;
-  cursor: pointer;
-  transition: box-shadow 0.2s; /* Keep transition for smooth shadow change */
-  border: 2px solid transparent; /* Base border */
-  color: white; /* CHANGE: Ensure text is white for contrast */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 40px;
+  padding: 20px 0;
   position: relative;
 }
 
-.pharaohIcon {
-  font-size: 2.5em;
-  margin-bottom: 12px;
-  transition: color 0.3s;
+/* CLEAN EXPERIENCE CARDS */
+.experienceCard {
+  position: relative;
+  border-radius: 30px;
+  padding: 50px 40px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Base Button Style (White text for contrast on colored card background) */
+.cardBackground {
+  position: absolute;
+  inset: 0;
+  opacity: 1;
+  transition: all 0.4s ease;
+  z-index: 0;
+}
+
+.cardContent {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+}
+
+.experienceCard:hover {
+  transform: translateY(-10px);
+}
+
+/* CARD COLOR VARIATIONS - Clean Gradients */
+
+/* Interactive Challenge (Game) -> Gold */
+.cardGame .cardBackground {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--primary) 100%);
+}
+
+/* Family Adventure (Kids) -> Blue */
+.cardKids .cardBackground {
+  background: linear-gradient(135deg, #2d5a7b 0%, var(--blue) 100%); 
+}
+
+/* Educational Tour (Learning) -> Red */
+.cardLearning .cardBackground {
+  background: linear-gradient(135deg, var(--secondary) 0%, #d64a2a 100%); 
+}
+
+/* Light mode adjustments */
+:global(.theme-light) .cardKids .cardBackground,
+:global(body.light-mode) .cardKids .cardBackground {
+  background: linear-gradient(135deg, #5d8ab8 0%, var(--blue) 100%);
+}
+
+:global(.theme-light) .cardLearning .cardBackground,
+:global(body.light-mode) .cardLearning .cardBackground {
+  background: linear-gradient(135deg, #e0c135 0%, #d64a2a 100%);
+}
+
+/* CLEAN ICON */
+.iconWrapper {
+  font-size: 7rem;
+  margin-bottom: 30px;
+  color: #ffffff;
+  font-family: "Noto Sans Egyptian Hieroglyphs", serif;
+  transition: all 0.4s ease;
+}
+
+.experienceCard:hover .iconWrapper {
+  transform: scale(1.1);
+}
+
+/* CLEAN TEXT */
+.cardTitle {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.4s ease;
+}
+
+.cardDescription {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.7;
+  margin-bottom: auto;
+  font-family: Georgia, 'Times New Roman', serif;
+  transition: color 0.5s ease;
+  font-weight: 400;
+}
+
+/* CLEAN BUTTON */
 .selectButton {
-  /* Default to a solid look with white text */
-  background: white;
-  color: black; /* Use dark text color on the white button */
+  margin-top: 35px;
+  padding: 16px 35px;
+  background: #ffffff;
   border: none;
-  border-radius: 30px;
-  padding: 10px 20px;
-  margin-top: 15px;
+  border-radius: 50px;
+  font-size: 1.05rem;
+  font-weight: 800;
   cursor: pointer;
-  font-weight: 700;
-  transition: all 0.2s ease-out;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+/* Button text colors per card */
+.cardGame .selectButton {
+  color: var(--primary);
+}
+
+.cardKids .selectButton {
+  color: #1c4568;
+}
+
+.cardLearning .selectButton {
+  color: var(--secondary);
 }
 
 .selectButton:hover {
-  filter: brightness(0.95);
+  transform: translateY(-3px);
+  opacity: 0.95;
 }
 
-/* ---------------------------------------------------- */
-/* --- NEW: Individual Card Color Schemes (Solid BG) --- */
-/* ---------------------------------------------------- */
-
-/* 1. GAME MODE (Primary Color Theme) */
-.cardPrimary {
-    background-color: var(--primary); /* CHANGE: Primary color as BACKGROUND */
-    border: 3px solid var(--primary); /* Keeps border for consistency */
-    box-shadow: 0 10px 20px rgba(217, 101, 15, 0.4);
-}
-.cardPrimary .pharaohIcon {
-    color: white; /* Icon remains white */
+.selectButton:active {
+  transform: translateY(-1px);
 }
 
-/* 2. KIDS MODE (Secondary Color Theme) */
-.cardSecondary {
-    background-color: var(--secondary); /* CHANGE: Secondary color as BACKGROUND */
-    border: 3px solid var(--secondary); 
-    box-shadow: 0 10px 20px rgba(163, 48, 19, 0.4);
-}
-.cardSecondary .pharaohIcon {
-    color: white; /* Icon remains white */
-}
-
-/* 3. LEARNING MODE (Blue Color Theme) */
-.cardBlue {
-    background-color: var(--blue); /* CHANGE: Blue color as BACKGROUND */
-    border: 3px solid var(--blue); 
-    box-shadow: 0 10px 20px rgba(53, 99, 138, 0.4);
-}
-.cardBlue .pharaohIcon {
-    color: white; /* Icon remains white */
-}
-
-
-/* --- Map Styles (Unchanged) --- */
-.mapContainer {
-  position: relative;
-  width: 100%;
-  max-width: 800px; 
-  margin: 20px auto;
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .heading {
+    font-size: 2.5rem;
+    letter-spacing: 3px;
+  }
+  .subtext {
+    font-size: 1.15rem;
+  }
+  .cardsGrid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .experienceCard {
+    max-width: 500px;
+    margin: 0 auto;
+  }
 }
 
-.mapImage {
-  width: 100%;
-  display: block;
+@media (max-width: 768px) {
+  .heading {
+    font-size: 2rem;
+    letter-spacing: 2px;
+  }
+  .subtext {
+    font-size: 1rem;
+    margin-bottom: 40px;
+  }
+  .experienceCard {
+    padding: 40px 30px;
+    min-height: 380px;
+    border-radius: 25px;
+  }
+  .iconWrapper {
+    font-size: 6rem;
+  }
+  .cardTitle {
+    font-size: 1.5rem;
+    letter-spacing: 1.5px;
+  }
+  .cardDescription {
+    font-size: 0.95rem;
+  }
+  .selectButton {
+    padding: 14px 30px;
+    font-size: 0.95rem;
+    letter-spacing: 1.2px;
+  }
 }
 
-.mapArea {
-  position: absolute;
-  width: 4%;        
-  aspect-ratio: 1;  
-  border-radius: 50%;
-  background: rgba(201, 169, 55, 0.4);
-  border: 2px solid rgba(245, 210, 80, 0.8);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.mapArea:hover {
-  background: rgba(245, 210, 80, 0.7);
-  transform: scale(1.2);
+@media (max-width: 480px) {
+  .heading {
+    font-size: 1.7rem;
+    letter-spacing: 1.5px;
+  }
+  .subtext {
+    font-size: 0.9rem;
+  }
+  .experienceCard {
+    padding: 35px 25px;
+    min-height: 350px;
+    border-radius: 20px;
+  }
+  .iconWrapper {
+    font-size: 5rem;
+  }
+  .cardTitle {
+    font-size: 1.3rem;
+  }
+  .cardDescription {
+    font-size: 0.9rem;
+  }
+  .selectButton {
+    padding: 12px 25px;
+    font-size: 0.9rem;
+  }
 }

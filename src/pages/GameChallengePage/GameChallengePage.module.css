@@ -1,0 +1,574 @@
+/* src/pages/GameChallengePage/GameChallengePage.module.css */
+/* Enhanced for Dark Gold/Bronze Egyptian Theme */
+
+/* Define color variables using the established theme names */
+:root {
+  /* Fallbacks to ensure color theme consistency */
+  --primary: #d9650f;
+  --secondary: #a33013;
+  --gold-bright-solid: #FFD700;
+  --bg1: #080603;
+  --bg2: #1a1206;
+  --text-primary: #FFD700;
+  --text-secondary: #e5c9a4;
+  --white-text: #fff9df;
+}
+
+.pageContainer {
+  min-height: 100vh;
+  /* Dark background */
+  background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
+  padding: 60px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.pageContainer::before {
+  /* Use a hieroglyph that fits the theme */
+  content: '𓆣'; /* Scarab glyph for game/challenge */
+  position: fixed;
+  top: 10%;
+  right: 10%;
+  font-family: "Noto Sans Egyptian Hieroglyphs", serif;
+  font-size: 20rem;
+  opacity: 0.05; /* Slightly more visible on dark background */
+  color: var(--gold-bright-solid);
+  animation: floatPhoto 8s ease-in-out infinite;
+}
+
+@keyframes floatPhoto {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-30px, 30px) rotate(-10deg); }
+}
+
+.challengeCard {
+  max-width: 700px;
+  width: 100%;
+  /* Dark glass-like background */
+  background: rgba(26, 18, 6, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 35px;
+  padding: 50px;
+  box-shadow: 
+    0 40px 100px rgba(0, 0, 0, 0.7),
+    0 0 0 2px rgba(255, 215, 0, 0.3); /* Gold border glow */
+  position: relative;
+  overflow: hidden;
+}
+
+.challengeCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  /* Gold/Bronze Shimmer */
+  background: linear-gradient(90deg, var(--primary), var(--gold-bright-solid), var(--primary));
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.cameraIcon {
+  width: 70px;
+  height: 70px;
+  /* Gold color */
+  color: var(--gold-bright-solid);
+  margin-bottom: 20px;
+  filter: drop-shadow(0 10px 30px rgba(255, 215, 0, 0.5));
+  animation: cameraShake 3s ease-in-out infinite;
+}
+
+@keyframes cameraShake {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-5deg) scale(1.05); }
+  75% { transform: rotate(5deg) scale(1.05); }
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 900;
+  /* Gold/Bronze gradient text */
+  background: linear-gradient(135deg, var(--gold-bright-solid) 0%, var(--primary) 50%, var(--gold-bright-solid) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.roomName {
+  font-size: 1.5rem;
+  /* Gold color */
+  color: var(--text-primary);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.hieroglyph {
+  font-family: "Noto Sans Egyptian Hieroglyphs", serif;
+  font-size: 1.8rem;
+  color: var(--gold-bright-solid);
+}
+
+.challengeText {
+  /* Darker background with gold tint */
+  background: rgba(255, 215, 0, 0.05);
+  padding: 25px;
+  border-radius: 20px;
+  border-left: 5px solid var(--gold-bright-solid);
+  margin-bottom: 40px;
+  box-shadow: 0 5px 20px rgba(255, 215, 0, 0.15);
+}
+
+.challengeText p {
+  margin: 0 0 12px 0;
+  font-size: 1.15rem;
+  /* Light text color */
+  color: var(--white-text);
+  line-height: 1.6;
+}
+
+.challengeText p:last-child {
+  margin-bottom: 0;
+  font-weight: 600;
+  /* Bronze highlight color */
+  color: var(--primary);
+}
+
+.uploadSection {
+  margin-bottom: 30px;
+}
+
+.uploadZone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+  /* Gold dashed border */
+  border: 3px dashed rgba(255, 215, 0, 0.3);
+  border-radius: 25px;
+  /* Subtle dark gold gradient */
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.02), rgba(217, 101, 15, 0.02));
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.uploadZone:hover {
+  border-color: rgba(255, 215, 0, 0.6);
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.08), rgba(217, 101, 15, 0.08));
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.15);
+}
+
+.fileInput {
+  display: none;
+}
+
+.uploadIcon {
+  width: 80px;
+  height: 80px;
+  /* Gold color */
+  color: var(--gold-bright-solid);
+  margin-bottom: 20px;
+  animation: uploadBounce 2s ease-in-out infinite;
+}
+
+@keyframes uploadBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.uploadText {
+  font-size: 1.4rem;
+  font-weight: 700;
+  /* Gold text */
+  color: var(--text-primary);
+  margin: 0 0 8px 0;
+}
+
+.uploadHint {
+  font-size: 1rem;
+  /* Light secondary text */
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.imagePreview {
+  position: relative;
+  border-radius: 25px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.previewImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 25px;
+}
+
+.changeButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  background: rgba(0, 0, 0, 0.8);
+  color: var(--white-text);
+  border: 1px solid rgba(255, 215, 0, 0.5); /* Subtle gold border */
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.changeButton:hover {
+  background: rgba(0, 0, 0, 0.95);
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+}
+
+.uploadButton {
+  width: 100%;
+  padding: 22px 40px;
+  /* Gold/Bronze gradient button */
+  background: linear-gradient(135deg, var(--gold-bright-solid), var(--primary));
+  border: none;
+  border-radius: 18px;
+  /* Dark text on bright button */
+  color: var(--bg1); 
+  font-size: 1.4rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.5);
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.uploadButton:hover {
+  box-shadow: 0 20px 50px rgba(255, 215, 0, 0.7);
+  transform: translateY(-3px);
+}
+
+/* FEEDBACK MODAL */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8); /* Darker overlay */
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.feedbackModal {
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  /* Dark modal card */
+  background: var(--bg2);
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 50px 100px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+.modalHeader {
+  padding: 30px 40px;
+  /* Gold/Bronze gradient header */
+  background: linear-gradient(135deg, var(--primary), var(--gold-bright-solid));
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+}
+
+.feedbackIcon {
+  color: var(--bg1); /* Dark icon on bright header */
+  width: 32px;
+  height: 32px;
+}
+
+.modalTitle {
+  flex: 1;
+  font-size: 2rem;
+  font-weight: 800;
+  /* Dark text on bright header */
+  color: var(--bg1);
+  margin: 0;
+}
+
+.closeButton {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.2);
+  border: none;
+  color: var(--white-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.closeButton:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.feedbackContent {
+  padding: 40px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.questionBlock {
+  margin-bottom: 35px;
+}
+
+.questionBlock:last-child {
+  margin-bottom: 0;
+}
+
+.questionLabel {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 700;
+  /* Gold text */
+  color: var(--text-primary);
+  margin-bottom: 15px;
+}
+
+.radioGroup,
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.radioLabel,
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 20px;
+  /* Gold border on dark card */
+  border: 2px solid rgba(255, 215, 0, 0.2);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.05rem;
+  font-weight: 600;
+  /* Light secondary text */
+  color: var(--text-secondary);
+}
+
+.radioLabel:hover,
+.checkboxLabel:hover {
+  border-color: rgba(255, 215, 0, 0.6);
+  background: rgba(255, 215, 0, 0.05);
+}
+
+.radioInput,
+.checkboxInput {
+  display: none;
+}
+
+.radioCustom {
+  width: 22px;
+  height: 22px;
+  /* Primary bronze border */
+  border: 3px solid var(--primary);
+  border-radius: 50%;
+  position: relative;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.radioInput:checked + .radioCustom::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  /* Primary bronze fill */
+  background: var(--primary);
+  border-radius: 50%;
+}
+
+.checkboxCustom {
+  width: 22px;
+  height: 22px;
+  /* Primary bronze border */
+  border: 3px solid var(--primary);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  color: var(--white-text);
+}
+
+.checkboxInput:checked + .checkboxCustom {
+  /* Primary bronze fill */
+  background: var(--primary);
+}
+
+.starRating {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.star {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  transition: all 0.2s ease;
+  color: #555; /* Neutral color for unrated star */
+}
+
+.starActive {
+  /* Gold color for rated star */
+  color: var(--gold-bright-solid);
+}
+
+.selectInput {
+  width: 100%;
+  padding: 15px 20px;
+  /* Gold border on dark background */
+  border: 2px solid rgba(255, 215, 0, 0.2);
+  border-radius: 12px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  /* Secondary text color */
+  color: var(--text-secondary);
+  background: var(--bg1); /* Dark input background */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.selectInput:hover {
+  border-color: rgba(255, 215, 0, 0.6);
+}
+
+.selectInput:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+}
+
+.submitButton {
+  margin: 0 40px 40px;
+  padding: 20px 40px;
+  /* Gold/Bronze gradient button */
+  background: linear-gradient(135deg, var(--gold-bright-solid), var(--primary));
+  border: none;
+  border-radius: 15px;
+  /* Dark text on bright button */
+  color: var(--bg1);
+  font-size: 1.3rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.5);
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.submitButton:hover:not(:disabled) {
+  box-shadow: 0 20px 50px rgba(255, 215, 0, 0.7);
+  transform: translateY(-3px);
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .challengeCard {
+    padding: 35px;
+  }
+  
+  .title {
+    font-size: 2.3rem;
+  }
+  
+  .roomName {
+    font-size: 1.3rem;
+  }
+  
+  .challengeText {
+    padding: 20px;
+  }
+  
+  .uploadZone {
+    padding: 40px 30px;
+  }
+  
+  .feedbackContent {
+    padding: 30px;
+  }
+  
+  .submitButton {
+    margin: 0 30px 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .challengeCard {
+    padding: 25px;
+  }
+  
+  .title {
+    font-size: 2rem;
+  }
+  
+  .modalHeader {
+    padding: 25px 30px;
+  }
+  
+  .modalTitle {
+    font-size: 1.6rem;
+  }
+  
+  .feedbackContent {
+    padding: 25px;
+  }
+  
+  .questionLabel {
+    font-size: 1.1rem;
+  }
+}
