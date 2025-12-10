@@ -3,6 +3,9 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Trophy, Camera, Clock } from 'lucide-react';
 import styles from './WinnerDashboard.module.css';
+import shot1 from './../../assets/images/shot1.png'
+import shot2 from './../../assets/images/shot2.png'
+import shot3 from './../../assets/images/shot3.png'
 
 interface Winner {
   name: string;
@@ -14,22 +17,22 @@ interface Winner {
 // DUMMY DATA - Top 3 winners
 const dummyWinners: Winner[] = [
   {
-    name: 'Sarah Ahmed',
+    name: 'Maya Mohamed',
     room: 'Royal Treasures',
     timestamp: Date.now() - 15 * 60 * 1000, // 15 mins ago
-    imageUrl: 'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=800&h=600&fit=crop'
+    imageUrl: shot1
   },
   {
     name: 'Mohamed Ali',
     room: 'Sacred Tombs',
     timestamp: Date.now() - 32 * 60 * 1000, // 32 mins ago
-    imageUrl: 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=800&h=600&fit=crop'
+    imageUrl: shot2
   },
   {
     name: 'Layla Hassan',
     room: 'Temple of Gods',
     timestamp: Date.now() - 48 * 60 * 1000, // 48 mins ago
-    imageUrl: 'https://images.unsplash.com/photo-1539768942893-daf53e448371?w=800&h=600&fit=crop'
+    imageUrl: shot3
   }
 ];
 
@@ -50,12 +53,9 @@ const WinnersDashboard: React.FC = () => {
           animate={{ scale: 1 }}
           transition={{ duration: 0.6 }}
         >
-          <Trophy className={styles.trophyIcon} />
+         
           <h2 className={styles.title}>Top Captures This Hour</h2>
-          <div className={styles.liveIndicator}>
-            <span className={styles.liveDot}></span>
-            LIVE
-          </div>
+       
         </motion.div>
 
         <div className={styles.winnersGrid}>
@@ -88,14 +88,8 @@ const WinnersDashboard: React.FC = () => {
 
               <div className={styles.winnerInfo}>
                 <h3 className={styles.winnerName}>{winner.name}</h3>
-                <p className={styles.winnerRoom}>
-                  <span className={styles.hieroglyph}>𓋹</span>
-                  {winner.room}
-                </p>
-                <div className={styles.winnerMeta}>
-                  <Clock size={14} />
-                  <span>{formatTimeAgo(winner.timestamp)}</span>
-                </div>
+           
+       
               </div>
 
               <div className={styles.cardGlow}></div>

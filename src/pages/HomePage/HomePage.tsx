@@ -5,13 +5,10 @@ import { motion } from 'framer-motion';
 import ExperiencePicker from '../../components/ExperiencePicker/ExperiencePicker';
 import MatrixCard from '../../components/MatrixBackground/MatrixBackground';
 import styles from './HomePage.module.css';
-
-// CORRECT IMPORT PATH - adjust this based on where you save the ThemeToggle component
-// If you save it as src/components/ThemeToggle/ThemeToggle.tsx, use:
 import ThemeToggle from '../../components/ToggleTheme/ThemeContext';
 import PhotocardImage from '../../assets/images/Grand-Egyptian-Museum.jpg';
 import KaperImage from '../../assets/images/kaper.png';
-
+import WinnersDashboard from '../../components/WinnerDashboard/WinnerDashboard';
 export interface UserInfo {
     name: string;
     email: string;
@@ -191,9 +188,15 @@ const HomePage: React.FC<HomePageProps> = ({
                     </div>
                 </section>
             ) : (
-                <section className={styles.scrollSection} id="experience-section">
-                    <ExperiencePicker onSelect={handleModeSelection} /> 
-                </section>
+                <>
+                    {/* Winners Dashboard */}
+                    <WinnersDashboard />
+
+                    {/* EXPERIENCE SECTION */}
+                    <section className={styles.experienceSection} id="experience-section">
+                        <ExperiencePicker onSelect={handleModeSelection} /> 
+                    </section>
+                </>
             )}
         </div>
     );

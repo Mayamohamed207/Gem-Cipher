@@ -7,8 +7,9 @@ import kaperIntroVideo from '../../assets/images/kaperIntro.mp4';
 import question1Video from '../../assets/images/Question 1 - level 1.mp4';
 import question2Video from '../../assets/images/Question 2 - level 1.mp4';
 import question3Video from '../../assets/images/Question 3 - level 1.mp4';
-import question4Video from '../../assets/images/Question 4 - level1.mp4';
+import question4Video from '../../assets/images/Question 4 - level 1.mp4';
 import ThemeToggle from '../../components/ToggleTheme/ThemeContext';
+
 const questionVideos = [question1Video, question2Video, question3Video, question4Video];
 
 interface QuestionsPageProps {
@@ -25,20 +26,38 @@ const FinalPrompt: React.FC<{ room: string; totalScore: number; onContinue: () =
     <motion.div
         key="final"
         className={styles.finalPromptCard}
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, scale: 0.9, y: 50 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.5, type: 'spring' }}
     >
-        <Trophy size={80} color="var(--gold-bright-solid)" className={styles.trophyIcon} />
+        <motion.div
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+        >
+            <Trophy size={100} className={styles.trophyIcon} />
+        </motion.div>
         <h3 className={styles.finalHeader}>Challenge Complete!</h3>
-        <p className={styles.finalScore}>You earned <span className={styles.scoreHighlight}>{totalScore}</span> points in {room}</p>
+        <p className={styles.finalScore}>
+            You earned <span className={styles.scoreHighlight}>{totalScore}</span> points in {room}
+        </p>
         <div className={styles.finalActions}>
-            <motion.button onClick={onContinue} className={styles.advanceButton} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+            <motion.button 
+                onClick={onContinue} 
+                className={styles.advanceButton} 
+                whileHover={{ scale: 1.05, y: -2 }} 
+                whileTap={{ scale: 0.95 }}
+            >
                 <ArrowRight size={20} />
                 Advance to Next Level
             </motion.button>
-            <motion.button onClick={onExit} className={styles.exitButton} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+            <motion.button 
+                onClick={onExit} 
+                className={styles.exitButton} 
+                whileHover={{ scale: 1.05, y: -2 }} 
+                whileTap={{ scale: 0.95 }}
+            >
                 <LogOut size={20} />
                 Exit Experience
             </motion.button>
@@ -64,17 +83,33 @@ const QuestionStep: React.FC<{
         <motion.div
             key={q.id}
             className={styles.questionForm}
-            initial={{ x: 50, opacity: 0 }}
+            initial={{ x: 100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -50, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            exit={{ x: -100, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 20 }}
         >
             <div className={styles.questionHeader}>
-                <span className={styles.questionBadge}>Question {index + 1}/{total}</span>
+                <motion.span 
+                    className={styles.questionBadge}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.2, type: 'spring' }}
+                >
+                    Question {index + 1}/{total}
+                </motion.span>
             </div>
-            <h3 className={styles.questionLabel}>{q.text}</h3>
+            
+            <motion.h3 
+                className={styles.questionLabel}
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.1 }}
+            >
+                {q.text}
+            </motion.h3>
+            
             <div className={styles.optionCardContainer}>
-                {q.options.map(option => {
+                {q.options.map((option, idx) => {
                     const isSelected = answeredOption === option;
                     const isCorrectOption = option.trim().toLowerCase() === q.correctAnswer.trim().toLowerCase();
                     let cardState = '';
@@ -83,42 +118,52 @@ const QuestionStep: React.FC<{
                         else if (isSelected && !isCorrectAnswer) cardState = styles.wrongAnswer;
                         else if (isCorrectOption && !isCorrectAnswer) cardState = styles.showCorrect;
                     }
+                    
                     return (
                         <motion.div
                             key={option}
                             className={`${styles.optionCard} ${isSelected ? styles.selected : ''} ${cardState}`}
                             onClick={() => handleOptionClick(option)}
-                            whileHover={answeredOption === null ? { scale: 1.02, y: -2 } : {}}
-                            whileTap={answeredOption === null ? { scale: 0.98 } : {}}
+                            initial={{ x: -50, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ delay: 0.2 + idx * 0.1 }}
+                            whileHover={answeredOption === null ? { scale: 1.03, y: -4 } : {}}
+                            whileTap={answeredOption === null ? { scale: 0.97 } : {}}
                             style={{ cursor: answeredOption === null ? 'pointer' : 'not-allowed' }}
                         >
                             <div className={styles.optionCheckbox}>
-                                {isSelected && isCorrectAnswer && <CheckCircle2 size={20} />}
-                                {isSelected && !isCorrectAnswer && <XCircle size={20} />}
-                                {!isSelected && isCorrectOption && answeredOption !== null && !isCorrectAnswer && <CheckCircle2 size={20} />}
+                                {isSelected && isCorrectAnswer && <CheckCircle2 size={24} />}
+                                {isSelected && !isCorrectAnswer && <XCircle size={24} />}
+                                {!isSelected && isCorrectOption && answeredOption !== null && !isCorrectAnswer && <CheckCircle2 size={24} />}
                             </div>
                             <span className={styles.optionText}>{option}</span>
                         </motion.div>
                     );
                 })}
             </div>
+            
             <AnimatePresence>
                 {answeredOption !== null && (
                     <motion.div
                         className={styles.inlineFeedback}
-                        initial={{ opacity: 0, y: -20, height: 0 }}
-                        animate={{ opacity: 1, y: 0, height: 'auto' }}
-                        exit={{ opacity: 0, y: -20, height: 0 }}
-                        transition={{ duration: 0.5 }}
+                        initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -20, scale: 0.9 }}
+                        transition={{ duration: 0.4 }}
                     >
-                        <div className={styles.feedbackIcon}>
-                            {isCorrectAnswer ? <CheckCircle2 size={48} color="#10b981" /> : <XCircle size={48} color="#ef4444" />}
-                        </div>
+                        <motion.div 
+                            className={styles.feedbackIcon}
+                            initial={{ scale: 0, rotate: -180 }}
+                            animate={{ scale: 1, rotate: 0 }}
+                            transition={{ type: 'spring', stiffness: 200 }}
+                        >
+                            {isCorrectAnswer ? <CheckCircle2 size={56} /> : <XCircle size={56} />}
+                        </motion.div>
                         <h4 className={isCorrectAnswer ? styles.correct : styles.incorrect}>
                             {isCorrectAnswer ? 'Excellent Work!' : 'Not Quite Right'}
                         </h4>
                         <div className={styles.keeperFeedback}>
-                            <Sparkles size={20} className={styles.sparkleIcon} />
+                            <Sparkles size={24} className={styles.sparkleIcon} />
                             <p>{q.feedback}</p>
                         </div>
                     </motion.div>
@@ -138,8 +183,8 @@ const QuestionsPage: React.FC<QuestionsPageProps> = ({ room, mode, level: initia
     const [isQuestionVideoFinished, setIsQuestionVideoFinished] = useState(false);
     const [answeredOption, setAnsweredOption] = useState<string | null>(null);
     const [isCorrectAnswer, setIsCorrectAnswer] = useState<boolean | null>(null);
+    const [isDark, setIsDark] = useState(false);
 
-    const [isDark, setIsDark] = useState(false); // THEME STATE
     const handleThemeToggle = () => setIsDark(prev => !prev);
 
     const introVideoRef = useRef<HTMLVideoElement>(null);
@@ -222,55 +267,131 @@ const QuestionsPage: React.FC<QuestionsPageProps> = ({ room, mode, level: initia
     const currentQuestionVideo = questionVideos[currentQuestionIndex] ?? kaperIntroVideo;
 
     return (
-        <motion.div className={`${styles.questionsPageContainer} ${isDark ? styles.darkTheme : styles.lightTheme}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-            
-            {/* FLOATING THEME TOGGLE */}
+        <motion.div 
+            className={`${styles.questionsPageContainer} ${isDark ? styles.darkTheme : styles.lightTheme}`} 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            transition={{ duration: 0.6 }}
+        >
             <div className={styles.themeToggleWrapper}>
                 <ThemeToggle isDark={isDark} onToggle={handleThemeToggle} />
             </div>
 
-            <div className={styles.headerSection}>
+            <motion.div 
+                className={styles.headerSection}
+                initial={{ y: -50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+            >
                 <h1 className={styles.heading}>{room.toUpperCase()}</h1>
                 <p className={styles.levelDisplay}>{levelDisplay}</p>
-                <div className={styles.scoreDisplay}>
-                    <Trophy size={24} color="var(--gold-bright-solid)" />
+                <motion.div 
+                    className={styles.scoreDisplay}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                >
+                    <Trophy size={28} />
                     <span>{totalScore} Points</span>
-                </div>
-            </div>
+                </motion.div>
+            </motion.div>
 
             <div className={styles.progressBarContainer}>
-                <motion.div className={styles.progressBar} initial={{ width: 0 }} animate={{ width: `${progress}%` }} transition={{ duration: 0.5 }} />
+                <motion.div 
+                    className={styles.progressBar} 
+                    initial={{ width: 0 }} 
+                    animate={{ width: `${progress}%` }} 
+                    transition={{ duration: 0.6, ease: 'easeOut' }} 
+                />
                 <span className={styles.progressLabel}>
                     {currentStep !== 'final' ? `${currentQuestionIndex + 1}/${totalQuestions}` : 'Complete'}
                 </span>
             </div>
 
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
                 {currentStep === 'intro' && (
-                    <motion.div className={styles.keeperVideoContainer} key="intro-video" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} transition={{ duration: 0.5 }}>
-                        <video ref={introVideoRef} src={kaperIntroVideo} playsInline autoPlay controls={false} className={styles.videoPlayer} onEnded={handleIntroEnd} />
+                    <motion.div 
+                        className={styles.keeperVideoContainer} 
+                        key="intro-video" 
+                        initial={{ opacity: 0, scale: 0.9 }} 
+                        animate={{ opacity: 1, scale: 1 }} 
+                        exit={{ opacity: 0, scale: 0.9 }} 
+                        transition={{ duration: 0.5 }}
+                    >
+                        <video 
+                            ref={introVideoRef} 
+                            src={kaperIntroVideo} 
+                            playsInline 
+                            autoPlay 
+                            controls={false} 
+                            className={styles.videoPlayer} 
+                            onEnded={handleIntroEnd} 
+                        />
                         {playAttemptFailed && (
-                            <motion.button className={styles.startButtonOverlay} onClick={handleStartVideo} initial={{ opacity: 0 }} animate={{ opacity: 1 }} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                            <motion.button 
+                                className={styles.startButtonOverlay} 
+                                onClick={handleStartVideo} 
+                                initial={{ opacity: 0, scale: 0.8 }} 
+                                animate={{ opacity: 1, scale: 1 }} 
+                                whileHover={{ scale: 1.1 }} 
+                                whileTap={{ scale: 0.9 }}
+                            >
                                 <Sparkles size={24} />
                                 Begin Your Journey
                             </motion.button>
                         )}
-                        <button className={styles.skipButton} onClick={handleIntroEnd}>Skip Introduction</button>
+                        <motion.button 
+                            className={styles.skipButton} 
+                            onClick={handleIntroEnd}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                        >
+                            Skip Introduction
+                        </motion.button>
                     </motion.div>
                 )}
             </AnimatePresence>
 
             {showSmallVideo && currentStep === 'question' && !isQuestionVideoFinished && (
-                <motion.div className={`${styles.keeperVideoContainer} ${styles.smallVideo}`} key={`question-video-container-${currentQuestionIndex}`} initial={{ opacity: 0, scale: 0.5, x: 100, y: 100 }} animate={{ opacity: 1, scale: 1, x: 0, y: 0 }} exit={{ opacity: 0, scale: 0.5 }} transition={{ duration: 0.5 }}>
-                    <video ref={questionVideoRef} key={`video-${currentQuestionIndex}`} src={currentQuestionVideo} playsInline autoPlay controls={false} className={styles.videoPlayerSmall} onEnded={handleQuestionVideoEnd} />
+                <motion.div 
+                    className={`${styles.keeperVideoContainer} ${styles.smallVideo}`} 
+                    key={`question-video-container-${currentQuestionIndex}`} 
+                    initial={{ opacity: 0, scale: 0.5, x: 100, y: 100 }} 
+                    animate={{ opacity: 1, scale: 1, x: 0, y: 0 }} 
+                    exit={{ opacity: 0, scale: 0.5 }} 
+                    transition={{ duration: 0.5, type: 'spring' }}
+                >
+                    <video 
+                        ref={questionVideoRef} 
+                        key={`video-${currentQuestionIndex}`} 
+                        src={currentQuestionVideo} 
+                        playsInline 
+                        autoPlay 
+                        controls={false} 
+                        className={styles.videoPlayerSmall} 
+                        onEnded={handleQuestionVideoEnd} 
+                    />
                 </motion.div>
             )}
 
             <AnimatePresence mode="wait">
                 {currentStep === 'question' && currentQuestion && (
-                    <QuestionStep q={currentQuestion} index={currentQuestionIndex} total={totalQuestions} onAnswer={handleAnswerSubmission} answeredOption={answeredOption} isCorrectAnswer={isCorrectAnswer} />
+                    <QuestionStep 
+                        q={currentQuestion} 
+                        index={currentQuestionIndex} 
+                        total={totalQuestions} 
+                        onAnswer={handleAnswerSubmission} 
+                        answeredOption={answeredOption} 
+                        isCorrectAnswer={isCorrectAnswer} 
+                    />
                 )}
-                {currentStep === 'final' && <FinalPrompt room={room} totalScore={totalScore} onContinue={handleContinueInRoom} onExit={onFinish} />}
+                {currentStep === 'final' && (
+                    <FinalPrompt 
+                        room={room} 
+                        totalScore={totalScore} 
+                        onContinue={handleContinueInRoom} 
+                        onExit={onFinish} 
+                    />
+                )}
             </AnimatePresence>
         </motion.div>
     );

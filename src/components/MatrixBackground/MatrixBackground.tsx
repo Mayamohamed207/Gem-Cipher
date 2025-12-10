@@ -44,6 +44,7 @@ const MatrixCard: React.FC<MatrixCardProps> = ({ children }) => {
         }
     }, []);
 
+    
     return (
         <div className={styles.cardContainer}>
             <div ref={matrixRef} className={styles.matrix} aria-hidden="true" role="presentation">
