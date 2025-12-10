@@ -1,5 +1,5 @@
 // src/pages/HomePage/HomePage.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { ArrowDown } from 'lucide-react';
 import { motion } from 'framer-motion';
 import ExperiencePicker from '../../components/ExperiencePicker/ExperiencePicker';
@@ -19,19 +19,31 @@ export interface UserInfo {
 
 interface HomePageProps {
     onExperienceSelect: (id: string, info: UserInfo) => void;
+    onRegister: (name: string, email: string) => Promise<void>;
+    isRegistered: boolean;
+    virtualNfcId: string | null;
+    isWaitingForNfc: boolean;
     onToggleTheme: () => void;
     isDark: boolean;
 }
 
-const museumStats = [
-  { label: "Artifacts", value: "100,000+" },
-  { label: "Spans", value: "5,000 Years" },
-  { label: "Interactive", value: "12" },
-  { label: "Daily Visitors", value: "(50,000+)" },
-];
-
-const HomePage: React.FC<HomePageProps> = ({ onExperienceSelect, onToggleTheme, isDark }) => {
+// --- Component ---
+const HomePage: React.FC<HomePageProps> = ({ 
+    onExperienceSelect, 
+    onRegister, 
+    isRegistered, 
+    virtualNfcId, 
+    isWaitingForNfc,
+    onToggleTheme,
+    isDark
+}) => {
+    const [name, setName] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     
+    /**
+     * SIMPLIFIED: Handles mode selection and passes dummy/default data back to App.tsx.
+     */
     const handleModeSelection = (id: string) => {
         const dummyUserInfo: UserInfo = {
             name: "Visitor",
@@ -40,11 +52,20 @@ const HomePage: React.FC<HomePageProps> = ({ onExperienceSelect, onToggleTheme, 
         onExperienceSelect(id, dummyUserInfo);
     };
 
-    const scrollToExperience = () => {
-        document.getElementById('experience-section')?.scrollIntoView({ 
-            behavior: 'smooth',
-            block: 'start'
-        });
+    /**
+     * Handle registration form submission
+     */
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        
+        if (!name.trim() || !email.trim()) {
+            alert('Please fill in all fields');
+            return;
+        }
+
+        setIsSubmitting(true);
+        await onRegister(name, email);
+        setIsSubmitting(false);
     };
 
     return (
@@ -55,74 +76,117 @@ const HomePage: React.FC<HomePageProps> = ({ onExperienceSelect, onToggleTheme, 
             {/* HERO SECTION WITH MATRIX BACKGROUND */}
             <MatrixCard>
                 <div className={styles.matrixContent}>
-                    <motion.div 
-                        className={styles.heroContainer}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 1 }}
-                    >
-                        {/* Column 1: Title and Start Button */}
-                        <div className={styles.heroContent}>
-                            <div className={styles.titleWrapper}>
-                                <h1 className={styles.title}>THE GRAND<br/>EGYPTIAN MUSEUM</h1>
-                                <motion.span 
-                                    className={styles.glyph}
-                                    animate={{ rotateY: [0, -360], scale: [1, 1.1, 1] }}
-                                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                                >
-                                    𓂀
-                                </motion.span>
-                            </div>
-                            <p className={styles.subtitle}>ANCIENT ECHOES</p>
-                            <p className={styles.subtitle} style={{fontSize: '1.2rem'}}>Where Generative History Breathes New Life into Kemet</p>
-                            <button className={styles.startButton}>START YOUR JOURNEY</button>
-                        </div>
-                        
-                        {/* Column 2: Photo Card */}
-                        <div className={styles.photoCard}>
-                            <img 
-                                src={PhotocardImage} 
-                                alt="Grand Egyptian Museum Exterior"
-                            />
-                            <div className={styles.photoCaption}>Giza, Egypt • Grand Opening 2024</div>
-                        </div>
-                    </motion.div>
-
-                    {/* Stats Row */}
-                    <div className={styles.statsContainer}>
-                        {museumStats.map((stat) => (
-                            <motion.div 
-                                key={stat.label} 
-                                className={styles.statCard}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: 1.2 + museumStats.indexOf(stat) * 0.1 }}
-                            >
-                                <div className={styles.statValue}>{stat.value}</div>
-                                <div className={styles.statLabel}>{stat.label}</div>
-                            </motion.div>
-                        ))}
-                    </div>
-                    
-                  
+                    <h1 className={styles.title}>WELCOME TO THE <span><span className={styles.glyph}>𓂀</span> PHARAOH MATRIX <span className={styles.glyph}>𓋹</span></span></h1>
+                    {/* Add a direct instruction here */}
+                    <p className={styles.subtitle}>
+                        {isRegistered ? 'Select your desired experience below to begin your journey through the museum.' : 'Please register to begin your journey'}
+                    </p>
                 </div>
             </MatrixCard>
 
-         
-
-          
-
-            {/* EXPERIENCE SECTION */}
-            <section className={styles.experienceSection} id="experience-section">
-                <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
-                >
+            {/* -------------------- CONDITIONAL: REGISTRATION FORM OR EXPERIENCE PICKER -------------------- */}
+            {!isRegistered ? (
+                <section className={styles.scrollSection}>
+                    <MatrixCard>
+                        <div style={{ padding: '40px', maxWidth: '500px', margin: '0 auto' }}>
+                            <h2 style={{ color: '#00ff00', marginBottom: '24px', textAlign: 'center' }}>Join the Museum Experience</h2>
+                            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                <div>
+                                    <label style={{ color: '#00ff00', display: 'block', marginBottom: '8px', fontSize: '14px' }}>Name</label>
+                                    <input
+                                        type="text"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        placeholder="Enter your name"
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px',
+                                            backgroundColor: 'rgba(0, 255, 0, 0.1)',
+                                            border: '1px solid #00ff00',
+                                            borderRadius: '4px',
+                                            color: '#00ff00',
+                                            fontSize: '16px',
+                                            fontFamily: 'inherit'
+                                        }}
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label style={{ color: '#00ff00', display: 'block', marginBottom: '8px', fontSize: '14px' }}>Email</label>
+                                    <input
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        placeholder="Enter your email"
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px',
+                                            backgroundColor: 'rgba(0, 255, 0, 0.1)',
+                                            border: '1px solid #00ff00',
+                                            borderRadius: '4px',
+                                            color: '#00ff00',
+                                            fontSize: '16px',
+                                            fontFamily: 'inherit'
+                                        }}
+                                        required
+                                    />
+                                </div>
+                                {isWaitingForNfc && (
+                                    <div style={{
+                                        padding: '12px',
+                                        backgroundColor: 'rgba(255, 165, 0, 0.1)',
+                                        border: '1px solid #ffa500',
+                                        borderRadius: '4px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '10px'
+                                    }}>
+                                        <div style={{
+                                            width: '20px',
+                                            height: '20px',
+                                            border: '2px solid #ffa500',
+                                            borderTop: '2px solid transparent',
+                                            borderRadius: '50%',
+                                            animation: 'spin 1s linear infinite'
+                                        }} />
+                                        <p style={{ color: '#ffa500', fontSize: '14px', margin: 0 }}>
+                                            📱 Reading NFC from device... Please wait
+                                        </p>
+                                    </div>
+                                )}
+                                <button
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    style={{
+                                        padding: '14px',
+                                        backgroundColor: '#00ff00',
+                                        color: '#000',
+                                        border: 'none',
+                                        borderRadius: '4px',
+                                        fontSize: '18px',
+                                        fontWeight: 'bold',
+                                        cursor: 'pointer',
+                                        marginTop: '10px',
+                                        transition: 'all 0.3s ease',
+                                        opacity: isSubmitting ? 0.7 : 1
+                                    }}
+                                >
+                                    {isSubmitting ? 'Joining...' : 'Join'}
+                                </button>
+                                {virtualNfcId && virtualNfcId.startsWith('WEB_') && (
+                                    <p style={{ color: '#00ff00', fontSize: '12px', textAlign: 'center', margin: 0 }}>
+                                        🌐 Web Mode - Device ID auto-generated
+                                    </p>
+                                )}
+                            </form>
+                        </div>
+                    </MatrixCard>
+                </section>
+            ) : (
+                <section className={styles.scrollSection} id="experience-section">
                     <ExperiencePicker onSelect={handleModeSelection} /> 
-                </motion.div>
-            </section>
+                </section>
+            )}
         </div>
     );
 };

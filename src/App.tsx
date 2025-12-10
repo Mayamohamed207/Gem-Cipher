@@ -15,12 +15,104 @@ const AppStage = {
 
 type AppStageType = (typeof AppStage)[keyof typeof AppStage];
 
+// Extend Window interface for Android bridge
+declare global {
+    interface Window {
+        setAndroidNfcId?: (id: string) => void;
+        onPhysicalCardScanned?: (uid: string) => void;
+    }
+}
+
 const App: React.FC = () => {
   const [currentStage, setCurrentStage] = useState<AppStageType>(AppStage.HOME_INFO);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [selectedMode, setSelectedMode] = useState<'kids' | 'learning' | 'game' | null>(null);
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
   const [selectedLevel, setSelectedLevel] = useState<string | undefined>(undefined);
+    
+    // --- Android Bridge State ---
+    const [virtualNfcId, setVirtualNfcId] = useState<string | null>(null);
+    const [isRegistered, setIsRegistered] = useState<boolean>(() => {
+        return localStorage.getItem('user_registered') === 'true';
+    });
+    const [isWaitingForNfc, setIsWaitingForNfc] = useState<boolean>(() => {
+        // Detect if we're in Android WebView - always wait for fresh NFC on Android
+        const isAndroid = /android/i.test(navigator.userAgent);
+        return isAndroid;
+    });
+
+    // --- Helper: Get or Generate NFC ID (Device Agnostic) ---
+    const getOrGenerateNfcId = useCallback((): string => {
+        // Priority 1: Check if Android injected NFC ID via bridge
+        if (virtualNfcId) {
+            console.log('🔵 Using existing NFC ID:', virtualNfcId);
+            return virtualNfcId;
+        }
+
+        // Priority 2: Check localStorage for existing ID
+        const storedId = localStorage.getItem('virtual_nfc_id');
+        if (storedId) {
+            console.log('💾 Using stored NFC ID:', storedId);
+            setVirtualNfcId(storedId);
+            return storedId;
+        }
+
+        // Priority 3: Fallback - Generate web-based ID
+        const webId = `WEB_${crypto.randomUUID()}`;
+        console.log('🌐 Generated web NFC ID:', webId);
+        localStorage.setItem('virtual_nfc_id', webId);
+        setVirtualNfcId(webId);
+        return webId;
+    }, [virtualNfcId]);
+
+    // --- Android Bridge Setup ---
+    useEffect(() => {
+        // Create global function for Android to set virtual NFC ID
+        window.setAndroidNfcId = (id: string) => {
+            console.log('📱 Android Bridge: Received virtual NFC ID:', id);
+            setVirtualNfcId(id);
+            localStorage.setItem('virtual_nfc_id', id);
+            setIsWaitingForNfc(false); // NFC received, stop waiting
+        };
+
+        // Create global function for physical card scanning
+        window.onPhysicalCardScanned = (uid: string) => {
+            console.log('💳 Physical Card Scanned:', uid);
+            alert(`Physical Card Found: ${uid}`);
+            // TODO: Send to backend for verification
+        };
+
+        // For Android: Wait for fresh NFC, but fallback to cached after 3 seconds
+        let nfcTimeout: number | null = null;
+        const isAndroid = /android/i.test(navigator.userAgent);
+        
+        if (isAndroid && isWaitingForNfc) {
+            nfcTimeout = window.setTimeout(() => {
+                const cachedId = localStorage.getItem('virtual_nfc_id');
+                if (cachedId) {
+                    console.log('⏱️ Using cached NFC ID:', cachedId);
+                    setVirtualNfcId(cachedId);
+                } else {
+                    console.log('⏱️ NFC timeout - switching to web mode');
+                }
+                setIsWaitingForNfc(false);
+            }, 3000); // Reduced to 3 seconds for better UX
+        } else if (!isAndroid) {
+            // Not Android, load cached or generate immediately
+            const cachedId = localStorage.getItem('virtual_nfc_id');
+            if (cachedId) {
+                setVirtualNfcId(cachedId);
+            }
+            setIsWaitingForNfc(false);
+        }
+
+        // Cleanup
+        return () => {
+            delete window.setAndroidNfcId;
+            delete window.onPhysicalCardScanned;
+            if (nfcTimeout) window.clearTimeout(nfcTimeout);
+        };
+    }, [isWaitingForNfc]);
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   // Apply theme class to both body AND html on mount and when theme changes
@@ -51,16 +143,67 @@ const App: React.FC = () => {
       setCurrentStage(newStage);
     };
 
-    window.addEventListener('hashchange', handleHashChange);
-    handleHashChange();
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, [getHashStage]);
+        window.addEventListener('hashchange', handleHashChange);
+        // Set initial stage based on URL
+        handleHashChange(); 
 
-  const handleInitialSelect = (id: string, info: UserInfo) => {
-    setUserInfo(info);
-    setSelectedMode(id as 'kids' | 'learning' | 'game');
-    window.location.hash = AppStage.MAP_SELECTION;
-  };
+        return () => window.removeEventListener('hashchange', handleHashChange);
+    }, [getHashStage]);
+
+
+    // --- Registration Handler ---
+    const handleRegistration = async (name: string, email: string) => {
+        // Get or generate device ID (works on Android, web, and laptop)
+        const deviceId = getOrGenerateNfcId();
+
+        try {
+            // TODO: Replace with your laptop IP address
+            const response = await fetch('http://10.3.106.185:8000/api/auth/login-register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    virtual_nfc_id: deviceId,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Registration failed: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            console.log('✅ Registration successful:', data);
+            
+            // Mark as registered
+            localStorage.setItem('user_registered', 'true');
+            localStorage.setItem('user_name', name);
+            localStorage.setItem('user_email', email);
+            setIsRegistered(true);
+            
+            alert(`Welcome, ${name}! Registration successful.`);
+        } catch (error) {
+            console.error('❌ Registration error:', error);
+            alert(`Registration failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        }
+    };
+
+    // --- 3. Stage Handlers (Now update the URL hash) ---
+    
+    const handleInitialSelect = (id: string, info: UserInfo) => {
+        setUserInfo(info);
+        setSelectedMode(id as 'kids' | 'learning' | 'game');
+        
+        if (id === 'game') {
+             alert(`GAME MODE selected by ${info.name}. This mode currently skips the map and submits.`);
+             handleQuestionsFinish(); 
+             return;
+        }
+        // Navigate to /map route
+        window.location.hash = AppStage.MAP_SELECTION;
+    };
 
   const handleRoomSelect = (roomId: string, level?: string) => {
     setSelectedRoom(roomId);
@@ -101,7 +244,11 @@ const App: React.FC = () => {
   if (currentStage === AppStage.HOME_INFO) {
     CurrentComponent = (
       <HomePage 
-        onExperienceSelect={handleInitialSelect} 
+        onExperienceSelect={handleInitialSelect}
+                onRegister={handleRegistration}
+                isRegistered={isRegistered}
+                virtualNfcId={virtualNfcId}
+                isWaitingForNfc={isWaitingForNfc}
         onToggleTheme={toggleTheme} 
         isDark={isDarkMode} 
       />
@@ -161,6 +308,24 @@ const App: React.FC = () => {
   return (
     <div className={`App ${isDarkMode ? 'theme-dark' : 'theme-light'}`}>
       {CurrentComponent}
+            
+            {/* Debug Footer */}
+            <div style={{
+                position: 'fixed',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                color: '#00ff00',
+                padding: '8px 16px',
+                fontSize: '12px',
+                fontFamily: 'monospace',
+                borderTop: '1px solid #00ff00',
+                zIndex: 9999,
+                textAlign: 'center'
+            }}>
+                🔧 Debug | Device ID: {virtualNfcId || 'Waiting for Android...'} | Registered: {isRegistered ? '✅' : '❌'}
+            </div>
     </div>
   );
 };
