@@ -185,6 +185,18 @@ const QuestionsPage: React.FC<QuestionsPageProps> = ({ room, mode, level: initia
     const [isCorrectAnswer, setIsCorrectAnswer] = useState<boolean | null>(null);
     const [isDark, setIsDark] = useState(false);
 
+    // ===== chatbot State =====
+    const [chatOpen, setChatOpen] = useState(false);
+    const [chatInput, setChatInput] = useState('');
+    const [chatResponses, setChatResponses] = useState<string[]>([]);
+
+    const handleChatSubmit = () => {
+        if (!chatInput.trim()) return;
+        const response = `You asked: "${chatInput}". This is a placeholder answer.`;
+        setChatResponses(prev => [...prev, `You: ${chatInput}`, `chatbot: ${response}`]);
+        setChatInput('');
+    };
+
     const handleThemeToggle = () => setIsDark(prev => !prev);
 
     const introVideoRef = useRef<HTMLVideoElement>(null);
@@ -393,6 +405,44 @@ const QuestionsPage: React.FC<QuestionsPageProps> = ({ room, mode, level: initia
                     />
                 )}
             </AnimatePresence>
+
+            {/* ==================== chatbot ==================== */}
+            <div className={styles.chatbotContainer}>
+                {!chatOpen && (
+                    <button
+                        className={styles.chatbotButton}
+                        onClick={() => setChatOpen(true)}
+                    >
+                        chatbot
+                    </button>
+                )}
+
+                {chatOpen && (
+                    <div className={styles.chatbotBox}>
+                        <div className={styles.chatHeader}>
+                            <span>chatbot</span>
+                            <button onClick={() => setChatOpen(false)}>✕</button>
+                        </div>
+                        <div className={styles.chatMessages}>
+                            {chatResponses.map((msg, idx) => (
+                                <div key={idx} className={msg.startsWith('You:') ? styles.userMessage : styles.botMessage}>
+                                    {msg}
+                                </div>
+                            ))}
+                        </div>
+                        <div className={styles.chatInputWrapper}>
+                            <input
+                                type="text"
+                                value={chatInput}
+                                onChange={e => setChatInput(e.target.value)}
+                                placeholder="Ask a question..."
+                                onKeyDown={e => e.key === 'Enter' && handleChatSubmit()}
+                            />
+                            <button onClick={handleChatSubmit}>Send</button>
+                        </div>
+                    </div>
+                )}
+            </div>
         </motion.div>
     );
 };
