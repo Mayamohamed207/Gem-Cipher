@@ -136,10 +136,8 @@ const HomePage: React.FC<HomePageProps> = ({
                         padding: '40px 20px', 
                         maxWidth: '500px', 
                         margin: '20px auto',
-                        backgroundColor: '#e5c9a4',
                         border: '2px solid #a33013',
                         borderRadius: '12px',
-                        boxShadow: '0 0 20px rgba(237, 16, 16, 0.3)'
                     }}>
                         <h2 style={{ color: '#a33013', marginBottom: '24px', textAlign: 'center' }}>Join the Museum Experience</h2>
                         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -153,10 +151,10 @@ const HomePage: React.FC<HomePageProps> = ({
                                     style={{
                                         width: '100%',
                                         padding: '12px',
-                                        backgroundColor: 'rgba(192, 188, 188, 0.1)',
-                                        border: '1px solid #a33013',
+                                        backgroundColor: 'var(--bg1)',
+                                        border: '1px solid var(--accent)',
                                         borderRadius: '4px',
-                                        color: '#a33013',
+                                        color: 'var(--text-primary)',
                                         fontSize: '16px',
                                         fontFamily: 'inherit',
                                         boxSizing: 'border-box'
@@ -165,7 +163,7 @@ const HomePage: React.FC<HomePageProps> = ({
                                 />
                             </div>
                             <div>
-                                <label style={{ color: '#a33013', display: 'block', marginBottom: '8px', fontSize: '14px' }}>Email</label>
+                                <label style={{ color: 'var(--text-primary)', display: 'block', marginBottom: '8px', fontSize: '14px' }}>Email</label>
                                 <input
                                     type="email"
                                     value={email}
@@ -177,7 +175,7 @@ const HomePage: React.FC<HomePageProps> = ({
                                         backgroundColor: 'rgba(219, 200, 198, 0.1)',
                                         border: '1px solid #a33013',
                                         borderRadius: '4px',
-                                        color: '#a33013',
+                                        color:  'var(--text-primary)',
                                         fontSize: '16px',
                                         fontFamily: 'inherit',
                                         boxSizing: 'border-box'
@@ -188,8 +186,8 @@ const HomePage: React.FC<HomePageProps> = ({
                             {isWaitingForNfc && (
                                 <div style={{
                                     padding: '12px',
-                                    backgroundColor: 'rgba(255, 165, 0, 0.1)',
-                                    border: '1px solid #ffa500',
+                                    backgroundColor: 'rgba(217, 101, 15, 0.1)',
+                                    border: '1px solid var(--primary)',
                                     borderRadius: '4px',
                                     display: 'flex',
                                     alignItems: 'center',
@@ -198,12 +196,12 @@ const HomePage: React.FC<HomePageProps> = ({
                                     <div style={{
                                         width: '20px',
                                         height: '20px',
-                                        border: '2px solid #ffa500',
+                                        border: '2px solid var(--primary)',
                                         borderTop: '2px solid transparent',
                                         borderRadius: '50%',
                                         animation: 'spin 1s linear infinite'
                                     }} />
-                                    <p style={{ color: '#ffa500', fontSize: '14px', margin: 0 }}>
+                                    <p style={{ color: 'var(--primary)', fontSize: '14px', margin: 0 }}>
                                         📱 Reading NFC from device... Please wait
                                     </p>
                                 </div>

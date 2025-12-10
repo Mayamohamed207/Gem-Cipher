@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Info, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Info, ChevronRight, X } from 'lucide-react'; // Added X for close button
 import styles from './MapPage.module.css';
 import museumMap from '../../assets/images/map.jpeg';
 import ThemeToggle from '../../components/ToggleTheme/ThemeContext';
+
 interface MapPageProps {
   mode: 'kids' | 'learning' | 'game';
   onRoomSelected: (roomId: string, level?: string) => void;
@@ -52,6 +53,11 @@ const MapPage: React.FC<MapPageProps> = ({ mode, onRoomSelected }) => {
     }
   };
 
+  const handleClosePopup = () => {
+    setSelectedRoom(null);
+    setSelectedLevel('');
+  };
+
   return (
     <div className={`${styles.pageContainer} ${darkMode ? 'theme-dark' : 'theme-light'}`}>
       <motion.div
@@ -97,41 +103,95 @@ const MapPage: React.FC<MapPageProps> = ({ mode, onRoomSelected }) => {
           </div>
         </motion.div>
 
-        {selectedRoom && mode === 'learning' && (
-          <motion.div
-            className={styles.detailsPanel}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className={styles.detailsHeader}>
-              <Info size={28} color="var(--primary)" />
-              <h2 className={styles.detailsTitle}>{selectedRoom.name}</h2>
-            </div>
+        {/* POPUP MODAL SECTION */}
+        <AnimatePresence>
+          {selectedRoom && mode === 'learning' && (
+            <>
+              {/* Dark Overlay Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={handleClosePopup}
+                style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                  zIndex: 999,
+                  backdropFilter: 'blur(3px)'
+                }}
+              />
 
-            {selectedRoom.levels && (
-              <div className={styles.levelSelector}>
-                <h3 className={styles.levelTitle}>Select Difficulty Level</h3>
-                <div className={styles.levelButtons}>
-                  {selectedRoom.levels.map((level) => (
-                    <button
-                      key={level}
-                      className={`${styles.levelButton} ${selectedLevel === level ? styles.levelButtonActive : ''}`}
-                      onClick={() => setSelectedLevel(level)}
-                    >
-                      {level}
-                    </button>
-                  ))}
+              {/* The Popup Content */}
+              <motion.div
+                className={styles.detailsPanel}
+                // Inline styles to override CSS class for popup positioning
+                style={{
+                  position: 'fixed',
+                  top: '50%',
+                  left: '50%',
+                  zIndex: 1000,
+                  width: '90%',
+                  maxWidth: '500px',
+                  maxHeight: '90vh',
+                  overflowY: 'auto',
+                  margin: 0,
+                  boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                }}
+                initial={{ opacity: 0, x: '-50%', y: '-40%', scale: 0.9 }}
+                animate={{ opacity: 1, x: '-50%', y: '-50%', scale: 1 }}
+                exit={{ opacity: 0, x: '-50%', y: '-40%', scale: 0.9 }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              >
+                <div className={styles.detailsHeader} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <Info size={28} color="var(--primary)" />
+                    <h2 className={styles.detailsTitle} style={{ margin: 0 }}>{selectedRoom.name}</h2>
+                  </div>
+                  <button 
+                    onClick={handleClosePopup}
+                    style={{ 
+                      background: 'none', 
+                      border: 'none', 
+                      cursor: 'pointer',
+                      padding: '5px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      color: 'inherit'
+                    }}
+                  >
+                    <X size={24} />
+                  </button>
                 </div>
-              </div>
-            )}
 
-            <button className={styles.proceedButton} onClick={handleProceed} disabled={!selectedLevel}>
-              Begin Experience
-              <ChevronRight size={20} />
-            </button>
-          </motion.div>
-        )}
+                {selectedRoom.levels && (
+                  <div className={styles.levelSelector}>
+                    <h3 className={styles.levelTitle}>Select Difficulty Level</h3>
+                    <div className={styles.levelButtons}>
+                      {selectedRoom.levels.map((level) => (
+                        <button
+                          key={level}
+                          className={`${styles.levelButton} ${selectedLevel === level ? styles.levelButtonActive : ''}`}
+                          onClick={() => setSelectedLevel(level)}
+                        >
+                          {level}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <button className={styles.proceedButton} onClick={handleProceed} disabled={!selectedLevel}>
+                  Begin Experience
+                  <ChevronRight size={20} />
+                </button>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

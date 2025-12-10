@@ -197,13 +197,23 @@ const App: React.FC = () => {
             const data = await response.json();
             console.log('✅ Registration successful:', data);
             
-            // Mark as registered
+            // Mark as registered and store visitor_id
             localStorage.setItem('user_registered', 'true');
             localStorage.setItem('user_name', name);
             localStorage.setItem('user_email', email);
+            
+            // Store visitor_id from backend response (data.user.id)
+            if (data.user && data.user.id) {
+                localStorage.setItem('visitor_id', data.user.id.toString());
+                console.log('💾 Stored visitor_id:', data.user.id);
+            }
+            
             setIsRegistered(true);
             
-            alert(`Welcome, ${name}! Registration successful.`);
+            const welcomeMsg = data.is_new_user 
+                ? `Welcome, ${name}! Account created successfully.`
+                : `Welcome back, ${name}!`;
+            alert(welcomeMsg);
         } catch (error) {
             console.error('❌ Registration error:', error);
             alert(`Registration failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -216,11 +226,11 @@ const App: React.FC = () => {
         setUserInfo(info);
         setSelectedMode(id as 'kids' | 'learning' | 'game');
         
-        if (id === 'game') {
-             alert(`GAME MODE selected by ${info.name}. This mode currently skips the map and submits.`);
-             handleQuestionsFinish(); 
-             return;
-        }
+        // if (id === 'game') {
+        //      alert(`GAME MODE selected by ${info.name}. This mode currently skips the map and submits.`);
+        //      handleQuestionsFinish(); 
+        //      return;
+        // }
         // Navigate to /map route
         window.location.hash = AppStage.MAP_SELECTION;
     };

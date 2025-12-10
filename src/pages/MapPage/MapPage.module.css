@@ -87,7 +87,7 @@ button { border-radius: var(--border-radius-button); border: none; cursor: point
    ============================================ */
 .detailsPanel {
   border-radius: 24px;
-  padding: 40px;
+  padding: 20px;
   background: rgba(255, 255, 255, 0.08); /* semi-transparent glass */
   backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -138,7 +138,7 @@ button { border-radius: var(--border-radius-button); border: none; cursor: point
 
 .levelButtons {
   display: flex;
-  gap: 15px;
+  gap: 16px;
   flex-wrap: wrap;
 }
 
