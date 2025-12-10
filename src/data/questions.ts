@@ -75,7 +75,7 @@ const QUESTIONS: Record<string, RoomQuestionSet> = {
             { id: 1, text: "What is the main purpose of this place?", type: 'radio', options: ["Producing food for the King", "A vacation spot"], correctAnswer: "Producing food for the King", feedback: "The $hwt$ (estates) were agricultural centers for the crown.", points: 25 },
             { id: 2, text: "How do I pay workers?", type: 'radio', options: ["Bread/Beer", "Gold Coins"], correctAnswer: "Bread/Beer", feedback: "Wages were paid in rations, primarily grain and beer.", points: 25 },
             // ID 3: Feedback - Omitted
-            { id: 3, text: "Does the layout of this exhibit make it easy to see the artifacts?", type: 'radio', options: ["Yes", "No Crowded"], correctAnswer: "", feedback: "", points: 25 },
+            { id: 3, text: "Does the layout of this exhibit make it easy to see the artifacts?", type: 'radio', options: ["Yes", "No Crowded"], correctAnswer: "No, Crowded", feedback: "", points: 25 },
             { id: 4, text: "What is in the round silo?", type: 'radio', options: ["Grain", "Sand"], correctAnswer: "Grain", feedback: "The silo (granary) stored the state's wealth.", points: 25 },
             
 // ID 5: Checkpoint - Omitted

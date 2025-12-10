@@ -187,7 +187,11 @@ const WinnersDashboard: React.FC<WinnersDashboardProps> = ({ roomId }) => {
                   {winner.visitor?.name || `Visitor ${winner.visitor_id}`}
                   
                 </h3>
-          
+                <p className={styles.winnerRoom}>Room {winner.room_id}</p>
+                <p className={styles.winnerTime}>
+                  <Clock size={14} />
+                  {formatTimeAgo(winner.created_at)}
+                </p>
               </div>
 
               <div className={styles.cardGlow}></div>
