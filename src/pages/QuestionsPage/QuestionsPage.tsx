@@ -157,14 +157,7 @@ const QuestionStep: React.FC<{
                         exit={{ opacity: 0, y: -20, scale: 0.9 }}
                         transition={{ duration: 0.4 }}
                     >
-                        <motion.div 
-                            className={styles.feedbackIcon}
-                            initial={{ scale: 0, rotate: -180 }}
-                            animate={{ scale: 1, rotate: 0 }}
-                            transition={{ type: 'spring', stiffness: 200 }}
-                        >
-                            {isCorrectAnswer ? <CheckCircle2 size={56} /> : <XCircle size={56} />}
-                        </motion.div>
+                  
                         <h4 className={isCorrectAnswer ? styles.correct : styles.incorrect}>
                             {isCorrectAnswer ? 'Excellent Work!' : 'Not Quite Right'}
                         </h4>
