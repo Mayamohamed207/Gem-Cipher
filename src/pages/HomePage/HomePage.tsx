@@ -70,8 +70,8 @@ const HomePage: React.FC<HomePageProps> = ({ onExperienceSelect, onToggleTheme, 
                                     𓂀
                                 </motion.span>
                             </div>
-                            <p className={styles.subtitle}>ANCIENT ECHOES</p>
-                            <p className={styles.subtitle} style={{fontSize: '1.2rem'}}>Where Generative History Breathes New Life into Kemet</p>
+                            <p className={styles.subtitle}>Listenting To Every Voice</p>
+                            <p className={styles.subtitle} style={{fontSize: '1.2rem'}}>Personalizing Your Experience</p>
                             <button className={styles.startButton}>START YOUR JOURNEY</button>
                         </div>
                         

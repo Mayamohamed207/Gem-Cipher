@@ -3,6 +3,9 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Trophy, Camera, Clock } from 'lucide-react';
 import styles from './WinnerDashboard.module.css';
+import shot1 from './../../assets/images/shot1.png'
+import shot2 from './../../assets/images/shot2.png'
+import shot3 from './../../assets/images/shot3.png'
 
 interface Winner {
   name: string;
@@ -14,22 +17,22 @@ interface Winner {
 // DUMMY DATA - Top 3 winners
 const dummyWinners: Winner[] = [
   {
-    name: 'Sarah Ahmed',
+    name: 'Maya Mohamed',
     room: 'Royal Treasures',
     timestamp: Date.now() - 15 * 60 * 1000, // 15 mins ago
-    imageUrl: 'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=800&h=600&fit=crop'
+    imageUrl: shot1
   },
   {
     name: 'Mohamed Ali',
     room: 'Sacred Tombs',
     timestamp: Date.now() - 32 * 60 * 1000, // 32 mins ago
-    imageUrl: 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=800&h=600&fit=crop'
+    imageUrl: shot2
   },
   {
     name: 'Layla Hassan',
     room: 'Temple of Gods',
     timestamp: Date.now() - 48 * 60 * 1000, // 48 mins ago
-    imageUrl: 'https://images.unsplash.com/photo-1539768942893-daf53e448371?w=800&h=600&fit=crop'
+    imageUrl: shot3
   }
 ];
 
