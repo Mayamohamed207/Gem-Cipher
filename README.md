@@ -47,7 +47,7 @@ We built a **gamified, accessible, multi-experience web platform** that embeds f
 
 ### Main Landing Page
 ![Main Web Interface](src/assets/images/main%20web.png)
-*The portal entrance — built with Egyptian hieroglyphic motifs and modern UX principles.*
+*The portal entrance — built with modern UX principles.*
 
 ---
 
@@ -57,28 +57,26 @@ We built a **gamified, accessible, multi-experience web platform** that embeds f
 | ![Light Mode](src/assets/images/LIGHT.png) | ![Dark Mode](src/assets/images/DARK.png) |
 
 *One toggle. Full comfort — whether you're in the sunlit atrium or the dimly lit Tutankhamun gallery.*
+
+Visitors choose one of **three immersive experience modes** before entering:
 ```
 𓆣  Interactive Challenge
-    Solve historical puzzles and capture rare digital artifacts
+    Capture unique images
     to compete with fellow explorers.
-    → [ BEGIN JOURNEY ]
 
 𓇋  Kids Adventure
     Age-appropriate tours with simplified facts, animated stories,
-    and fun, hands-on activities.
-    → [ BEGIN JOURNEY ]
+    and fun journey.
 
 𓁈  Educational Tour
-    Deep dive into curatorial notes, archaeological context,
+    Deep dive into archaeological context,
     and expert academic insights.
-    → [ BEGIN JOURNEY ]
 ```
 ---
 
 ### Choosing Your Journey
+Visitors choose one of **three immersive difficulty level** before entering:
 ![Choosing Level of Difficulty](src/assets/images/choosing%20level%20of%20difficulty.png)
-
-Visitors choose one of **three immersive experience modes** before entering:
 
 ---
 
@@ -118,35 +116,28 @@ Visitors in **Interactive Challenge** mode can:
 
 1. **Browse the gallery map** and choose a location to photograph
 2. **Capture a photo** inside the museum using the in-app camera
-3. **See their photo analyzed** automatically for:
-   - Contrast & composition score
-   - Color vibrancy
-   - Subject clarity & framing
-   - Artifact identification accuracy
+3. To submit photo he fill small feedback 
+4. **See their photo analyzed** automatically
 
-Every hour, the **top-ranked photos** are featured on a live leaderboard displayed at the museum, showing:
+Every hour, the **top-ranked photos** are featured on a live leaderboard displayed at our website, showing:
 
 ```
 🥇  [Photo Thumbnail]  — Visitor Name
      📍 Tutankhamun Gallery  |  Score: 94/100
-     ⏱ Captured: 2:34 PM    |  ♥ 128 likes
+     ⏱ Captured: 2:34 PM    
 ```
 
-This creates a social, competitive layer that encourages deeper exploration across galleries — and generates rich behavioral data on which areas attract the most photographic interest.
+This creates a social, competitive layer that encourages deeper exploration across galleries.
 
 ---
 
 ## ♿ Accessibility
 
-We took accessibility seriously from day one — not as an afterthought.
+We took accessibility seriously to suit each and every tourist.
 
-- ✅ **Color blindness simulation checker** built into the design system 
-- ✅ All UI elements tested with color contrast tools meeting **WCAG 2.1 AA**
-- ✅ Screen reader compatible semantic HTML throughout
-- ✅ Keyboard navigable interface
-- ✅ Dark / Light mode toggle for photosensitivity and lighting conditions
-- ✅ Adjustable font sizes for readability in gallery lighting
-
+- **Color blindness simulation checker** built into the design system 
+- All UI elements tested with color contrast tools meeting **WCAG 2.1 AA**
+- Dark / Light mode toggle for photosensitivity and lighting conditions
 ---
 
 ## Tech Stack
